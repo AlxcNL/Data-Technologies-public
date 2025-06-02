@@ -92,7 +92,7 @@ To avoid redundancy and inconsistent data, relational databases are often normal
 - 3NF (Third Normal Form) – Eliminate transitive dependencies between attributes.
 <br>
   
-    *:mortar_board: We will learn more about normalization later on in this course.*
+*:mortar_board: We will learn more about normalization later on in this course.*
 
 <br>
 

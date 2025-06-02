@@ -295,6 +295,8 @@ SELECT * FROM cte_name;
 ````
 CTEs provide a **cleaner alternative** to subqueries, improving readability and reusability.
 
+<br>
+
 **Simple data extraction**
 Let's learn by example. We will retrieve all students enrolled in courses.
 ````sql
@@ -303,6 +305,8 @@ WITH enrolled_students AS (
 )
 SELECT * FROM enrolled_students WHERE academic_year = 2025;
 ````
+
+<br>
 
 **Multiple CTEs in one query**
 CTEs can also be **stacked**, allowing indepdent calculations.
@@ -316,8 +320,10 @@ recent_enrollments AS (
 SELECT * FROM active_courses ac 
 JOIN recent_enrollments re ON ac.id = re.course_id;
 ````
+<br>
 
 **Recursive CTEs for hierarchical data**
+
 Recursive queries are particularly useful for **organizational hierarchies**, **course prerequisites**, and **nested relationships**.
 What if we need to find course prerequisites recursively? We could use:
 ````sql
@@ -335,7 +341,10 @@ WITH RECURSIVE course_tree AS (
 SELECT * FROM course_tree;
 ````
 
+<br>
+
 **Aggregation & Statistical Computations**
+
 What if we want to calculate the average grade per student using CTEs for a cleaner logic, we could use:
 ````sql
 WITH student_grades AS (

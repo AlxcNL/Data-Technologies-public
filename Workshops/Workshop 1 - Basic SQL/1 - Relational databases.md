@@ -1,3 +1,5 @@
+# Relational Databases
+
 ### 1. What is a Relational Database?
 A relational database is a type of database that stores data in structured tables, where the relationships between the data are explicitly recorded. This model was introduced in the 1970s by Edgar F. Codd and has since formed the basis of many database management systems (DBMS).
 

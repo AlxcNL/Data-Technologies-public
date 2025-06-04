@@ -8,6 +8,5 @@ For more in depth information about PostgresSql and SQL, the following resources
 - [INSERTing data in SQL](https://www.postgresql.org/docs/current/sql-insert.html)
 - [How to UPDATE data in SQL](https://www.postgresql.org/docs/current/sql-update.html)
 - [How to DELETE data in SQL](https://www.postgresql.org/docs/current/sql-delete.html)
-- [Transactions in SQL](https://www.postgresql.org/docs/current/tutorial-transactions.html)
 - [SQL overview in PostgreSQL](https://www.postgresql.org/docs/current/sql-commands.html)
 - [PSQL commands for PostgreSQL](https://www.postgresql.org/docs/current/app-psql.html)

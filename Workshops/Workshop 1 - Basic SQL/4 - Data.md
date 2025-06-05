@@ -1,11 +1,9 @@
-# SQL Data Manipulation and Transactions
+# SQL Data Manipulation
 Structured Query Language (SQL) allows database manipulation using `INSERT`, `UPDATE`, and `DELETE` commands.
 Data Manipulation Language (DML) allows modification of data in relational databases using:
 - `INSERT` (add new records)
 - `UPDATE` (modify existing records)
 - `DELETE` (remove records)
-  
-Transactions ensure that database operations maintain consistency and integrity.
 
 
 <br>

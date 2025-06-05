@@ -67,7 +67,8 @@ Ordering of keys|Preserved|Not preserved
 Duplicate keys|Allow duplicate key, the last value is retained|Do not allow duplicate keys.
 Use cases|Storing configuration data, log data, simple JSON documents|Storing JSON documents where fast querying and indexing are required
 
-In practice, you should use `JSONB` to store JSON data unless you have specialized requirements such as retaining the ordering of keys in the JSON documents.
+> [!TIP]
+> In practice, you should use `JSONB` to store JSON data unless you have specialized requirements such as retaining the ordering of keys in the JSON documents.
 
 <br>
 

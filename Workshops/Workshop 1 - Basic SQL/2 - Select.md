@@ -104,12 +104,14 @@ SELECT name, department FROM courses;
 
 <details markdown="1">
 <summary>View this query result</summary>
+
 | name  | department  |
 |------|-------------|
 | Introduction to Programming | Computer Science |
 | Data Structures and Algorithms | Computer Science |
 | Database Management Systems | Computer Science |
 | ... | ... | 
+
 </details>
 
 <br>
@@ -133,6 +135,7 @@ SELECT DISTINCT department FROM courses;
 | Economics |
 | Medicine |
 | ... |
+
 </details>
 
 
@@ -159,6 +162,7 @@ WHERE city = 'Rotterdam';
 1454 | Joep | Vermeulen | 2000-04-23 | joep.vermeulen83@example.com | Rotterdam | 2020-08-06
 1599 | Alicja | Kowalski | 1998-07-29 | alicja.kowalski@example.com | Rotterdam | 2020-10-04
 1809 | Loïs | Ricci | 2006-04-25 | lois.ricci@example.com | Rotterdam | 2024-07-10
+
 </details>
 
 <br>
@@ -179,6 +183,7 @@ WHERE id >= 1000 AND city = 'Rotterdam';
 1454 | Joep | Vermeulen | 2000-04-23 | joep.vermeulen83@example.com | Rotterdam | 2020-08-06
 1599 | Alicja | Kowalski | 1998-07-29 | alicja.kowalski@example.com | Rotterdam | 2020-10-04
 1809 | Loïs | Ricci | 2006-04-25 | lois.ricci@example.com | Rotterdam | 2024-07-10
+
 </details>
 
 
@@ -204,6 +209,7 @@ ORDER BY department ASC;
 59 | Art History Survey I | Arts | 4 | True
 27 | Ecology | Biology | 4 | True
 ... | ... | ... | ... | ...
+
 </details>
 
 
@@ -227,6 +233,7 @@ ORDER BY enrolled DESC;
 402 | Scott | Durand | 2006-12-26 | scott.durand74@example.com | Zaanstad | 2025-05-18
 442 | Willem | Durand | 2006-05-17 | willem.durand@example.com | Ommen | 2025-05-17
 ... | ... | ... | ... | ... | ... | ...
+
 </details>
 
 
@@ -302,6 +309,7 @@ LIMIT 5;
 3 | Rosalie | Verbeek | 2004-09-30 | rosalie.verbeek@example.com | Hoofddorp | 2021-11-02
 4 | Luis | Dekkers | 2005-05-08 | luis.dekkers@example.com | Steenbergen | 2022-07-23
 5 | Olivier | Martin | 1999-06-10 | olivier.martin@example.com | Cranendonck | 2022-09-13
+
 </details>
 
 

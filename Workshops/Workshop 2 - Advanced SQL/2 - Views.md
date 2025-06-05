@@ -22,7 +22,8 @@ SELECT columns FROM table_name WHERE condition;
 ```
 In this syntax we start by setting the `name` of the view after `CREATE VIEW`. By optionally using `IF NOT EXISTS` option we can prevent creating a view that might already exist. After the `AS` we start our `SELECT` query, this is called a view defining query. The query can retrieve data from one or more tables, it acts as a normal query.
 
-> **Note:** A view always shows up-to-date data! The database engine recreates the view, every time a user queries it.
+> [!NOTE]
+> A view always shows up-to-date data! The database engine recreates the view, every time a user queries it.
 
 <br>
 
@@ -79,7 +80,8 @@ DROP VIEW IF EXISTS view_name;
 We start by specifying the name of the view (`view_name`) we want to remove after the `DROP VIEW` keywords.
 You could also add the `IF EXISTS` option to conditionally drop a view only if it exists. If you don't use the `IF EXISTS` option, and the view does not exists; the databsae system will issue an error. 
 
-> **Note:** The `DROP VIEW` statement deletes the view only, it does not remove the tables.
+> [!NOTE]
+> The `DROP VIEW` statement deletes the view only, it does not remove the tables.
 
 The following query uses the `DROP VIEW` statement to drop the `student_enrollments` view from the database:
 

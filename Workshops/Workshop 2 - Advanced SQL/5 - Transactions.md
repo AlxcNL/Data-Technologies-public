@@ -130,7 +130,8 @@ ROLLBACK TO enrollment_saved;
 
 COMMIT;
 ````
-:warning: *Rolling back to a savepoint **does not** end the transaction; you can continue executing further commands after a rollback.*
+> [!WARNING]
+> Rolling back to a savepoint **does not** end the transaction; you can continue executing further commands after a rollback.
 
 <br>
 

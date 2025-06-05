@@ -98,7 +98,8 @@ WHERE email = 'john.doe@example.com';
 ````
 *This will update the `city` of all students matching `john.doe@example.com` to `'Amsterdam'`.*
 
-> :warning: Be careful when updating records in a table! 
+> [!WARNING]
+> Be careful when updating records in a table! 
 > Notice the `WHERE` clause in the `UPDATE` statement. The `WHERE` clause specifies which record(s) that should be updated. 
 > **If you omit the `WHERE` clause, ALL records in the table will be updated!**
 
@@ -139,8 +140,8 @@ WHERE id IN (SELECT student_id FROM enrollments WHERE academic_year = 2025);
 
 <br>
 
-#### *:warning: Update warning!*
-Be careful when updating records. If you omit the `WHERE` clause, ALL records will be updated!
+> [!CAUTION]
+> Be careful when updating records. If you omit the `WHERE` clause, ALL records will be updated!
 
 <br>
 
@@ -167,7 +168,8 @@ WHERE email = 'john.doe@example.com';
 *This will delete all students with email `'john.doe@example.com'`.*
 <br>
 
-> :warning: Be careful when deleting records in a table! 
+> [!WARNING]
+> Be careful when deleting records in a table! 
 > Notice the `WHERE` clause in the `DELETE` statement. The `WHERE` clause specifies which record(s) that should be deleted. 
 > **If you omit the `WHERE` clause, ALL records in the table will be deleted!**
 
@@ -189,8 +191,8 @@ WHERE student_id IN (SELECT id FROM students WHERE city = 'Amsterdam');
 
 <br>
 
-#### *:warning: Delete warning!*
-Be careful when deleting records. If you omit the `WHERE` clause, ALL records will be deleted!
+> [!CAUTION]
+> Be careful when deleting records. If you omit the `WHERE` clause, ALL records will be deleted!
 
 <br>
 

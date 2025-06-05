@@ -274,7 +274,8 @@ PostgreSQL provides **ILIKE**, which automatically performs case-insensitive mat
 SELECT city FROM students WHERE city ILIKE '%amsterdam%';
 ````
 
-:warning: *Using `LIKE` on large datasets can slow down queries, especially if searching with `%` at the start.*
+> [!WARNING]
+> Using `LIKE` on large datasets can slow down queries, especially if searching with `%` at the start.
 
 <br>
 <br>

@@ -1,6 +1,6 @@
 # Caching & Connection Pooling
 
-## Caching
+## Caching (TBD)
 Met caching hebben we het dan over de caches in PostgreSQL:
 
 | Cache-type         | Niveau        | Voorbeeld                              |
@@ -12,7 +12,7 @@ Met caching hebben we het dan over de caches in PostgreSQL:
 | plan cache         | PostgreSQL    | Via prepared statements/functions      |
 
 
-## Connection pooling
+## Connection pooling (TBD)
 PgPool or PgBouncer ?
 
 PgPool heeft wel een query result cache

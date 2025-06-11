@@ -20,12 +20,12 @@ Without an index, PostgreSQL must perform a sequential scan — checking every r
 | **GiST**   | Generalized Search Tree; supports complex data types like geometry.             | Spatial data, ranges, custom indexing                                |
 
 
-### Benefits of Using Indexes
+*Benefits of Using Indexes*
 - Faster queries: Especially for SELECTs with filters or joins.
 - Enables efficient sorting and searching.
 - Supports constraints: e.g., enforcing uniqueness.
 
-### Drawbacks of Indexes
+*Drawbacks of Indexes*
 - Insert/Update overhead: Indexes must be updated when the table changes, which adds write cost.
 - More storage usage: Indexes take up disk space.
 - Too many indexes hurt performance: Each additional index slows down inserts, updates, and deletes.

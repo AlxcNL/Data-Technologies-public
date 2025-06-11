@@ -4,4 +4,4 @@
 CREATE INDEX idx_employee_salary ON employees USING BRIN (salary);
 `````
 
-Creates a BRIN index, which is efficient for large datasets.
+Creates a Block Range Index (BRIN), which is efficient for large datasets.

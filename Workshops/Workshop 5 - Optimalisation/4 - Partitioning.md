@@ -67,7 +67,7 @@ WHERE sale_date BETWEEN '2024-05-01' AND '2024-05-31';
 ### Design tip
 Horizontal partitioning can be done not only by dates, but also by numeric values, text categories, or even hashed values. As a database designer, you should analyze the most common query patterns before deciding how to partition — the right partitioning strategy depends entirely on how the data is accessed.
 
-## Vertical partitioning
+## Vertical partitioning (TBD)
 
 No native PostgresSQL support, but the benefits are:
 

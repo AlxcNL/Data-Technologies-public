@@ -102,7 +102,7 @@ While this works, it lacks some important advantages of a materialized view:
 |Query definition is lost|The original query is not stored with the table. You must track it yourself.|
 |No dependency tracking|PostgreSQL doesn't know which base tables the data came from. You can drop or modify the original table without warning — the derived table will not be affected (but may become outdated or irrelevant).|
 
-**When to Use CREATE TABLE AS**  
+**When to Use CREATE TABLE AS SELECT**  
 This method is suitable when:
 
 - You only need a one-time result or a snapshot.

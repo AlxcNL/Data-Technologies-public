@@ -151,10 +151,10 @@ Without the index, PostgreSQL would scan every row. With the GIN index, it direc
 In the context of GIN indexes, inversion refers to the idea that the index maps from internal elements (like JSON keys or array items) to the rows that contain them — rather than mapping from a full column value to a row, as B-tree indexes do.
 
 So instead of:
-value → list of rows (B-Tree)
+> value → list of rows (B-Tree)
 
 You get:
-element within value → list of rows (GIN)
+> element within value → list of rows (GIN)
 
 This "inversion" refers to the focus shifting from entire values to the internal terms or components that make up those values.
 

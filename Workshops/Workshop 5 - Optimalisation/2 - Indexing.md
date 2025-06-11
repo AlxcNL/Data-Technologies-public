@@ -20,6 +20,12 @@ Without an index, PostgreSQL must perform a sequential scan — checking every r
 | **GIN**    | Generalized Inverted Index; used for indexing composite or array values.        | Full-text search, JSONB, arrays                                      |
 | **GiST**   | Generalized Search Tree; supports complex data types like geometry.             | Spatial data, ranges, custom indexing                                |
 
+
+In the figure below, you see a visual representation of a B-tree index. The blue rectangles represent the nodes of the tree, with the ones at the bottom (inside the yellow box) called leaf nodes.
+The leaf nodes contain the actual mapping between indexed values and row pointers, known in PostgreSQL as Tuple Identifiers (`TIDs`). Each `TID` points to the physical location of a row in the table, using a `(page, offset)` format.
+In a B-tree, a node with N keys always has N+1 child nodes, which ensures that the search space is correctly partitioned.
+
+
 ```mermaid
 flowchart TD
     A[1000&vert;2000&vert;3000] --> B(500&vert;750)
@@ -39,7 +45,8 @@ flowchart TD
     M
     end
 ```
-A illustration of a B-Tree   
+
+
 
 ### Benefits of Using Indexes
 - Faster queries: Especially for SELECTs with filters or joins.

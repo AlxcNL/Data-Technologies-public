@@ -64,6 +64,9 @@ WHERE sale_date BETWEEN '2024-05-01' AND '2024-05-31';
 - PostgreSQL automatically uses partition pruning, scanning only the relevant partition(s).
 - This improves query performance, especially on large datasets, by skipping irrelevant partitions.
 
+### Design tip
+Horizontal partitioning can be done not only by dates, but also by numeric values, text categories, or even hashed values. As a database designer, you should analyze the most common query patterns before deciding how to partition — the right partitioning strategy depends entirely on how the data is accessed.
+
 ## Vertical partitioning
 
 No native PostgresSQL support, but the benefits are:

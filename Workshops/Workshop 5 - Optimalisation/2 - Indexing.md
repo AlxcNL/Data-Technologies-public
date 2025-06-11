@@ -202,7 +202,7 @@ This index uses PostgreSQL’s default `jsonb_opsz` operator class, which suppor
 
 4. Run a query using the `@>` containment operator
 
-````
+````sql
 SELECT * FROM employees
 WHERE info @> '{"department": "Engineering"}';
 ````

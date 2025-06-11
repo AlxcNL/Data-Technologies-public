@@ -233,7 +233,7 @@ INSERT INTO reservations (guest_name, stay_period) VALUES
 ('Bob',    '[2025-06-20, 2025-06-25)'),
 ('Charlie','[2025-06-15, 2025-06-22)');
 ````
-> The range `[2025-06-10, 2025-06-15)` includes the 10th up to but not including the 15th.
+The range `[2025-06-10, 2025-06-15)` includes the 10th up to but not including the 15th.
 
 3. Create a GiST index to optimize overlap queries
 
@@ -249,6 +249,6 @@ SELECT guest_name
 FROM reservations
 WHERE stay_period && '[2025-06-14, 2025-06-17)';
 ````
-> The && operator means: "overlaps with"
+The && operator means: "overlaps with"
 
 

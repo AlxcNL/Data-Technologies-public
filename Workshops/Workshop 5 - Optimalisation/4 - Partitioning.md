@@ -77,3 +77,14 @@ No native PostgresSQL support, but the benefits are:
 - Soms betere write-prestaties, bij kolommen met verschillende wijzigingsfrequenties.
 
   It is a design decesion of the Database Administrator (DBA) to do this (or not). 
+
+## Horizontal vs Vertical Partitioning – Summary
+
+| Characteristic       | Horizontal Partitioning                    | Vertical Partitioning                               |
+| -------------------- | ------------------------------------------ | --------------------------------------------------- |
+| **Split by**         | Row values (e.g. by date)                  | Columns (e.g. rarely used or sensitive fields)      |
+| **Primary use case** | Performance with large amounts of row data | Performance or security with wide tables            |
+| **Result**           | Multiple tables containing subsets of rows | Multiple tables containing subsets of columns       |
+| **Common scenarios** | Time-series data, logging, geographic data | Sensitive data, wide tables, column-specific access |
+
+

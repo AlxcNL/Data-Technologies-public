@@ -86,7 +86,7 @@ The above diagram shows the **Physical diagram** and is the last diagram step be
 
 &nbsp;
 
-> [!notice]
+> [!NOTE]
 > On this page we will focus on the Conceptual en Logical ERDs, later we will focus on the physical implementation.
 
 &nbsp;
@@ -108,7 +108,7 @@ erDiagram
     Author
 ```
 
-> [!notice]
+> [!NOTE]
 > Some teams prefer plural table names in the database, this is a design choose and is not wrong.
 > As long as you are consistent this is a choose you as a team make and enforce.
 
@@ -182,7 +182,7 @@ erDiagram
     }
 ```
 
-> [!notice]
+> [!NOTE]
 > In the above logical example the Primary Key (PK) and Foreing Key (FK) are also shown, this is optional to include.
 
 &nbsp;
@@ -217,7 +217,7 @@ erDiagram
     }
 ```
 
-> [!notice]
+> [!NOTE]
 > In the above logical example the Primary Key (PK) and Foreing Key (FK) are also shown, this is optional to include.
 
 &nbsp;
@@ -251,7 +251,7 @@ erDiagram
     }
 ```
 
-> [!notice]
+> [!NOTE]
 > In the above logical example the Primary Key (PK) and Foreing Key (FK) are also shown, this is optional to include.
 > The above logical example also shows an extra table, this is required because databases need to store more information to create a many to many relation.
 
@@ -282,7 +282,7 @@ erDiagram
     Employee ||--o| Employee : reports_to
 ```
 
-> [!notice]
+> [!NOTE]
 > In the above logical example the Primary Key (PK) and Foreing Key (FK) are also shown, this is optional to include.
 > The above logical example also adds a new attribute field `manager_id` which holds the relation to the other employee (manager).
 
@@ -316,7 +316,7 @@ If you need sharper diagrams, collaboration, or automated features, ERD tools ar
 - DBML (Database Markup Language) - Simple text-based schema language, write by human-readable format, version controllable;
 - Mermaid.js - Text-based ER diagram generation, works well for programmers who prefer code over visuals
 
-> [!notice]
+> [!NOTE]
 > We use `Mermaid.js` for all our diagrams, check out the sourcecode of this page to see how this works in Markdown.
 
 &nbsp;

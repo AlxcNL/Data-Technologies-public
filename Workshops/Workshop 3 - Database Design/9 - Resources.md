@@ -1,4 +1,5 @@
-## Resources for further learning
+# Resources for further learning
+
 For more in depth information about PostgresSql and SQL, the following resources could help.
 
 - [Datatypes in PostgreSQL](https://www.postgresql.org/docs/current/datatype.html)
@@ -14,3 +15,4 @@ For more in depth information about PostgresSql and SQL, the following resources
 - [Access Control in PostgreSQL](https://www.postgresql.org/docs/6.5/security13618.htm)
 - [Database roles](https://www.postgresql.org/docs/current/user-manag.html)
 - [Monitoring activity](https://www.postgresql.org/docs/current/monitoring.html)
+- [ERD with Mermaid](https://mermaid.js.org/syntax/entityRelationshipDiagram.html)

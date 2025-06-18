@@ -34,7 +34,7 @@ For example if we want to delete our `employees` table:
 DROP TABLE employees;
 ```
 
-> ![WARN]
+> [!CAUTION]
 > Deleting a table is a **permanent action**, data cannot be restored! Make backups and use precaution before running `DROP TABLE`!
 
 ### Avoiding errors
@@ -121,7 +121,7 @@ DROP TABLE employees CASCADE;
 
 This command **automatically removes** all dependencies, ensuring a smooth deletion.
 
-> ![WARN]
+> [!CAUTION]
 > Although called *Safe deletion*, deleting a table is a **permanent action** and data cannot be restored! 
 > Make backups and use precaution before running `DROP TABLE` (even when using `CASCADE`)!
 

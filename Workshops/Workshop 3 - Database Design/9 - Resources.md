@@ -10,3 +10,7 @@ For more in depth information about PostgresSql and SQL, the following resources
 - [Deleting a database in PostgreSQL](https://www.postgresql.org/docs/current/sql-dropdatabase.html)
 - [Triggers in PostgreSQL](https://www.postgresql.org/docs/current/plpgsql-trigger.html)
 - [Dropping a table in PostgreSQL](https://www.postgresql.org/docs/current/sql-droptable.html)
+- [Database access in PostgreSQL](https://www.postgresql.org/docs/current/tutorial-accessdb.html)
+- [Access Control in PostgreSQL](https://www.postgresql.org/docs/6.5/security13618.htm)
+- [Database roles](https://www.postgresql.org/docs/current/user-manag.html)
+- [Monitoring activity](https://www.postgresql.org/docs/current/monitoring.html)

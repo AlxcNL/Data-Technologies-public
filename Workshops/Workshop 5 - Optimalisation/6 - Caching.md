@@ -1,13 +1,11 @@
 # Caching & Connection Pooling
 
 ## Caching (TBD)
-Caching is a mechanism used to speed up read and write operations between two components of a system, typically when one component (such as a database or disk) is significantly slower than the other (such as a processor or memory).
+Caching is a mechanism used to speed up **read operations** between two components of a system, typically when one component (such as a database or disk) is significantly slower than the other (such as a processor or memory).
 
 To accelerate **read operations**, previously fetched or computed data is stored in a temporary, faster storage layer called a cache. When the same data is requested again, it can be served from the cache instead of retrieving it from the slower original source.
 
-To accelerate **write operations**, new or updated data is temporarily written to the cache first, and then written back to the original source at a later, more optimal time. This is known as write caching.
-
-In the diagram below, two components are shown: the *Application* and the *Disk*. The running application needs to read data from and write data to the disk. To speed up these operations, a cache layer is placed between the two components. The *Cache Manager* stores previously accessed data in RAM, so that when the application requests the same data again, it can be retrieved from RAM instead of the slower disk.
+In the diagram below, two components are shown: the *Application* and the *Disk*. The running application needs to read data from the disk. To speed up these read operations, a cache layer is placed between the two components. The *Cache Manager* stores previously accessed data in RAM, so that when the application requests the same data again, it can be retrieved from RAM instead of the slower disk.
 
 ```mermaid
 flowchart TB
@@ -20,6 +18,9 @@ flowchart TB
   
   Cache <--> Application
 ```
+> **Write caching note:**
+> Some caching strategies also involve storing writes in the cache. *Write-back caching* improves write performance by temporarily storing data in fast memory before writing it to the slower source at a later time. This strategy will be covered later in this workshop.
+
 
 
 

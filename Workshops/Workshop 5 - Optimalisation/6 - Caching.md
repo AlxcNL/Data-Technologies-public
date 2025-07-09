@@ -1,6 +1,6 @@
 # Caching & Connection Pooling
 
-## Caching (TBD)
+## Caching introduction
 Caching is a technique used to speed up **read operations** between two system components, especially when one component (like a disk or database) is much slower than the other (like RAM or a CPU).
 
 To reduce the time needed to retrieve data, a **cache** stores requently accessed or recently used data in a faster, temporary storage layer - usually in RAM. When the same data is requested again, it can be quickly returned from the cache instead of being fetched from the slower original source.
@@ -24,7 +24,7 @@ flowchart TB
 Because the cache has limited space, it can’t store everything. That’s why the Cache Manager must decide which data to keep and which to evict. This decision is governed by caching strategies such as LRU (Least Recently Used), LFU (Least Frequently Used) or Write-through / Write-back. We will explore these in the following sections.
 
 
-## Caching Across System Layers
+### Caching Across System Layers
 Caching occurs at multiple levels within a software system. The table below shows typical caching layers, each serving a different purpose to reduce latency and system load.
 
 | **Level**              | **Example**                                    | **Purpose**                                                      |
@@ -62,9 +62,14 @@ Cached data can also be **dirty**, meaning it contains changes that have not yet
 
 
 ## Caching stategies at Application level
-Since cache memory is limited and not automatically synchronized with the original data source, we need a strategy for how and when to store data in the cache. These strategies define how data is read from and written to the cache and the underlying storage.
+Since cache memory is limited and not automatically kept in sync with the original data source, we need to decide - from the application perspective:
 
-There are five caching strategies at application level:
+- **How to handle writes** — this is called the **write-policy**: should the cache, the data source, or both be updated? 
+- **How to handle reads** — this is sometimes called the **read-policy**: the application always queries the cache first. If the data is not found (a cache miss), the cache (or the application, depending on the strategy) will fetch it from the original source and may store it in the cache.
+
+A caching stategy defines either the write-policy, the read-policy or both.
+
+There are five common caching strategies at application level:
 - Cache aside (also know as: Lazy loading)
 - Read through
 - Write through
@@ -72,11 +77,11 @@ There are five caching strategies at application level:
 - Write around
 
 Each strategy handles the following aspects in a different way:
-- **Cache population policy** – When and how data enters the cache
+- **Cache population** – When and how data enters the cache
 - **Stale or dirty data handling** - How consistency between cache and source is maintained
 - **Application behavior during cache hits and misses** - What the application does on a cache hit or miss, and how it interacts with the data source
   
-### Cache aside (lazy loading)
+### Cache aside (Lazy loading)
 In this caching strategy, the **application itself controls access to the cache**. When reading data, the application first checks the cache. If the data is not found (a cache miss), it retrieves the data from the database and stores it in the cache for future use. When writing data, the application **writes directly to the database** and may explicitly invalidate or update the corresponding cache entry.
 
 Cache-aside is a flexible strategy, giving the application full control over how and when the cache is used.  
@@ -137,14 +142,14 @@ sequenceDiagram
     end
 ```
 
-Only read-strategy. Must be combined with a write strategy (usally write-through or write-back).
-
 ### Write through
 In this caching strategy, **write operations are sent to both the cache and the original data source simultaneously**. This ensures that the cache always remains consistent with the backing store. Although this approach guarantees strong consistency, it does **not improve write performance**, because the write operation is only considered complete after it has been persisted in the database.
 
 Write-through is a **write strategy only**, and must be combined with a separate **read strategy** (such as read-through or cache-aside) to handle data retrieval.
 
 The name *write-through* indicates that each write operation passes “through” the cache and directly reaches the backing store as well.
+
+Analogy: It’s like writing a document and immediately saving it to a USB drive after every single keystroke.
 
 ```mermaid
 sequenceDiagram
@@ -161,6 +166,8 @@ In this caching strategy, **write operations are optimized** by temporarily stor
 Write-back is a **write strategy only**, and must be combined with a separate **read strategy** to define how data is retrieved from the cache. For example, it is commonly used alongside a cache-aside or read-through read strategy.
 
 In write-back caching, “back” refers to the delayed action of writing data back to the original data source — not to the user or front-end, but to the persistent backing store (e.g., a database or disk). 
+
+Analogy: It’s like writing in a notebook and only saving the contents to a USB drive when you're done or taking a break.
 
 ```mermaid
 sequenceDiagram
@@ -219,58 +226,47 @@ sequenceDiagram
     App->>DB: Write(key, value)
 ```
 
-
-
-#### TBD Write-through caching 
-> **TBD:** Write-through and write-back define how writes are handled between the cache and the backing store. Cache population, on the other hand, is managed through separate strategies like write-allocate and read-allocate.
-
-With write-through caching, every time data is written to the cache, it is also immediately written to the original data source (e.g., disk or database).
-
-Pros:
-- The cache and the data source are always consistent.
-- No data is lost if the system crashes.
-  
-Cons:
-- Slower write performance, because every write involves the slower backing store.
-
-Analogy: It’s like writing a document and immediately saving it to a USB drive after every single keystroke.
-```mermaid
-sequenceDiagram
-    participant App as Application
-    participant Cache as Cache
-    participant DB as Disk / Database
-
-    App->>Cache: Write(data)
-    Cache->>DB: Write(data)
-    Note right of DB: Data is immediately written
-```
-
-#### Write-back caching
-With write-back caching, data is initially written only to the cache. The write to the original source happens later, either on a schedule or when the cache entry is evicted.
-
-Pros:
-- Faster write performance, since writes happen in fast memory (RAM).
-- Multiple writes can be combined into a single update to the source.
-  
-Cons:
-- Risk of data loss if the system crashes before changes are written back.
-- Cache and source can temporarily be inconsistent (dirty data).
-
-Analogy: It’s like writing in a notebook and only saving the contents to a USB drive when you're done or taking a break.
+### Summary
 
 ```mermaid
-sequenceDiagram
-    participant App as Application
-    participant Cache as Cache
-    participant DB as Disk / Database
+flowchart LR
 
-    App->>Cache: Write(data)
-    Note right of Cache: Data is now marked as dirty
+    subgraph "Strategies"
+        CA["Cache-aside"]
+        RT["Read-through"]
+        WT["Write&nbsp;through"]
+        WB["Write&nbsp;back"]
+        WA["Write&nbsp;around"]
+    end
 
-    Note over Cache, DB: Later...
-    Cache->>DB: Write(data)
-    Note right of DB: Data is written back from cache
+    subgraph "Read&nbsp;Policy"
+        R1["Application reads from cache first"]
+        R2["Cache handles miss automatically"]
+    end
+
+    subgraph "Write&nbsp;Policy"
+        W2["Writes go to cache and DB (sync)"]
+        W3["Writes go to cache only, DB is updated later"]
+        W1["App writes to DB and invalidates/updates cache"]                
+        W4["Writes go only to DB, cache is not touched"]
+    end
+
+    %% Read edges
+    CA --> R1
+    WA --> R1
+    RT --> R2
+
+    %% Write edges
+    CA --> W1
+    WT --> W2
+    WB --> W3
+    WA --> W4
+
+    %% Optional styling
+    classDef strategy fill:#f9f,stroke:#333,stroke-width:1px;
+    class CA,RT,WT,WB,WA strategy;
 ```
+
 
 ## Connection pooling (TBD)
 PgPool or PgBouncer ?

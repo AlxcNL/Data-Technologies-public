@@ -333,6 +333,31 @@ TBD: To avoid data loss, it’s important to pair write-back with persistence st
 </details>
 
 
+#### Case 3: Shared Content in a CMS
+
+A content management system (CMS) manages multiple sub-sites for different organizational units.  
+Some parts of the content are maintained by each sub-site, while other parts (such as shared announcements, policies, or branding elements) are managed centrally by the head office. Sub-sites regularly need to display this centrally managed content.
+
+<details>
+<summary>Click to reveal the answer</summary>
+
+**Recommended caching strategy:**  
+**Read-through**
+
+**Explanation:**  
+The sub-site application logic simply wants the content — it doesn’t care whether it comes from cache or database. With read-through caching, the cache automatically fetches the content from the database on a cache miss and stores it, making the process transparent to the application.
+
+This strategy keeps the caching logic centralized and ensures shared content is quickly available once fetched.
+
+**Why not cache-aside?**  
+Cache-aside requires the sub-site logic to handle cache population explicitly, increasing complexity.
+
+**Why not write-through/write-back/write-around?**  
+These strategies focus on write performance, but the shared content from the head office is read much more often than written.
+
+</details>
+
+
 ## Connection pooling (TBD)
 PgPool or PgBouncer ?
 

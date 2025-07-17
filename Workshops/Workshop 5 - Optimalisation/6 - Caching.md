@@ -61,7 +61,7 @@ Cached data can also be **dirty**, meaning it contains changes that have not yet
 > If another system reads the database directly, it will still see the old price. This is an example of **dirty data**.
 
 
-## Caching stategies at Application level
+## Caching strategies at Application level
 Since cache memory is limited and not automatically kept in sync with the original data source, we need to decide - from the application perspective:
 
 - **How to handle writes** — this is called the **write-policy**: should the cache, the data source, or both be updated? 
@@ -252,9 +252,10 @@ flowchart LR
     end
 
     %% Read edges
+    RT --> R2
     CA --> R1
     WA --> R1
-    RT --> R2
+    
 
     %% Write edges
     CA --> W1
@@ -266,7 +267,8 @@ flowchart LR
     classDef strategy fill:#f9f,stroke:#333,stroke-width:1px;
     class CA,RT,WT,WB,WA strategy;
 ```
-
+### Data access patterns determines which caching strategy to use
+It depends on the typical data access patterns in your application which caching strategy is best to use. 
 
 ## Connection pooling (TBD)
 PgPool or PgBouncer ?

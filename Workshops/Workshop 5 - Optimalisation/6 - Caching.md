@@ -282,7 +282,7 @@ It depends on the typical data access patterns in your application which caching
 |**Cache-aside**  |Use when you want control over when and what to cache.<br/>Flexible and safe, but more complex logic in the application. |
 |**Read-through** |Use when you want automatic cache population on reads.<br/>Simplifies application logic at the cost of flexibility.|
 
-#### Case 1: Banking Transactions
+#### 🧠 Case 1: Banking Transactions
 
 A bank processes hundreds of thousands of transactions per day for multiple account holders.  
 An account holder checks their balance and transaction history two or three times per day using the banking app.
@@ -303,9 +303,9 @@ This keeps the cache reserved for frequently-read data (like account balances), 
 - **Write-through** would push every transaction into the cache, wasting memory and evicting more relevant data.  
 - **Write-back** would delay writes to the database — unacceptable in a banking context where strong consistency and durability are critical.
 </details>
+<hr>
 
-
-####  Case 2: Real-Time Stock Prices
+#### 🧠 Case 2: Real-Time Stock Prices
 
 A stock trading application receives continuous updates of stock prices, driven by live bid and ask quotes.  
 Each stock’s price can change multiple times per second. The application needs to show the most current price to users, but doesn’t need to persist every micro-update in the database.
@@ -327,9 +327,9 @@ This approach reduces write pressure and ensures fast access to the most recent 
 **Note:**  
 TBD: To avoid data loss, it’s important to pair write-back with persistence strategies like write-ahead logging or regular snapshots.
 </details>
+<hr>
 
-
-#### Case 3: Shared Content in a CMS
+#### 🧠 Case 3: Shared Content in a CMS
 
 A content management system (CMS) manages multiple sub-sites for different organizational units.  
 Some parts of the content are maintained by each sub-site, while other parts (such as shared announcements, policies, or branding elements) are managed centrally by the head office. Sub-sites regularly need to display this centrally managed content.
@@ -351,8 +351,9 @@ Cache-aside requires the sub-site logic to handle cache population explicitly, i
 These strategies focus on write performance, but the shared content from the head office is read much more often than written.
 
 </details>
+<hr>
 
-#### Case 4: Sub-site Own Content Management
+#### 🧠 Case 4: Sub-site Own Content Management
 
 Within the same CMS platform, each sub-site also manages its own content — such as news articles, contact pages, and team information.  
 This content is updated occasionally by local staff and then viewed by site visitors. Each sub-site is responsible for loading and managing its own data.
@@ -372,8 +373,9 @@ Read-through hides the caching logic inside the cache layer, but here each sub-s
 Writes are infrequent and do not need immediate caching. Managing cache population manually is more efficient in this case.
 
 </details>
+<hr>
 
-#### Case 5: Electronic Health Records
+#### 🧠 Case 5: Electronic Health Records
 
 A hospital uses an electronic health record (EHR) system where doctors and nurses view and update patient data, such as diagnoses, medications, and vital signs. Any update must be immediately available to other users or systems. At the same time, frequently accessed patient data should load quickly to ensure responsiveness in emergency situations.
 
@@ -404,7 +406,7 @@ if invalidation fails, users may see **outdated or incorrect patient information
 Write-back delays the write to the database, which introduces a **risk of data loss** if the cache crashes before flushing — unacceptable in healthcare systems.
 
 </details>
-
+<hr>
 
 ## Connection pooling (TBD)
 PgPool or PgBouncer ?

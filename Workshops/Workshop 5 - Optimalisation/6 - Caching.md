@@ -408,6 +408,23 @@ Write-back delays the write to the database, which introduces a **risk of data l
 </details>
 <hr>
 
+## Implementing a caching-strategy
+The implementation of a cache for a caching-strategy in a application depends heavily on the tools, libraries and architecture of the application. Most caching-solutions like Redis and Memcached are primary read-caches. Rarely 'out-of-the box' solutions exists to implement a write-back cache policy.
+
+Redis is a key-value store which stores its data persistent or in-memory
+Memcached is a key-value store (only strings as values) and only in-memory
+
+These key-value stores can easily be integrated into framework like Django and Laravel. 
+Django: cache.get(), cache.set(), and a cache_page decorator
+https://docs.djangoproject.com/en/5.2/topics/cache/
+
+Laravel: Cache::remember(), Cache::Put() 
+https://laravel.com/docs/12.x/cache
+
+These key-value stores and framework-integrations can be used for the 'cache-aside', 'read-through' and 'write-through' caching strategies.
+
+
+
 ## Connection pooling (TBD)
 PgPool or PgBouncer ?
 

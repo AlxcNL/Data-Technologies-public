@@ -460,6 +460,23 @@ These settings help ensure that data in the cache survives crashes.
 
 Since most frameworks do not support write-back caching directly, a custom implementation is often needed. This usually involves wrapping the cache and database access with your own logic to track changes and flush updates safely.
 
+### Example cache-aside in Django
+```
+import logging
+from django.core.cache import cache
+from myapp.models import Product
+logger = logging.getLogger(__name__)
+
+def get_product(product_id):
+    key = f"product:{product_id}"
+    product = cache.get(key)
+    if product is None:
+        logger.info("Cache miss for product %s. Loading from database...", product_id)
+        product = Product.objects.get(id=product_id)
+        cache.set(key, product, timeout=60*5)
+    return product
+
+```
 
 
 

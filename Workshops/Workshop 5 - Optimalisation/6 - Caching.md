@@ -268,7 +268,70 @@ flowchart LR
     class CA,RT,WT,WB,WA strategy;
 ```
 ### Data access patterns determines which caching strategy to use
-It depends on the typical data access patterns in your application which caching strategy is best to use. 
+It depends on the typical data access patterns in your application which caching strategy is best to use. Ask yourself:
+
+- Is the data read often?
+- Are writes more frequent than reads?
+- Does consistency between cache and database matter?
+
+|Strategy         |When to use|
+|-----------------|-----------|
+|**Write-around** |Use when you have many writes of unique or rarely-read data.<br/>Avoids polluting the cache with data that likely won’t be read.|
+|**Write-back**   |Use when you have many successive writes on the same data.<br/>Reduces database load but risks data loss on cache failure. |
+|**Write-through**|Use when reads and writes are equally frequent and you want the cache to stay consistent.<br/>Writes are slower, but the cache and database stay in sync.|   
+|**Cache-aside**  |Use when you want control over when and what to cache.<br/>Flexible and safe, but more complex logic in the application. |
+|**Read-through** |Use when you want automatic cache population on reads.<br/>Simplifies application logic at the cost of flexibility.|
+
+#### Case 1: Banking Transactions
+
+A bank processes hundreds of thousands of transactions per day for multiple account holders.  
+An account holder checks their balance and transaction history two or three times per day using the banking app.
+
+<details>
+<summary>Click to reveal the answer</summary>
+
+**Recommended caching strategy:**  
+**Write-around**
+
+**Explanation:**  
+The number of write operations (incoming transactions) far exceeds the number of reads (account holders checking their balance or history).  
+Each transaction is unique and typically not accessed immediately — many will never be accessed at all.  
+Caching all of these writes would quickly fill the cache with data that’s unlikely to be reused.
+
+**Why write-around?**  
+Write-around writes directly to the database and avoids caching data unless it’s later read.  
+This keeps the cache reserved for frequently-read data (like account balances), improving overall efficiency.
+
+**Why not write-through or write-back?**  
+- **Write-through** would push every transaction into the cache, wasting memory and evicting more relevant data.  
+- **Write-back** would delay writes to the database — unacceptable in a banking context where strong consistency and durability are critical.
+</details>
+
+
+####  Case 2: Real-Time Stock Prices
+
+A stock trading application receives continuous updates of stock prices, driven by live bid and ask quotes.  
+Each stock’s price can change multiple times per second. The application needs to show the most current price to users, but doesn’t need to persist every micro-update in the database.
+
+<details>
+<summary>Click to reveal the answer</summary>
+
+**Recommended caching strategy:**  
+**Write-back**
+
+**Explanation:**  
+The stock price for a given ticker symbol is updated very frequently. Writing each update directly to the database would cause excessive write load and latency. With write-back, updates are stored in the cache and written back to the database in the background or at regular intervals.
+
+This approach reduces write pressure and ensures fast access to the most recent price.
+
+**Why not write-through or write-around?**  
+- **Write-through** would send every minor price change to the database immediately, which is unnecessary overhead.  
+- **Write-around** would bypass the cache on writes, leading to stale or missing prices in the cache when users request them.
+
+**Note:**  
+TBD: To avoid data loss, it’s important to pair write-back with persistence strategies like write-ahead logging or regular snapshots.
+</details>
+
 
 ## Connection pooling (TBD)
 PgPool or PgBouncer ?

@@ -478,6 +478,71 @@ def get_product(product_id):
 
 ```
 
+### Example write-back with Redis
+```python
+import redis
+import json
+
+class WriteBackRedisCache:
+    def __init__(self, db_backend, redis_client, namespace="wb"):
+        self.db = db_backend  # Simulated backing store (e.g. dict or ORM)
+        self.redis = redis_client
+        self.namespace = namespace
+
+    def _key(self, key):
+        return f"{self.namespace}:{key}"
+
+    def get(self, key):
+        rkey = self._key(key)
+        value = self.redis.get(rkey)
+        if value is not None:
+            return json.loads(value)
+
+        # Cache miss: load from DB
+        value = self.db.get(key)
+        if value is not None:
+            self.redis.set(rkey, json.dumps(value))
+        return value
+
+    def set(self, key, value):
+        rkey = self._key(key)
+        self.redis.set(rkey, json.dumps(value))
+        self.redis.sadd(f"{self.namespace}:dirty", key)
+
+    def flush(self):
+        dirty_keys = self.redis.smembers(f"{self.namespace}:dirty")
+        for key in dirty_keys:
+            key = key.decode()  # Redis returns bytes
+            rkey = self._key(key)
+            value = self.redis.get(rkey)
+            if value:
+                self.db[key] = json.loads(value)
+        self.redis.delete(f"{self.namespace}:dirty")
+
+```
+
+Gebruik:
+
+```python
+# Simulated persistent DB (could also be ORM)
+db = {"x": 1, "y": 2}
+
+# Connect to Redis
+r = redis.Redis(host="localhost", port=6379, db=0)
+
+# Create cache
+cache = WriteBackRedisCache(db_backend=db, redis_client=r)
+
+print("Initial DB:", db)
+
+print("Reading x:", cache.get("x"))
+cache.set("x", 42)
+cache.set("z", 999)
+
+print("DB before flush:", db)
+cache.flush()
+print("DB after flush:", db)
+```
 
 
 ## Connection pooling (TBD)

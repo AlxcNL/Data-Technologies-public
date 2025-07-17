@@ -290,13 +290,11 @@ An account holder checks their balance and transaction history two or three time
 <details>
 <summary>Click to reveal the answer</summary>
 
-**Recommended caching strategy:**  
-**Write-around**
+**Recommended caching strategy:**  **Write-around**
 
 **Explanation:**  
 The number of write operations (incoming transactions) far exceeds the number of reads (account holders checking their balance or history).  
-Each transaction is unique and typically not accessed immediately — many will never be accessed at all.  
-Caching all of these writes would quickly fill the cache with data that’s unlikely to be reused.
+Each transaction is unique and typically not accessed immediately — many will never be accessed at all. Caching all of these writes would quickly fill the cache with data that’s unlikely to be reused.
 
 **Why write-around?**  
 Write-around writes directly to the database and avoids caching data unless it’s later read.  
@@ -316,8 +314,7 @@ Each stock’s price can change multiple times per second. The application needs
 <details>
 <summary>Click to reveal the answer</summary>
 
-**Recommended caching strategy:**  
-**Write-back**
+**Recommended caching strategy:**  **Write-back**
 
 **Explanation:**  
 The stock price for a given ticker symbol is updated very frequently. Writing each update directly to the database would cause excessive write load and latency. With write-back, updates are stored in the cache and written back to the database in the background or at regular intervals.
@@ -341,8 +338,7 @@ Some parts of the content are maintained by each sub-site, while other parts (su
 <details>
 <summary>Click to reveal the answer</summary>
 
-**Recommended caching strategy:**  
-**Read-through**
+**Recommended caching strategy:**  **Read-through**
 
 **Explanation:**  
 The sub-site application logic simply wants the content — it doesn’t care whether it comes from cache or database. With read-through caching, the cache automatically fetches the content from the database on a cache miss and stores it, making the process transparent to the application.
@@ -354,6 +350,59 @@ Cache-aside requires the sub-site logic to handle cache population explicitly, i
 
 **Why not write-through/write-back/write-around?**  
 These strategies focus on write performance, but the shared content from the head office is read much more often than written.
+
+</details>
+
+#### Case 4: Sub-site Own Content Management
+
+Within the same CMS platform, each sub-site also manages its own content — such as news articles, contact pages, and team information.  
+This content is updated occasionally by local staff and then viewed by site visitors. Each sub-site is responsible for loading and managing its own data.
+
+<details>
+<summary>Click to reveal the answer</summary>
+
+**Recommended caching strategy:**  **Cache-aside**
+
+**Explanation:**  
+Each sub-site has autonomy over its own content and reads it frequently. With cache-aside, the application first checks the cache. If the data isn’t there, it fetches it from the database and places it in the cache explicitly. This gives the sub-site full control over what is cached and when — useful when some content is rarely accessed and shouldn't occupy memory unnecessarily.
+
+**Why not read-through?**  
+Read-through hides the caching logic inside the cache layer, but here each sub-site benefits from having control over cache population and invalidation (e.g. after edits).
+
+**Why not write-through or write-back?**  
+Writes are infrequent and do not need immediate caching. Managing cache population manually is more efficient in this case.
+
+</details>
+
+#### Case 5: Electronic Health Records
+
+A hospital uses an electronic health record (EHR) system where doctors and nurses view and update patient data, such as diagnoses, medications, and vital signs. Any update must be immediately available to other users or systems. At the same time, frequently accessed patient data should load quickly to ensure responsiveness in emergency situations.
+
+<details>
+<summary>Click to reveal the answer</summary>
+
+**Recommended caching strategy:**  **Combination of Write-through and Read-through**
+
+**Explanation:**  
+This system requires both high **data consistency** and **fast access** to frequently used information. When patient data is updated, it must be stored immediately in both the cache and the database. This ensures that all reads — whether from cache or DB — return the most recent information.
+
+- **Write-through** ensures that every change is immediately written to both the cache and the database.  
+  ➤ This guarantees consistency between what’s stored and what’s shown.
+
+- **Read-through** allows the application to access patient data through the cache transparently.  
+  ➤ If the data isn’t in the cache, it’s automatically loaded from the database and cached for next time.
+
+This combination ensures that:
+- All data shown to users is up-to-date.
+- The cache remains useful for quick access.
+- The application logic stays clean and simple.
+
+**Why not cache-aside?**  
+Cache-aside requires manual cache invalidation after each write. In a medical context, this is too risky:  
+if invalidation fails, users may see **outdated or incorrect patient information** — which can have serious consequences.
+
+**Why not write-back?**  
+Write-back delays the write to the database, which introduces a **risk of data loss** if the cache crashes before flushing — unacceptable in healthcare systems.
 
 </details>
 

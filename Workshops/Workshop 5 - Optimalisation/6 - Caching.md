@@ -408,20 +408,58 @@ Write-back delays the write to the database, which introduces a **risk of data l
 </details>
 <hr>
 
-## Implementing a caching-strategy
-The implementation of a cache for a caching-strategy in a application depends heavily on the tools, libraries and architecture of the application. Most caching-solutions like Redis and Memcached are primary read-caches. Rarely 'out-of-the box' solutions exists to implement a write-back cache policy.
+## Implementing a Caching Strategy (TBD)
 
-Redis is a key-value store which stores its data persistent or in-memory
-Memcached is a key-value store (only strings as values) and only in-memory
+The implementation of a caching strategy in an application depends heavily on the tools, frameworks, and overall architecture.  
+Most caching solutions — such as Redis and Memcached — are primarily designed for **read caching**.  
+There are rarely any “out-of-the-box” solutions to implement a **write-back** caching policy.
 
-These key-value stores can easily be integrated into framework like Django and Laravel. 
-Django: cache.get(), cache.set(), and a cache_page decorator
-https://docs.djangoproject.com/en/5.2/topics/cache/
+---
 
-Laravel: Cache::remember(), Cache::Put() 
-https://laravel.com/docs/12.x/cache
+### Read policy caching
 
-These key-value stores and framework-integrations can be used for the 'cache-aside', 'read-through' and 'write-through' caching strategies.
+- **Redis** is a key-value store that can store data either in memory or persistently.
+- **Memcached** is an in-memory key-value store that supports only string values.
+
+These systems integrate easily with popular frameworks:
+
+- **Django**  
+  Functions like `cache.get()`, `cache.set()`, and decorators like `@cache_page` are available.  
+  [Django caching documentation](https://docs.djangoproject.com/en/5.2/topics/cache/)
+
+- **Laravel**  
+  Uses methods like `Cache::remember()`, `Cache::put()`, and others.  
+  [Laravel cache documentation](https://laravel.com/docs/12.x/cache)
+
+These caching mechanisms support strategies like:
+
+- **Cache-aside** (manual cache population and invalidation)
+- **Read-through** (automatic cache loading on read)
+- **Write-through** (writes go to both cache and database synchronously)
+
+---
+
+### Write-back caching
+
+Implementing a **write-back** caching policy is much more complex.  
+In this model, the **cache becomes the system of record**, which means it is responsible for eventually writing data back to the database.
+
+This introduces several challenges:
+
+- **Durability**: If the cache crashes, data that hasn’t yet been written to the database may be lost.
+- **Consistency**: The cache and database can become out of sync if the flush fails or is delayed.
+- **Responsibility**: The application logic must manage *dirty data tracking* and define *flush timing* (e.g. scheduled writes or write-on-eviction).
+
+For a write-back strategy, the cache must support **persistence**.  
+For example, Redis can be configured with:
+
+- `appendonly yes` (AOF: Append Only File)
+- `SAVE` (RDB: snapshotting)
+
+These settings help ensure that data in the cache survives crashes.
+
+Since most frameworks do not support write-back caching directly, a custom implementation is often needed. This usually involves wrapping the cache and database access with your own logic to track changes and flush updates safely.
+
 
 
 

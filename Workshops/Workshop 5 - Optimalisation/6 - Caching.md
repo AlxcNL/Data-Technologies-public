@@ -244,8 +244,8 @@ flowchart LR
     end
 
     subgraph "Read&nbsp;Policy"
-        R1["Application reads from cache.<br>In case of a cache miss, the application reads from the DB."]
-        R2["Application reads from cache.<br>In case of a cache miss, the cache itself reads from the DB."]
+        R1["Application reads from cache. In case of a cache miss, the application reads from the DB."]
+        R2["Application reads from cache. In case of a cache miss, the cache itself reads from the DB."]
     end
 
     subgraph "Write&nbsp;Policy"
@@ -267,9 +267,10 @@ flowchart LR
     WB --> W3
     WA --> W4
 
-    %% Optional styling
+ %% Optional styling
     classDef strategy fill:#f9f,stroke:#333,stroke-width:1px;
     class CA,RT,WT,WB,WA strategy;
+   
 ```
 ### Data access patterns determines which caching strategy to use
 It depends on the typical data access patterns in your application which caching strategy is best to use. Ask yourself:

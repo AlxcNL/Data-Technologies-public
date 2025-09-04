@@ -323,8 +323,8 @@ For the current balance (derived from all money transactions), a **cache-aside**
 
 #### 🧠 Case 2: Real-Time Stock Prices
 
-A stock trading application receives continuous updates of stock prices, driven by live bid and ask quotes.  
-Each stock’s price can change multiple times per second. The application needs to show the most current price to users, but doesn’t need to persist every micro-update in the authoritative data source.
+A stock trading application receives continuous price updates (bid/ask) for many tickers.  
+Each price can change multiple times per second. The application must display the most current price to users, but doesn’t need to persist every micro-update in its own database. The authoritative data source in this case is the external market feed. The database of the application is used for storing snapshots of the prices.
 
 <details>
 <summary>Click to reveal the answer</summary>
@@ -332,16 +332,14 @@ Each stock’s price can change multiple times per second. The application needs
 **Recommended caching strategy:**  **Write-back**
 
 **Explanation:**  
-The stock price for a given ticker symbol is updated very frequently. Writing each update directly to the authoritative data source would cause excessive write load and latency. With write-back, updates are stored in the cache and written back to the authoritative data source in the background or at regular intervals.
+The price for a given ticker symbol is updated very frequently. Writing each update directly to the database would cause excessive write load and latency. With write-back, updates are stored in the cache and written back to the database in the background or at regular intervals.
 
-This approach reduces write pressure and ensures fast access to the most recent price.
+This approach reduces write pressure and ensures fast access to the most recent price or a historical view of prices.
 
 **Why not write-through or write-around?**  
-- **Write-through** would send every minor price change to the authoritative data source immediately, which is unnecessary overhead.  
+- **Write-through** would send every minor price change to the database immediately, which is unnecessary overhead.  
 - **Write-around** would bypass the cache on writes, leading to stale or missing prices in the cache when users request them.
 
-**Note:**  
-TBD: To avoid data loss, it’s important to pair write-back with persistence strategies like write-ahead logging or regular snapshots.
 </details>
 <hr>
 
@@ -356,7 +354,7 @@ Some parts of the content are maintained by each sub-site, while other parts (su
 **Recommended caching strategy:**  **Read-through**
 
 **Explanation:**  
-The sub-site application logic simply wants the content — it doesn’t care whether it comes from cache or the authoritative data source. With read-through caching, the cache automatically fetches the content from the authoritative data source on a cache miss and stores it, making the process transparent to the application.
+The sub-site application logic only needs the content — it doesn’t care whether it comes from cache or the authoritative data source. With read-through caching, the cache automatically fetches the content from the authoritative data source on a cache miss and stores it, so the caching process is transparent to the application.
 
 This strategy keeps the caching logic centralized and ensures shared content is quickly available once fetched.
 
@@ -372,7 +370,7 @@ These strategies focus on write performance, but the shared content from the hea
 #### 🧠 Case 4: Sub-site Own Content Management
 
 Within the same CMS platform, each sub-site also manages its own content — such as news articles, contact pages, and team information.  
-This content is updated occasionally by local staff and then viewed by site visitors. Each sub-site is responsible for loading and managing its own data.
+This content is updated occasionally by local staff which is then viewed by site visitors. Each sub-site is responsible for loading and managing its own data.
 
 <details>
 <summary>Click to reveal the answer</summary>
@@ -380,7 +378,7 @@ This content is updated occasionally by local staff and then viewed by site visi
 **Recommended caching strategy:**  **Cache-aside**
 
 **Explanation:**  
-Each sub-site has autonomy over its own content and reads it frequently. With cache-aside, the application first checks the cache. If the data isn’t there, it fetches it from the authoritative data source and places it in the cache explicitly. This gives the sub-site full control over what is cached and when — useful when some content is rarely accessed and shouldn't occupy memory unnecessarily.
+Each sub-site has autonomy over its own content and reads it frequently. With cache-aside, the application first checks the cache. If the data isn’t there, it fetches the data from the authoritative data source and explicitly stored it in the cache. This gives the sub-site full control over what is cached and when — useful when some content is rarely accessed and shouldn't occupy memory unnecessarily.
 
 **Why not read-through?**  
 Read-through hides the caching logic inside the cache layer, but here each sub-site benefits from having control over cache population and invalidation (e.g. after edits).
@@ -393,7 +391,7 @@ Writes are infrequent and do not need immediate caching. Managing cache populati
 
 #### 🧠 Case 5: Electronic Health Records
 
-A hospital uses an electronic health record (EHR) system where doctors and nurses view and update patient data, such as diagnoses, medications, and vital signs. Any update must be immediately available to other users or systems. At the same time, frequently accessed patient data should load quickly to ensure responsiveness in emergency situations.
+A hospital uses an electronic health record (EHR) system where doctors and nurses view and update patient data, such as diagnoses, medications, and vital signs. Any update must be immediately be visible to other users or systems. At the same time, frequently accessed patient data should load quickly to ensure responsiveness in emergency situations.
 
 <details>
 <summary>Click to reveal the answer</summary>
@@ -404,7 +402,7 @@ A hospital uses an electronic health record (EHR) system where doctors and nurse
 This system requires both high **data consistency** and **fast access** to frequently used information. When patient data is updated, it must be stored immediately in both the cache and the authoritative data source. This ensures that all reads — whether from cache or the authoritative data source — return the most recent information.
 
 - **Write-through** ensures that every change is immediately written to both the cache and the authoritative data source.  
-  ➤ This guarantees consistency between what’s stored and what’s shown.
+  ➤ This guarantees consistency between what’s stored (authoritative data source) and what’s shown (the cache).
 
 - **Read-through** allows the application to access patient data through the cache transparently.  
   ➤ If the data isn’t in the cache, it’s automatically loaded from the authoritative data source and cached for next time.
@@ -419,10 +417,43 @@ Cache-aside requires manual cache invalidation after each write. In a medical co
 if invalidation fails, users may see **outdated or incorrect patient information** — which can have serious consequences.
 
 **Why not write-back?**  
-Write-back delays the write to the database, which introduces a **risk of data loss** if the cache crashes before flushing — unacceptable in healthcare systems.
+Write-back delays the write to the authoritative data source, which introduces a **risk of data loss** if the cache crashes before flushing — unacceptable in healthcare systems.
 
 </details>
 <hr>
+
+#### 🧠 Case 6: Page-View Logging & Analytics
+
+A high-traffic website records page views for analytics dashboards and reports.  
+Events (page views) arrive continuously and in bursts. The application must show near-real-time counters to users (e.g., “current viewers”) while periodically persisting aggregated results to the backend store (data warehouse / analytics DB).
+
+<details>
+<summary>Click to reveal the answer</summary>
+
+**Recommended caching strategy:** **Write-back** (buffered logging via queue/stream) + read from cache
+
+**Explanation:**  
+Incoming page-view events are first written to an in-memory cache or event buffer (e.g., Redis/Redis Streams or a message queue).  
+These entries are **dirty** until they are **flushed** in batches to the authoritative data source (e.g., a data warehouse or analytics database).  
+The cache/buffer also serves **low-latency reads** for live counters (last minute/second).
+
+This reduces write pressure on the backend, enables batching/coalescing (e.g., per URL and time bucket), and still provides fast, up-to-date counters.
+
+**Why not write-through?**  
+Every single event would synchronously hit the database — excessive write load and higher latency.
+
+**Why not cache-aside?**  
+The app would need to manage cache population per event and immediate invalidation per aggregate — high complexity with little benefit at this write volume.
+
+**Operational notes / mitigations:**  
+- Ensure durability: replicate the cache/stream or use a **write-ahead log** to avoid data loss on crash.  
+- Use **coalescing/batching** (e.g., aggregate per URL per 5–60 seconds) before flush.  
+- Design for **at-least-once** delivery and make backfills **idempotent** (upserts on (url, time_bucket)).  
+- Apply **backpressure** when the backend is slow to avoid overload.
+
+</details>
+<hr>
+
 
 ## Implementing a Caching Strategy (TBD)
 

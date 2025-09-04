@@ -4,8 +4,8 @@ Some first raw thougts:
 
 - Bulk Inserts
 - Insert .. Select
-- CTE's
 - Returning clausule
+- CTE's
 - upserts
 
 ## Bulk Inserts
@@ -42,7 +42,19 @@ WHERE created_at < now() - interval '1 year';
 Avoids fetching rows into the application and re-inserting them.
 
 ---
+## RETURNING Clause
 
+Get inserted/updated values immediately without an extra select:
+
+```sql
+INSERT INTO users (username, created_at)
+VALUES ('alice', now())
+RETURNING id;
+```
+
+Useful when you need the new primary key directly.
+
+---
 ## Common Table Expressions (CTEs) — `WITH` Clause
 
 Use CTEs to combine multiple steps into one statement:
@@ -59,18 +71,7 @@ SELECT id, payload, now() FROM moved;
 
 This combines a delete + insert in a single transactional step.
 
-## RETURNING Clause
-
-Get inserted/updated values immediately without an extra select:
-
-```sql
-INSERT INTO users (username, created_at)
-VALUES ('alice', now())
-RETURNING id;
-```
-
-Useful when you need the new primary key directly.
-
+---
 ## Optimizing Inserts and Updates with Upserts  
 
 ### Context

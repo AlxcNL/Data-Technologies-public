@@ -1,4 +1,4 @@
-# Caching & Connection Pooling
+# Caching
 
 ## Caching introduction
 Caching is a technique used to speed up **read operations** between two system components, especially when one component (like a disk or database) is much slower than the other (like RAM or a CPU).
@@ -594,11 +594,6 @@ cache.flush()
 print("DB after flush:", db)
 ```
 
-
-## Connection pooling (TBD)
-PgPool or PgBouncer ?
-
-PgPool heeft wel een query result cache
 
 
 

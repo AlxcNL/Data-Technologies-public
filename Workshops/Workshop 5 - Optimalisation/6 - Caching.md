@@ -358,10 +358,12 @@ The sub-site application logic only needs the content — it doesn’t care whet
 
 This strategy keeps the caching logic centralized and ensures shared content is quickly available once fetched.
 
+Optionally, adding **write-through** at the central publishing path ensures that new or updated shared content is written to the authoritative data source **and** the cache immediately, pre-warming the cache so first reads after publishing won’t miss. If ***only read-through is used***, it is recommended to configure a TTL (Time-To-Live) or apply event-based invalidation to ensure that updated content does not remain stale in the cache.
+
 **Why not cache-aside?**  
 Cache-aside requires the sub-site logic to handle cache population explicitly, increasing complexity.
 
-**Why not write-through/write-back/write-around?**  
+**Why not write-back/write-around?**  
 These strategies focus on write performance, but the shared content from the head office is read much more often than written.
 
 </details>

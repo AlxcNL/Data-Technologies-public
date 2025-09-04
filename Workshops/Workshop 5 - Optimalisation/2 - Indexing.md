@@ -251,4 +251,49 @@ WHERE stay_period && '[2025-06-14, 2025-06-17)';
 ````
 The && operator means: "overlaps with"
 
+## Partial Indexes
+
+A partial index is an index built only on a subset of rows in a table, defined by a WHERE condition. This can reduce index size and improve performance if queries only need to access a filtered portion of the data.
+
+Example:
+Suppose we have a users table, but we only need fast access to active users.
+
+```sql
+CREATE INDEX idx_active_users
+ON users (last_login)
+WHERE active = true;
+```
+This index only includes rows where active = true.
+Queries that filter on this condition can use the smaller, more efficient index.
+
+```sql
+SELECT id, last_login
+FROM users
+WHERE active = true
+ORDER BY last_login DESC;
+```
+
+## Covering Indexes
+
+A covering index stores extra non-key columns inside the index.
+This allows the database to answer queries directly from the index, without looking up the original table (a so-called index-only scan).
+
+Example:
+Suppose we often query orders by customer_id, but also need the amount column:
+
+```sql
+CREATE INDEX idx_orders_customer
+ON orders (customer_id)
+INCLUDE (amount);
+```
+The index is ordered by customer_id.
+It also stores amount, but not as a key — just as extra data.
+This means the query can be satisfied using only the index:
+
+```sql
+SELECT customer_id, amount
+FROM orders
+WHERE customer_id = 123;
+```
+
 

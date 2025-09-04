@@ -69,7 +69,7 @@ DO UPDATE SET views = page_views.views + EXCLUDED.views;
 ```
 
 - If the record does not exist → a new row is inserted.  
-- If the record exists → it is updated (`views + EXCLUDED.views`).  
+- If the record exists → it is updated (`page_views.views + EXCLUDED.views`). The `page_views.views` refers to the current `views` and the `EXCLUDED.views` to the new views you tried to insert. 
 
 👉 **Advantages:**  
 - One query instead of multiple.  

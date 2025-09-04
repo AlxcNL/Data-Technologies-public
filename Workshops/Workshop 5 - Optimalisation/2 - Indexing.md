@@ -19,6 +19,16 @@ Without an index, PostgreSQL must perform a sequential scan — checking every r
 | **GIN**    | Generalized Inverted Index; used for indexing composite or array values.        | Full-text search, JSONB, arrays                                      |
 | **GiST**   | Generalized Search Tree; supports complex data types like geometry.             | Spatial data, ranges, custom indexing                                |
 
+### Index Variants in PostgreSQL
+
+Besides the core index types, PostgreSQL also supports variants that extend their functionality.  
+These are usually based on **B-tree indexes**, but add special behavior.
+
+| Variant              | Description                                                                 | Use Cases                                                            |
+| -------------------- | --------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| **Partial Index**    | Index only a subset of rows, defined by a `WHERE` condition.                | When queries frequently filter on a specific condition (e.g., active users). |
+| **Covering Index**   | A normal index with extra non-key columns included via `INCLUDE`.           | When you want *index-only scans* (queries can be satisfied entirely from the index). |
+
 
 *Benefits of Using Indexes*
 - Faster queries: Especially for SELECTs with filters or joins.

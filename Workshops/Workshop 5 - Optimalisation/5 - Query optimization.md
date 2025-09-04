@@ -5,7 +5,7 @@ Some first raw thougts:
 - Bulk Inserts
 - Insert .. Select
 - Returning clausule
-- CTE's
+- Common Table Expressions (CTE's)
 - upserts
 
 ## Bulk Inserts

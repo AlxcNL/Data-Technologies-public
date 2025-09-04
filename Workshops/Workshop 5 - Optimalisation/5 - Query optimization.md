@@ -76,15 +76,12 @@ DO UPDATE SET views = page_views.views + EXCLUDED.views;
 - Atomic and concurrency-safe.  
 - Fewer roundtrips → better performance.  
 
----
 
-## Hands-on Assignment
+A similar syntax also exists for MySQL and MariaDB.
 
-1. Insert 5 rows for different URLs and time buckets using the naïve approach.  
-2. Repeat the same task using an upsert statement.  
-3. Measure the number of SQL statements required for both approaches.  
-4. Discuss: Which approach is safer when multiple users update the same URL at the same time?  
-5. (Optional) Stress test: Run 100 inserts concurrently — what happens with the naïve approach vs. upsert?  
+https://dev.mysql.com/doc/refman/8.4/en/insert-on-duplicate.html
+https://mariadb.com/docs/server/reference/sql-statements/data-manipulation/inserting-loading-data/insert-on-duplicate-key-update
+https://www.postgresql.org/docs/current/sql-insert.html
 
 ---
 

@@ -76,12 +76,18 @@ DO UPDATE SET views = page_views.views + EXCLUDED.views;
 - Atomic and concurrency-safe.  
 - Fewer roundtrips → better performance.  
 
-
 A similar syntax also exists for MySQL and MariaDB.
 
-https://dev.mysql.com/doc/refman/8.4/en/insert-on-duplicate.html
-https://mariadb.com/docs/server/reference/sql-statements/data-manipulation/inserting-loading-data/insert-on-duplicate-key-update
-https://www.postgresql.org/docs/current/sql-insert.html
+- **PostgreSQL**  
+  [PostgreSQL SQL Insert documentation](https://www.postgresql.org/docs/current/sql-insert.html)
+  
+- **MySQL**  
+  [MySQL insert on duplicate documentation](https://dev.mysql.com/doc/refman/8.4/en/insert-on-duplicate.html)
+
+- **MariaDB**  
+  [MariaDB insert on duplicate key documentation](https://mariadb.com/docs/server/reference/sql-statements/data-manipulation/inserting-loading-data/insert-on-duplicate-key-update)
+
+👉 Tip: Ctrl+click (Windows) or Cmd+click (Mac) to open the framework documentation in a new tab.
 
 ---
 

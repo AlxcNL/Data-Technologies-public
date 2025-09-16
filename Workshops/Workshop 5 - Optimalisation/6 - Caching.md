@@ -36,7 +36,7 @@ Caching occurs at multiple levels within a software system. The table below show
 
 In this workshop, we focus on caching at the **Application** and **Custom Aggregation** levels — the layers most relevant to application developers.
 
-In this course, we will use the term **authoritative data source** to refer to the primary and ultimate source of truth (sometimes also called the *original data source* or *backing store*). To make this concrete: When a relational database is used, the authoritative data source consists of the primary tables that stores the original records. For consistency, we will always use *authoritative data source* throughout the remainder of this text. 
+In this course, we will use the term **authoritative data source** to refer to the primary and ultimate source of truth (sometimes also called the *original data source* or *backing store*). To make this concrete: When a relational database is used, the authoritative data source consists of the tables that stores the original records. For consistency, we will always use *authoritative data source* throughout the remainder of this text. 
 
 ## Stale Data and Dirty Data
 The concepts **stale data** and **dirty data** are commonly used when discussing caching behavior.
@@ -202,28 +202,9 @@ sequenceDiagram
 ```
 ### Write around
 
-In write-around caching, the write path bypasses the cache entirely, writing only to the authoritative data source.
-However, the read path follows a cache-aside pattern: the application checks the cache first, and on a miss, retrieves data from the authoritative data source and stores it in the cache. As a result, the cache will eventually be populated — but it may contain stale data if older values remain in the cache after updates. 
+Write-around caching is a write strategy in which the write path bypasses the cache entirely, writing only to the authoritative data source.
 
-The term "write-around" refers to the fact that write operations deliberately bypass the cache and go straight to the authoritative data source. This prevents infrequently read data from polluting the cache.
-
-```mermaid
-sequenceDiagram
-    title Write-around strategy (Read)
-
-    participant App as Application
-    participant Cache as Cache
-    participant DB as Database
-
-    App->>Cache: Read(key)
-    alt Cache miss
-        App->>DB: Read(key)
-        DB-->>App: Value
-        App->>Cache: Write(key, value)
-    else Cache hit
-        Cache-->>App: Value
-    end
-```
+By skipping the cache on writes, it prevents infrequently read data from polluting the cache. Since write-around is a **write strategy only**, it must be combined with a separate **read strategy** (such as cache-aside or read-through) to define how the cache is populated and how the application reads data.
 
 ```mermaid
 sequenceDiagram
@@ -234,6 +215,8 @@ sequenceDiagram
 
     App->>DB: Write(key, value)
 ```
+
+> 💡 *Note:* While there is widespread agreement on what cache-aside, write-through, write-behind, etc., generally mean, there is no formal standard (no official RFC-/ISO-type definition) that mandates exactly how “write-around” must be used. Different vendors / blogs / architectures may use slightly different semantics. It’s important to specify exactly what you mean when you use these terms in your design.
 
 ### Summary
 
@@ -255,23 +238,21 @@ flowchart LR
 
     subgraph "Write&nbsp;Policy"
         W2["Writes go to cache and DB (sync)"]
-        W3["Writes go to cache only, DB is updated later"]
-        W1["Application writes to DB and invalidates/updates cache"]                
+        W3["Writes go to cache only, DB is updated later"]                
         W4["Writes go only to DB, cache is not touched"]
+        W1["Application writes to DB and invalidates/updates cache"]
     end
 
-    %% Read edges
-    RT --> R2
-    CA --> R1
-    WA --> R1
-    
-
-    %% Write edges
-    CA --> W1
+    %% Write edges   
     WT --> W2
     WB --> W3
     WA --> W4
+    CA --> W1
 
+    %% Read edges
+    CA --> R1 
+    RT --> R2
+    
  %% Optional styling
     classDef strategy fill:#f9f,stroke:#333,stroke-width:1px;
     class CA,RT,WT,WB,WA strategy;

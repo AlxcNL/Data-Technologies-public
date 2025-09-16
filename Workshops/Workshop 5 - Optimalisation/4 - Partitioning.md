@@ -78,16 +78,13 @@ CREATE TABLE sales (
     amount    NUMERIC
 ) PARTITION BY LIST (region);
 
-CREATE TABLE sales_eu
-    PARTITION OF sales
+CREATE TABLE sales_eu PARTITION OF sales
     FOR VALUES IN ('Europe');
 
-CREATE TABLE sales_us
-    PARTITION OF sales
+CREATE TABLE sales_us PARTITION OF sales
     FOR VALUES IN ('USA');
 
-CREATE TABLE sales_asia
-    PARTITION OF sales
+CREATE TABLE sales_asia PARTITION OF sales
     FOR VALUES IN ('Asia');
 
 -- Rows will be routed based on region value
@@ -105,20 +102,16 @@ CREATE TABLE orders (
     order_date DATE NOT NULL
 ) PARTITION BY HASH (customer_id);
 
-CREATE TABLE orders_p0
-    PARTITION OF orders
+CREATE TABLE orders_p0 PARTITION OF orders
     FOR VALUES WITH (MODULUS 4, REMAINDER 0);
 
-CREATE TABLE orders_p1
-    PARTITION OF orders
+CREATE TABLE orders_p1 PARTITION OF orders
     FOR VALUES WITH (MODULUS 4, REMAINDER 1);
 
-CREATE TABLE orders_p2
-    PARTITION OF orders
+CREATE TABLE orders_p2 PARTITION OF orders
     FOR VALUES WITH (MODULUS 4, REMAINDER 2);
 
-CREATE TABLE orders_p3
-    PARTITION OF orders
+CREATE TABLE orders_p3 PARTITION OF orders
     FOR VALUES WITH (MODULUS 4, REMAINDER 3);
 
 -- Each row is assigned to a partition based on a hash of customer_id

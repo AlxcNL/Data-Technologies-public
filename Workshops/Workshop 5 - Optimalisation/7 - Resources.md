@@ -1,6 +1,14 @@
 ## Resources for further learning
 For more in depth information about Indexing, Materialized views, Query optimization and Caching, the following resources could help.
 
+### Indexing
+#### 📚 Vendor sources
+
+| Source | Vendor / Author | Summary |
+|--------|-----------------|---------|
+| [PostgreSQL Documentation – Indexes](https://www.postgresql.org/docs/current/indexes.html) | PostgreSQL Global Development Group | Official documentation covering B-tree, BRIN, GIN, GiST, and index variants (partial, covering). |
+| [Use the Index, Luke!](https://use-the-index-luke.com) | Markus Winand | Practical online guide explaining indexing strategies, access paths, and query optimization in SQL databases. |
+
 
 ### Caching
 

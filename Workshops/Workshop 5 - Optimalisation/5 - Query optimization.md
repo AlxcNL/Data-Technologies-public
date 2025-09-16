@@ -281,6 +281,17 @@ FROM orders;
 
 This computes a cumulative sum ordered by date, directly in one query.  
 
+### Example 4 - Running total per customer
+```sql
+SELECT id, customer_id, order_date, amount,
+       SUM(amount) OVER (
+         PARTITION BY customer_id
+         ORDER BY order_date
+       ) AS running_total
+FROM orders;
+```
+This computes a cumulative sum per customer ordered by date. 
+
 ---
 
 👉 In short: **window functions combine the detail view of each row with the power of aggregates, in one efficient query.**

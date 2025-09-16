@@ -282,8 +282,20 @@ Use this for analytics; keep hot paths on the **core** table only.
 - **Row width:** Do wide columns slow down reads?  
 - **Security:** Do some fields need stricter access?  
 - **Indexes:** Can you keep core indexes small?  
-- **Hot path:** Can SLO-critical queries hit only the core?  
+- **Hot path:** Can SLO-critical queries hit only the core?
 
+**SLO query**: A query that is part of a Service Level Objective (SLO), meaning its performance is subject to explicit targets (e.g., 95% of requests must finish under 200 ms). These queries usually define the “hot path” of an application and guide design choices like indexing or partitioning.
+
+*Example of an SLO query*
+Suppose the service level objective is: 95% of user lookups by email must finish within 100 ms.
+In PostgreSQL, that translates into a very common query like:
+```sql
+SELECT customer_id, full_name, created_at
+FROM customer_core
+WHERE email = 'alice@example.com';
+```
+This query is on the hot path of the application (e.g., login or authentication). Its performance drives design choices such as indexing on email or vertical partitioning to keep the customer_core table lean. If this query becomes slow, the service may fail to meet its SLO.
+  
 ---
 
 ### Minimal migration template

@@ -612,7 +612,7 @@ flowchart TB
 
 ### Connection Pooling in Frameworks
 
-Some application frameworks, like **Django** and **Laravel***, already provide a form of connection pooling out of the box.  
+Some application frameworks, like **Django** and **Laravel**, already provide a form of connection pooling out of the box.  
 - Django’s ORM maintains a persistent connection per application process (or thread), reusing it across multiple queries.
 - Laravel uses PDO (PHP Data Objects) under the hood. You can enable persistent connections to let PDO attempt to reuse existing connections instead of creating new ones for each request.    
 - This is sometimes called **implicit pooling**, because you don’t see a pool manager, but you still avoid reconnecting on every query.  

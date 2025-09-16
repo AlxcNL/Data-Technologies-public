@@ -4,6 +4,8 @@ For more in depth information about Indexing, Materialized views, Query optimiza
 
 ### Caching
 
+#### 🔬 Vendor Sources
+
 | Source | Vendor / Author | Summary |
 |--------|-----------------|---------|
 | [Database Caching Strategies Using Redis (AWS Whitepaper)](https://docs.aws.amazon.com/whitepapers/latest/database-caching-strategies-using-redis/caching-patterns.html) | AWS / Redis | Explains cache-aside and write-through with pros/cons. |
@@ -14,5 +16,12 @@ For more in depth information about Indexing, Materialized views, Query optimiza
 | [Top 5 Caching Strategies Explained](https://blog.algomaster.io/p/top-5-caching-strategies-explained) | Algomaster (blog) | Explicitly describes write-around strategy. |
 
 > 💡 **Note:**  
-> The terms *cache-aside*, *write-through*, *write-back*, and *write-around* are widely used in practice, but they are **not formally standardized**.  
-> Different vendors (AWS, Redis, Azure, Hazelcast) may use slightly different descriptions. Always specify what you mean in your own design or documentation.
+> The terms *cache-aside*, *write-through*, *write-back*, and *write-around* are widely used in practice, but they are **not formally standardized**. Different vendors (AWS, Redis, Azure, Hazelcast) may use slightly different descriptions. Always specify what you mean in your own design or documentation.
+
+#### 🔬 Academic & Peer-Reviewed Sources
+
+| Source | Venue / Year | Summary |
+|--------|--------------|---------|
+| [A Qualitative Study of Application-Level Caching — Mertz & Nunes](https://arxiv.org/abs/2011.00242) | arXiv preprint, 2020 | Empirical study of how developers implement and maintain cache-aside patterns in real-world projects. |
+
+

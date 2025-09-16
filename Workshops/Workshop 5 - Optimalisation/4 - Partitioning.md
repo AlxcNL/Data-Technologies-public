@@ -80,7 +80,7 @@ Horizontal partitioning can be done not only by dates, but also by numeric value
 
 
 ## Vertical Partitioning (column-wise)
-Vertical partitioning is the process of splitting a large table into smaller ones by moving specific columns into separate tables. The goal is to reduce row width and isolate columns with different access patterns or sensitivity. This can improve I/O efficiency, cache locality, and security boundaries — at the cost of extra joins when queries need the full record.
+Vertical partitioning is the process of splitting a large table into smaller ones by moving specific columns into separate tables. The goal is to reduce row width and isolate columns with different access patterns or privacy & security sensitivity. This can improve I/O efficiency, cache locality, and security boundaries — at the cost of extra joins when queries need the full record.
 
 **Cache locality**\
 Cache locality describes how well the data you frequently need fits together in memory/pages. In PostgreSQL (and most databases), data is physically stored in fixed-size pages (8 KB).

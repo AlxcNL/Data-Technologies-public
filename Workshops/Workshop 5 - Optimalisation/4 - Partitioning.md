@@ -85,16 +85,11 @@ Vertical partitioning is the process of splitting a large table into smaller one
 **Cache locality**\
 Cache locality describes how well the data you frequently need fits together in memory/pages. In PostgreSQL (and most databases), data is physically stored in fixed-size pages (8 KB).
 - Wide rows (wide tables): each row occupies more space → fewer rows fit into a page → the database needs to read more pages to access the same number of logical rows. This leads to poor cache locality.
-- Narrow rows (after vertical partitioning): each row is smaller → more rows fit into a single page → the database can fetch more relevant data per page → this improves cache locality.
+- Narrow rows (after vertical partitioning): each row is smaller → more rows fit into a single page → the database can fetch more relevant data per page. This improves cache locality.
 
 ```mermaid
 flowchart TD
-    subgraph Wide_Row_Page["Page (8 KB) – Wide rows"]
-        W1["Row 1 (many columns)"]
-        W2["Row 2 (many columns)"]
-        W3["Row 3 (many columns)"]
-    end
-
+    
     subgraph Narrow_Row_Page["Page (8 KB) – Narrow rows"]
         N1["Row 1 (few columns)"]
         N2["Row 2 (few columns)"]
@@ -103,14 +98,19 @@ flowchart TD
         N5["Row 5 (few columns)"]
     end
 
+    subgraph Wide_Row_Page["Page (8 KB) – Wide rows"]
+        W1["Row 1 (many columns)"]
+        W2["Row 2 (many columns)"]
+        W3["Row 3 (many columns)"]
+    end
+
     W1:::wide 
     N1:::narrow 
 
     classDef wide fill:#f99,stroke:#333,stroke-width:1px;
     classDef narrow fill:#9f9,stroke:#333,stroke-width:1px;
 ```
-*Figure: Comparison of cache locality. Narrow rows (left) allow more rows to fit into a single page, improving I/O efficiency.  
-Wide rows (right) reduce the number of rows per page, which increases the number of pages the database must read.*
+*Figure: Comparison of cache locality. Wide rows (left) reduce the number of rows per page, which increases the number of pages the database must read. Narrow rows (right) allow more rows to fit into a single page, improving I/O efficiency.*
 
 
 **PII**\

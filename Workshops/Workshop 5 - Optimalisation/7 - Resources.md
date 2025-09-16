@@ -21,6 +21,7 @@ For more in depth information about Indexing, Materialized views, Query optimiza
 | Source | Vendor / Author | Summary |
 |--------|-----------------|---------|
 | [PostgreSQL Documentation – Table Partitioning](https://www.postgresql.org/docs/current/ddl-partitioning.html) | PostgreSQL Global Development Group | Official reference on partitioning methods (range, list, hash), setup, and optimizer behavior. |
+| [PostgreSQL Documentation – Schemas](https://www.postgresql.org/docs/current/ddl-schemas.html) | PostgreSQL Global Development Group | Explains what schemas are, how they serve as namespaces in a database, how `CREATE SCHEMA` works, and how the search path and authorization work in PostgreSQL. |
 
 
 ### Caching

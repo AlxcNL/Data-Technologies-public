@@ -282,7 +282,7 @@ Use this for analytics; keep hot paths on the **core** table only.
 - **Row width:** Do wide columns slow down reads?  
 - **Security:** Do some fields need stricter access?  
 - **Indexes:** Can you keep core indexes small?  
-- **Hot path:** Can SLO-critical queries hit only the core?
+- **Hot path:** Can Service Level Objective (SLO) critical queries hit only the core?
 
 **SLO query**: A query that is part of a Service Level Objective (SLO), meaning its performance is subject to explicit targets (e.g., 95% of requests must finish under 200 ms). These queries usually define the “hot path” of an application and guide design choices like indexing or partitioning.
 

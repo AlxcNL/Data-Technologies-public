@@ -118,7 +118,7 @@ In the text below the term **PII** is used. This abbreviation stands for *Person
 
 ---
 
-### When it helps
+### When vertical partitioning helps
 - **Performance:** Narrower hot tables (frequently read) keep more rows per page in memory and reduce I/O.  
 - **Security & compliance:** Sensitive fields (PII) can be isolated in a separate table/schema with tighter privileges.  
 - **Update frequency:** Separate “hot” frequently updated columns from “cold” rarely changing columns.  

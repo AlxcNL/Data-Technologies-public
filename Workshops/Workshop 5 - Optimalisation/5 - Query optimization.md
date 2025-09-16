@@ -180,14 +180,75 @@ WHEN NOT MATCHED THEN
 
 ## Window Functions
 
-Efficient way to compute aggregates without multiple queries:
+Window functions let you perform **aggregate-like calculations** across sets of rows, but **without collapsing the result into a single row per group**. Each row keeps its identity, while still carrying the aggregated information.  
+
+### Example 1 — Aggregation with GROUP BY
 
 ```sql
-SELECT id, amount,
+SELECT customer_id, SUM(amount) AS total_per_customer
+FROM orders
+GROUP BY customer_id;
+```
+
+This query collapses rows: you only get one row per customer.
+
+
+### Example 2 — Window function
+
+```sql
+SELECT id, customer_id, amount,
        SUM(amount) OVER (PARTITION BY customer_id) AS total_per_customer
 FROM orders;
 ```
 
-Performs a single scan instead of multiple grouped subqueries.
+Here each row keeps its own `id` and `amount`, but also shows the **total per customer**.  
+- `PARTITION BY customer_id` → defines the “window” (the set of rows per customer).  
+- You can also use `ORDER BY` inside the window to compute running totals, ranks, or moving averages.  
+
+#### Visual: GROUP BY vs Window Function
+
+```mermaid
+flowchart TB
+    subgraph Input["Orders table"]
+        O1["id=1, customer=Alice, amount=50"]
+        O2["id=2, customer=Alice, amount=30"]
+        O3["id=3, customer=Bob, amount=70"]
+    end
+
+    subgraph GroupBy["GROUP BY customer_id"]
+        GA["Alice, total=80"]
+        GB["Bob, total=70"]
+    end
+
+    subgraph Window["SUM(amount) OVER (PARTITION BY customer_id)"]
+        WA1["id=1, Alice, amount=50, total=80"]
+        WA2["id=2, Alice, amount=30, total=80"]
+        WB1["id=3, Bob, amount=70, total=70"]
+    end
+
+    Input --> GroupBy
+    Input --> Window
+```
+
+
+### Why it helps
+- Avoids writing multiple subqueries.  
+- Runs with a **single table scan**, which is faster.  
+- Very powerful for analytics (rankings, percentiles, cumulative sums).  
+
+
+### Example 3 — Running total
+
+```sql
+SELECT id, order_date, amount,
+       SUM(amount) OVER (ORDER BY order_date) AS running_total
+FROM orders;
+```
+
+This computes a cumulative sum ordered by date, directly in one query.  
+
+---
+
+👉 In short: **window functions combine the detail view of each row with the power of aggregates, in one efficient query.**
 
 

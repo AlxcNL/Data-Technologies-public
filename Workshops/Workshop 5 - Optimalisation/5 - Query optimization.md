@@ -173,7 +173,7 @@ WHEN NOT MATCHED THEN
 
 ### Reflection questions
 
-Why is the upsert approach more efficient?
+#### 🧠 Why is the upsert approach more efficient?
 <details>
 <summary>Click to reveal the answer</summary>
 
@@ -184,9 +184,9 @@ Without `UPSERT` (`INSERT ... ON CONFLICT DO UPDATE`), applications often have t
 That means **two queries and two network roundtrips**.  
 With an `UPSERT`, the database handles both cases in **one atomic query**, which reduces latency and load.  
 </details>
-<hr>
 
-How does it help prevent race conditions?  
+
+#### 🧠 How does it help prevent race conditions?  
 <details>
 <summary>Click to reveal the answer</summary>
 
@@ -196,8 +196,8 @@ If two clients try to insert the same key at the same time:
 
 This ensures consistency **without requiring extra application-side locking**.  
 </details>
-<hr>
-Can you think of situations where you **should not** use upserts?  
+
+#### 🧠 Can you think of situations where you **should not** use upserts?  
 
 <details>
 <summary>Click to reveal the answer</summary>
@@ -210,7 +210,7 @@ Upserts are very convenient, but there are a few cases where they may not be ide
 In those cases, a more explicit application workflow may be better.  
 
 </details>
----
+
 
 ## Window Functions
 

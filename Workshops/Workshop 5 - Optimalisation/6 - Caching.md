@@ -1,4 +1,4 @@
-# Caching
+# Caching & Connection pooling
 
 ## Caching introduction
 Caching is a technique used to speed up **read operations** between two system components, especially when one component (like a disk or database) is much slower than the other (like RAM or a CPU).
@@ -578,6 +578,22 @@ cache.flush()
 print("DB after flush:", db)
 ```
 
+## Connection Pooling
+
+Connection pooling is not caching of query results, but it uses the same principle of *reuse* to reduce overhead.  
+Instead of opening and closing a new database connection for every request, a pool of persistent connections is maintained and reused.  
+This reduces connection setup time and allows the database to handle more concurrent users efficiently.
+
+Popular tools include:  
+- **PgBouncer** — lightweight connection pooler.  
+- **Pgpool-II** — more advanced, supports load balancing and failover.
+
+👉 Conceptually similar to caching (reuse instead of recreate), but applied at the **connection level** rather than the **data level**.
+
+**Sources:**  
+- [PostgreSQL Documentation – Connection Pooling](https://www.postgresql.org/docs/current/runtime-config-connection.html#RUNTIME-CONFIG-CONNECTION-POOLING)  
+- [PgBouncer Official Documentation](https://www.pgbouncer.org/)  
+- [Pgpool-II Official Documentation](https://www.pgpool.net/docs/latest/en/html/)
 
 
 

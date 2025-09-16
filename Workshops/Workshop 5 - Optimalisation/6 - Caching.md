@@ -554,7 +554,7 @@ class WriteBackRedisCache:
 
 ```
 
-Gebruik:
+Usage:
 
 ```python
 # Simulated persistent DB (could also be ORM)

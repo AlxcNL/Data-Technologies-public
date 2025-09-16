@@ -82,6 +82,33 @@ Horizontal partitioning can be done not only by dates, but also by numeric value
 ## Vertical Partitioning (column-wise)
 Vertical partitioning is the process of splitting a large table into smaller ones by moving specific columns into separate tables. The goal is to reduce row width and isolate columns with different access patterns or sensitivity. This can improve I/O efficiency, cache locality, and security boundaries — at the cost of extra joins when queries need the full record.
 
+**Cache locality**\
+Cache locality describes how well the data you frequently need fits together in memory/pages. In PostgreSQL (and most databases), data is physically stored in fixed-size pages (8 KB).
+- Wide rows (wide tables): each row occupies more space → fewer rows fit into a page → the database needs to read more pages to access the same number of logical rows. This leads to poor cache locality.
+- Narrow rows (after vertical partitioning): each row is smaller → more rows fit into a single page → the database can fetch more relevant data per page → this improves cache locality.
+
+```mermaid
+flowchart TD
+    subgraph Wide_Row_Page["Page (8 KB) – Wide rows"]
+        W1["Row 1 (many columns)"]
+        W2["Row 2 (many columns)"]        
+    end
+
+    subgraph Narrow_Row_Page["Page (8 KB) – Narrow rows"]
+        N1["Row 1 (few columns)"]
+        N2["Row 2 (few columns)"]
+        N3["Row 3 (few columns)"]
+        N4["Row 4 (few columns)"]       
+    end
+
+    W1:::wide -->|Fewer rows per page| Wide_Row_Page
+    N1:::narrow -->|More rows per page| Narrow_Row_Page
+
+    classDef wide fill:#f99,stroke:#333,stroke-width:1px;
+    classDef narrow fill:#9f9,stroke:#333,stroke-width:1px;
+```
+
+**PII**\
 In the text below the term **PII** is used. This abbreviation stands for *Personally Identifiable Information* — data that can be used to identify an individual, either directly (e.g., name, social security number) or indirectly (e.g., date of birth, address, IP address).
 
 ---

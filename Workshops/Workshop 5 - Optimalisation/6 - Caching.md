@@ -219,8 +219,6 @@ sequenceDiagram
     App->>DB: Write(key, value)
 ```
 
-> 💡 *Note:* While there is widespread agreement on what cache-aside, write-through, write-behind, etc., generally mean, there is no formal standard (no official RFC-/ISO-type definition) that mandates exactly how “write-around” must be used. Different vendors / blogs / architectures may use slightly different semantics. It’s important to specify exactly what you mean when you use these terms in your design.
-
 ### Summary
 
 ```mermaid

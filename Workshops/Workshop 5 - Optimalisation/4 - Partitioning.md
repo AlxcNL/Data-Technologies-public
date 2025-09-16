@@ -207,7 +207,9 @@ CREATE TABLE device_state (
 );
 ```
 
-**Why it helps:** Updates to `device_state` do not rewrite wide identity rows → less bloat.
+**Why it helps:** 
+- Updates to `device_state` do not rewrite the corresponding `device_identity` rows. In PostgreSQL, updates are not in-place modifications. Due to MVCC (Multi-Version Concurrency Control), every UPDATE creates a new row version (tuple) and marks the old one as obsolete. This means even a small update still writes a new tuple.
+- Wide tables often have more indexes, because different queries need fast access on different subsets of columns. Each update may therefore trigger work on multiple indexes, even if the update itself only changes a single column.
 
 ---
 
@@ -244,14 +246,6 @@ Use this for analytics; keep hot paths on the **core** table only.
 - Index **core** columns that drive lookups/joins.  
 - Index extension columns only if often queried.  
 - Keep covering indexes lean by excluding large attributes.  
-
----
-
-### PostgreSQL specifics
-- **TOAST:** Large TEXT/JSONB are TOAST-ed; splitting avoids touching TOAST on hot reads.  
-- **VACUUM/Bloat:** Wide row updates create churn; core-only updates reduce this.  
-- **FK + ON DELETE CASCADE:** Maintain 1:1 integrity.  
-- **Permissions & RLS:** Vertical splits combine well with stricter access rules.  
 
 ---
 

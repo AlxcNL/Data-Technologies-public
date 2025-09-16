@@ -612,10 +612,11 @@ flowchart TB
 
 ### Connection Pooling in Frameworks
 
-Some application frameworks, such as **Django**, already provide a form of connection pooling out of the box.  
-- Django’s ORM maintains a persistent connection per application process (or thread), reusing it across multiple queries.  
+Some application frameworks, like **Django** and **Laravel***, already provide a form of connection pooling out of the box.  
+- Django’s ORM maintains a persistent connection per application process (or thread), reusing it across multiple queries.
+- Laravel uses PDO (PHP Data Objects) under the hood. You can enable persistent connections to let PDO attempt to reuse existing connections instead of creating new ones for each request.    
 - This is sometimes called **implicit pooling**, because you don’t see a pool manager, but you still avoid reconnecting on every query.  
-- For larger deployments or many concurrent users, an external pooler such as **PgBouncer** is still recommended, since Django’s built-in reuse does not manage hundreds or thousands of concurrent clients efficiently.
+- For larger deployments or many concurrent users, an external pooler such as **PgBouncer** is still recommended, since these 'out of the box solutions'does not manage hundreds or thousands of concurrent clients efficiently.
 
 👉 Important to know: frameworks often reduce connection overhead by default, but for true high-concurrency environments you usually combine them with a dedicated pooler.
 
@@ -625,7 +626,7 @@ Some application frameworks, such as **Django**, already provide a form of conne
 - [PgBouncer Official Documentation](https://www.pgbouncer.org/)  
 - [Pgpool-II Official Documentation](https://www.pgpool.net/docs/latest/en/html/)
 - [Django Persistent connections](https://docs.djangoproject.com/en/5.2/ref/databases/#persistent-connections)
-
+- [Laravel Documentation – Persistent connections](https://laravel.com/docs/11.x/database#persistent-connections)
 
 
 

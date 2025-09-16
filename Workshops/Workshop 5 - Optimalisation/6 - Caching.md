@@ -590,10 +590,41 @@ Popular tools include:
 
 👉 Conceptually similar to caching (reuse instead of recreate), but applied at the **connection level** rather than the **data level**.
 
+### Visual: Connection Pooling vs No Pooling
+
+```mermaid
+flowchart TB
+    subgraph NoPooling["Without Connection Pooling"]
+        A1["Client request 1"] -->|Open new connection| DB1["Database"]
+        A2["Client request 2"] -->|Open new connection| DB2["Database"]
+        A3["Client request 3"] -->|Open new connection| DB3["Database"]
+        note1["⚠️ Each request opens/closes a connection → overhead"]
+    end
+
+    subgraph WithPooling["With Connection Pooling"]
+        B1["Client request 1"] -->|Reuse pooled connection| Pool["Connection Pool"]
+        B2["Client request 2"] -->|Reuse pooled connection| Pool
+        B3["Client request 3"] -->|Reuse pooled connection| Pool
+        Pool --> DB["Database"]
+        note2["✅ Connections reused → less overhead, more scalability"]
+    end
+```
+
+### Connection Pooling in Frameworks
+
+Some application frameworks, such as **Django**, already provide a form of connection pooling out of the box.  
+- Django’s ORM maintains a persistent connection per application process (or thread), reusing it across multiple queries.  
+- This is sometimes called **implicit pooling**, because you don’t see a pool manager, but you still avoid reconnecting on every query.  
+- For larger deployments or many concurrent users, an external pooler such as **PgBouncer** is still recommended, since Django’s built-in reuse does not manage hundreds or thousands of concurrent clients efficiently.
+
+👉 Important to know: frameworks often reduce connection overhead by default, but for true high-concurrency environments you usually combine them with a dedicated pooler.
+
+
 **Sources:**  
-- [Microsoft Lean – Azure PostgreSQL Connection Pooling](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-connection-pooling-best-practices)  
+- [Microsoft Lean – Azure PostgreSQL Connection Pooling](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-connection-pooling-best-practices) 
 - [PgBouncer Official Documentation](https://www.pgbouncer.org/)  
 - [Pgpool-II Official Documentation](https://www.pgpool.net/docs/latest/en/html/)
+- [Django Persistent connections](https://docs.djangoproject.com/en/5.2/ref/databases/#persistent-connections)
 
 
 

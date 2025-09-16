@@ -244,6 +244,27 @@ CREATE TABLE user_marketing_optin (
     meta     JSONB
 );
 ```
+
+```mermaid
+erDiagram
+    USERS {
+        bigint user_id PK
+        text   email
+        boolean marketing_opt_in  "mostly NULL"
+        jsonb  optin_metadata     "mostly NULL"
+    }
+
+    USERS_OPTIN {
+        bigint user_id PK, FK
+        boolean marketing_opt_in
+        jsonb   optin_metadata
+    }
+
+    USERS ||--o{ USERS_OPTIN : "only when opted-in"
+```
+*Figure: Example of a sparse column. In the wide `USERS` table, most rows keep `NULL` values for opt-in data, which adds overhead.  
+By moving these columns into a separate `USERS_OPTIN` table, the core table stays lean and only opted-in users require extra storage.*
+
 **Why it helps:**\
 If only a small percentage of rows actually need certain attributes, keeping those columns in the main table makes every row wider — even when the values are empty or NULL. Each “empty” field still requires storage overhead (row headers, NULL markers), so most rows pay a cost for data they never use.
 

@@ -20,6 +20,7 @@ CREATE TABLE sales (
     amount NUMERIC
 ) PARTITION BY RANGE (sale_date);
 `````
+> 💡 **Note:** The column ```id``` is **not** a primary key in this table. The ```AS IDENTITY``` only indicates that the values are generated automatically. [PostgreSQL Identity columns](https://www.postgresql.org/docs/current/ddl-identity-columns.html)
 
 This logically partitions the sales table by sale_date, meaning the data is transparently stored across multiple physical partitions behind the scenes. Queries that filter on sale_date can benefit from improved performance through partition pruning — but only after specific partitions have been created.
 

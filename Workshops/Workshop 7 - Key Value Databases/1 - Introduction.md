@@ -8,12 +8,15 @@
 
 2
 - You must develop a convention for the key to 'group' related values. e.g. key 'customer:55', 'customer:60'.
-- It does not have a schema, the value can be stored in different data-types.
+- It does not have a fixed schema, for each key the value can be stored in different data-types.
 -   The value can be simply a string / number / boolean / etc.
 -   The value can also be stored as a JSON document --> Key - document database. Ideal for non-structured/semi-structured data.
-- Schema design to support key-value: The Polymorphic Pattern & The Attribute Pattern
 
-3  
+3
+- It is important to think ahead on the structure of document.
+- Patterns: for schema design to support key-value --> The Polymorphic Pattern & The Attribute Pattern
+
+4  
 - Three main methods (put/get/delete) to manage the data. 
 - What is the difference with a cache: Kort: cache is not-persistent
   

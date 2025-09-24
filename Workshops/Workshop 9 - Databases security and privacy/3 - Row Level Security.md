@@ -87,10 +87,20 @@ Row-Level Security (RLS) policies can then use these parameters to decide which 
 
 ## RLS and connection pooling
 
-With pooling, connections are reused across users. Always set the correct context when checking out a connection:
-```sql
-SET app.current_user_id = '...';
-```
+When using connection pooling (e.g., PgBouncer), database sessions are **reused** for different application requests.  
+If your application uses `SET app.current_user_id = ...` to pass context, then this context stays active in the database session until it is changed or reset.
+
+⚠️ **Risk:**  
+If the application forgets to execute the `SET` statement for a new request, the database may still hold the value from the *previous* request.  
+This can lead to a **data leak**: the new user sees rows belonging to another user.
+
+---
+
+### Mitigations
+
+- Always execute the `SET` immediately after a connection is checked out from the pool.  
+- Use `SET LOCAL` inside a transaction so that the parameter is reset automatically when the transaction ends.  
+- Configure the pool to reset session state (e.g., with `DISCARD ALL`) when a connection is returned.  
 
 Prefer SET LOCAL within a transaction if your app uses a strict request-per-transaction model:
 

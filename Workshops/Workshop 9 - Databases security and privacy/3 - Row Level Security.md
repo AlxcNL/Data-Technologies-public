@@ -62,6 +62,29 @@ SELECT * FROM customer_core;
 ```
 The app_user role only sees the row with customer_id = 55.
 
+### Using 'SET' to pass application context
+
+In PostgreSQL the command `SET` is normally used to change configuration parameters for a session.  
+Examples include changing the time zone or enabling/disabling logging.
+
+```sql
+SET work_mem = '64MB';
+SET timezone = 'Europe/Amsterdam';
+```
+PostgreSQL also allows custom parameters, as long as they have a prefix. This is often used by applications to pass context into the database.
+
+```sql
+-- Application-specific parameter
+SET app.current_user_id = '55';
+
+-- Later in queries or policies
+SELECT current_setting('app.current_user_id');
+```
+
+This mechanism makes it possible for the application to tell the database “which user is currently active”.
+Row-Level Security (RLS) policies can then use these parameters to decide which rows are visible or updatable.
+> Note: By convention a custom prefix like app. is used, to avoid conflicts with built-in PostgreSQL settings.
+
 ## RLS and connection pooling
 
 With pooling, connections are reused across users. Always set the correct context when checking out a connection:

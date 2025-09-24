@@ -46,7 +46,7 @@ REVOKE ALL ON pii.customer_pii FROM app_read;
 GRANT USAGE ON SCHEMA public TO app_read;
 GRANT SELECT ON public.customer_core TO app_read;
 ```
->💡 Note: In this example, ```app_read``` represents an application user with limited privileges. The user can query non-sensitive data in public.customer_core, but not the PII data stored in pii.customer_pii. How to create and configure such users and roles in PostgreSQL will be covered in a separate lesson.
+>💡 Note: In this example, ```app_read``` represents an application user with limited privileges. The user can query non-sensitive data in public.customer_core, but not the PII data stored in pii.customer_pii. How to create and configure such users and roles in PostgreSQL will be covered later on.
 
 ```mermaid
 erDiagram

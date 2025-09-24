@@ -43,6 +43,6 @@ GRANT SELECT ON public.customer_core TO app_read;
 >💡 Note: In this example, ```app_read``` represents an application user with limited privileges. The user can query non-sensitive data in public.customer_core, but not the PII data stored in pii.customer_pii. How to create and configure such users and roles in PostgreSQL will be covered in a separate lesson.
 
 ### Risk-based approach
-Strictly speaking, both ```full_name``` and ```email``` are also PII. In practice, however, not all PII carries the same level of sensitivity. In this example, the customer_core table contains basic identifiers that are commonly needed by applications, while the pii.customer_pii table isolates more sensitive identifiers such as social security number and physical address. This separation allows stronger access control where it matters most.
+Strictly speaking, both ```full_name``` and ```email``` are also PII. In practice, however, not all PII carries the same level of sensitivity. In this example, the ```customer_core``` table contains basic identifiers that are commonly needed by applications, while the ```pii.customer_pii``` table isolates more sensitive identifiers such as social security number and physical address. This separation allows stronger access control where it matters most.
 
 **Benefit:** Clear separation of duties and simplified audits.

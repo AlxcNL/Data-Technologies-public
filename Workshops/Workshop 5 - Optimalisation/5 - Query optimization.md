@@ -171,7 +171,7 @@ WHEN NOT MATCHED THEN
 
 ---
 
-### Reflection questions
+### Questions
 
 #### 🧠 Why is the upsert approach more efficient?
 <details>

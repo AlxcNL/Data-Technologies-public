@@ -99,7 +99,7 @@ Strictly speaking, both ```full_name``` and ```email``` are also PII. In practic
 ## Role-Based Access Control (RBAC)
 
 Role-Based Access Control (RBAC) is a security model that restricts access to resources based on defined roles rather than individual user accounts.
-- ***Roles*** represent represent organizational responsibilities (e.g., application user, HR administrator, database administrator). Each role is then mapped to a set of permissions on the relevant data objects.
+- ***Roles*** represent organizational responsibilities (e.g., application user, HR administrator, database administrator). Each role is then mapped to a set of permissions on the relevant data objects.
 - ***Users*** are assigned to one or more roles.
 - ***Permissions*** are granted to roles, not directly to users.
 
@@ -176,6 +176,17 @@ GRANT SELECT ON public.customer_core TO app_read;
 - NOLOGIN roles are used as groups of privileges.
 - LOGIN roles are user accounts or service accounts that can connect.
 - Access to schemas, tables, and functions is granted to roles, not directly to individuals.
+
+### Summary of the steps
+Security starts with understanding the data, not with SQL commands. First classify data, then design the schema, define access rights in a matrix, and finally implement them in PostgreSQL.
+
+```mermaid
+flowchart LR
+   A[Step 1: Data classification] --> B[Step 2: Schema design]
+    B --> C[Step 3: Access control matrix] 
+    C --> D[Step 4: SQL implementation]
+```
+**Figure**: Four-step workflow from classification to SQL implementation.
 
 ## PostgreSQL roles & authentification
 The example below shows how privileges are granted and revoked at the schema and table level. This illustrates the principle of least privilege:

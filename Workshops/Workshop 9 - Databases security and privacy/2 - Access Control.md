@@ -100,4 +100,22 @@ Role-Based Access Control (RBAC) is a security model that restricts access to re
 
 This approach simplifies management: instead of configuring privileges for each user separately, you manage them at the role level. When a user’s responsibilities change, you only need to update their role membership. RBAC can be applied in a way that supports the principle of **least privilege**, by carefully defining roles so that users receive only the access they need to perform their job.
 
+#### Roles inside PostgreSQL
+
+Roles are created and managed within the PostgreSQL database itself:
+
+```sql
+-- Create a role that groups privileges
+CREATE ROLE app_read NOLOGIN;
+
+-- Create a login role (user account)
+CREATE ROLE app_service LOGIN PASSWORD 'secure_scram_password';
+
+-- Make user 'app_read' member of role 'app_service'
+GRANT app_read TO app_service;
+```
+
+- NOLOGIN roles are used as groups of privileges.
+- LOGIN roles are user accounts or service accounts that can connect.
+- Access to schemas, tables, and functions is granted to roles, not directly to individuals.
 

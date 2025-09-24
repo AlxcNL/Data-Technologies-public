@@ -38,6 +38,7 @@ CREATE TABLE pii.customer_pii (
 -- Grant minimal privileges
 REVOKE ALL ON SCHEMA pii FROM app_read;
 REVOKE ALL ON pii.customer_pii FROM app_read;
+GRANT USAGE ON SCHEMA public TO app_read;
 GRANT SELECT ON public.customer_core TO app_read;
 ```
 >💡 Note: In this example, ```app_read``` represents an application user with limited privileges. The user can query non-sensitive data in public.customer_core, but not the PII data stored in pii.customer_pii. How to create and configure such users and roles in PostgreSQL will be covered in a separate lesson.
@@ -127,6 +128,7 @@ First, remove all default rights from the role (REVOKE). Then, explicitly grant 
 -- Grant minimal privileges
 REVOKE ALL ON SCHEMA pii FROM app_read;
 REVOKE ALL ON pii.customer_pii FROM app_read;
+GRANT USAGE ON SCHEMA public TO app_read;
 GRANT SELECT ON public.customer_core TO app_read;
 ```
 In this case, the ```app_read``` role can query non-sensitive data in customer_core, but has no access at all to the ```pii``` schema and therefore no access to the sensitive table ```customer_pii```.

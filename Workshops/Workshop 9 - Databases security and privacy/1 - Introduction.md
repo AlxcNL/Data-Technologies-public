@@ -17,3 +17,11 @@ By combining these techniques, organizations strengthen their resilience against
 
 **PII**\
 In this workshop the term **PII** is used. This abbreviation stands for *Personally Identifiable Information* — data that can be used to identify an individual, either directly (e.g., name, social security number) or indirectly (e.g., date of birth, address, IP address).
+
+**Schema**\
+The word “schema” has two meanings:
+
+- In data modeling, “schema” often refers to the entire structure of the database.
+- In PostgreSQL, Oracle, and MS SQL, a “schema” is a namespace inside a database, used to organize objects and control privileges.
+
+Regarding security and privacy the word "schema" can have either meaning, depending on whether we are discussing the overall database design or the namespace boundaries inside a DBMS.

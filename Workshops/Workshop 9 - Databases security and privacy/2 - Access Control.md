@@ -1,4 +1,8 @@
 # Access Control
+Access control is the process of defining **who** can access **which data** and **what actions** they are allowed to perform.  
+The goal is to ensure that sensitive information is only available to authorized users, while minimizing the risk of misuse or data leaks.  
+
+In databases, access control is typically implemented using **roles** and **permissions**. Roles reflect responsibilities within an organization (e.g., application user, HR administrator, database administrator) and are mapped to the privileges needed for those responsibilities. By designing access rights carefully, we can apply the principle of *least privilege*: users and applications only get the minimum rights required to perform their tasks.
 
 ## Vertical Partitioning
 

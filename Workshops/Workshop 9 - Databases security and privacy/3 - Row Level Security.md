@@ -94,8 +94,6 @@ If your application uses `SET app.current_user_id = ...` to pass context, then t
 If the application forgets to execute the `SET` statement for a new request, the database may still hold the value from the *previous* request.  
 This can lead to a **data leak**: the new user sees rows belonging to another user.
 
----
-
 ### Mitigations
 
 - Always execute the `SET` immediately after a connection is checked out from the pool.  

@@ -7,9 +7,7 @@ RLS is especially useful in multi-tenant apps or self-service portals where user
 ---
 
 ## Key considerations
-- RLS works with a **whitelisting principle**: once enabled, access is denied by default. Only rows explicitly allowed by a policy are visible or updatable.  
-- RLS requires **careful planning and setup**.  
-- Policies must be defined explicitly; once RLS is enabled, access is denied unless a policy allows it.  
+- RLS works with a **whitelisting principle**: once enabled, access is denied by default. Only rows explicitly allowed by a policy are visible or updatable. - RLS requires **careful planning and setup**.  
 - RLS policies apply **in addition** to normal table and schema privileges.  
 - Be cautious with **connection pooling**: application context (e.g., current user id) must be set correctly for every session or transaction.
 

@@ -42,7 +42,51 @@ GRANT SELECT ON public.customer_core TO app_read;
 ```
 >💡 Note: In this example, ```app_read``` represents an application user with limited privileges. The user can query non-sensitive data in public.customer_core, but not the PII data stored in pii.customer_pii. How to create and configure such users and roles in PostgreSQL will be covered in a separate lesson.
 
+```mermaid
+erDiagram
+    customer_core {
+        BIGINT customer_id PK
+        TEXT   full_name  "basic PII"
+        TEXT   email      "basic PII"
+        TIMESTAMP created_at
+    }
+
+    pii_customer_pii {
+        BIGINT customer_id PK,FK
+        TEXT   ssn        "sensitive PII"
+        TEXT   address    "sensitive PII"
+    }
+
+    customer_core ||--|| pii_customer_pii : "1:1"
+```
+***Figure***: The customer_core table (public schema) contains basic identifiers (name, email), while the customer_pii table (pii schema) holds more sensitive data (SSN, address).
+
+```mermaid
+flowchart LR
+  subgraph PUBLIC["public schema"]
+    CCORE[customer_core - basic PII]
+  end
+
+  subgraph PII["pii schema (restricted)"]
+    CPII[customer_pii - sensitive PII]
+  end
+
+  %% Relatie tussen tabellen
+  CCORE -- "customer_id PK ⇒ FK" --> CPII
+
+  %% Rollen
+  APPREAD[role: app_read]
+  DBA[role: db_admin]
+
+  %% Toegang
+  APPREAD --> CCORE
+  APPREAD -. no access .-> CPII
+  DBA --> CPII
+
+```
+***Figure***: The app_read role can only access the public schema (customer_core), not the pii schema (customer_pii). This separation enforces stricter access control for sensitive PII.
+
 ### Risk-based approach
 Strictly speaking, both ```full_name``` and ```email``` are also PII. In practice, however, not all PII carries the same level of sensitivity. In this example, the ```customer_core``` table contains basic identifiers that are commonly needed by applications, while the ```pii.customer_pii``` table isolates more sensitive identifiers such as social security number and physical address. This separation allows stronger access control where it matters most.
 
-**Benefit:** Clear separation of duties and simplified audits.
+

@@ -131,6 +131,21 @@ GRANT SELECT ON public.customer_core TO app_read;
 ```
 In this case, the ```app_read``` role can query non-sensitive data in customer_core, but has no access at all to the ```pii``` schema and therefore no access to the sensitive table ```customer_pii```.
 
+
+| **Type**             | **Privilege** | **Meaning**                                                                 |
+|-----------------------|---------------|------------------------------------------------------------------------------|
+| **Schema privileges** | USAGE         | Allows access to objects in the schema (can reference them, but not read data). |
+|                       | CREATE        | Allows creating new objects (tables, views, functions) in the schema.        |
+|                       | ALTER / DROP  | Allows altering or dropping the schema itself.                               |
+| **Table privileges**  | SELECT        | Read rows from the table.                                                    |
+|                       | INSERT        | Add new rows to the table.                                                   |
+|                       | UPDATE        | Modify existing rows in the table.                                           |
+|                       | DELETE        | Remove rows from the table.                                                  |
+|                       | TRUNCATE      | Empty the entire table.                                                      |
+|                       | REFERENCES    | Create foreign keys referencing the table.                                   |
+|                       | TRIGGER       | Create triggers on the table.                                                |
+
+
 [PostgreSQL Privileges](https://www.postgresql.org/docs/current/ddl-priv.html)
 
 

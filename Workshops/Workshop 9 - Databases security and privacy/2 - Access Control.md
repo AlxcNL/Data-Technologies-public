@@ -119,3 +119,14 @@ GRANT app_read TO app_service;
 - LOGIN roles are user accounts or service accounts that can connect.
 - Access to schemas, tables, and functions is granted to roles, not directly to individuals.
 
+#### Permissions inside PostgreSQL
+The example below shows how privileges are granted and revoked at the schema and table level. This illustrates the principle of least privilege:
+First, remove all default rights from the role (REVOKE). Then, explicitly grant only the permissions that are needed (GRANT).
+
+```sql
+-- Grant minimal privileges
+REVOKE ALL ON SCHEMA pii FROM app_read;
+REVOKE ALL ON pii.customer_pii FROM app_read;
+GRANT SELECT ON public.customer_core TO app_read;
+```
+In this case, the ```app_read``` role can query non-sensitive data in customer_core, but has no access at all to the ```pii``` schema and therefore no access to the sensitive table ```customer_pii```.

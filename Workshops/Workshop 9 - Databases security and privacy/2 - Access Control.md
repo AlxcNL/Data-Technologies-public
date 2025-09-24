@@ -4,12 +4,17 @@
 
 In an earlier workshop vertical partitioning was discussed in the context of performance optimization. In this workshop we look at the same concept from a security perspective. By applying vertical partitioning, access for a specific group of people to specific data can be managed at the database level. The method is to isolate sensitive data in a separate table or schema with tighter privileges.
 
-### What is a database schema?
-A schema is a logical container inside a database. It groups together related database objects such as tables, views, and functions. You can think of it as a namespace or folder within the database:
+### What is a database schema in PostgreSQL (and Oracle & MS SQL)
+In PostgreSQL a schema is a logical container inside a database. It groups together related database objects such as tables, views, and functions. You can think of it as a namespace or folder within the database:
 
 - It helps organize data and avoid name conflicts (two tables with the same name can exist in different schemas).
 - It provides a security boundary, because you can assign privileges at the schema level.
 - It allows you to separate sensitive data (e.g., PII) from non-sensitive data, making access control more transparent.
+
+> Note: The word “schema” has two meanings.
+> In **data modeling**, “schema” often refers to the entire structure of the database.
+> In **PostgreSQL, Oracle, and MS SQL**, a “schema” is a namespace inside a database, used to organize objects and control privileges.
+> In **MySQL** the terms *schema* and *database* mean the same thing — there is no separate namespace layer.
 
 ### Security boundary for PII
 

@@ -159,7 +159,7 @@ In this case, the ```app_read``` role can query non-sensitive data in customer_c
 
 ***Separation of concerns***:
 - Inside PostgreSQL: you define what a role may do (RBAC, grants on schemas/tables). This is authorization.
-- Outside PostgreSQL: you define how a role proves its identity and from where it may connect (authentication & client access).
+- Outside PostgreSQL: you define how a role proves its identity and from where it may connect. This is authentication.
 
 postgresql.conf (global settings)
 

@@ -95,9 +95,8 @@ flowchart LR
 ### Risk-based approach
 Strictly speaking, both ```full_name``` and ```email``` are also PII. In practice, however, not all PII carries the same level of sensitivity. In this example, the ```customer_core``` table contains basic identifiers that are commonly needed by applications, while the ```pii.customer_pii``` table isolates more sensitive identifiers such as social security number and physical address. This separation allows stronger access control where it matters most.
 
-## PostgreSQL roles & authentification
 
-### Role-Based Access Control (RBAC)
+## Role-Based Access Control (RBAC)
 
 Role-Based Access Control (RBAC) is a security model that restricts access to resources based on defined roles rather than individual user accounts.
 - ***Roles*** represent sets of permissions (e.g., read-only, data entry, administrator).
@@ -106,9 +105,31 @@ Role-Based Access Control (RBAC) is a security model that restricts access to re
 
 This approach simplifies management: instead of configuring privileges for each user separately, you manage them at the role level. When a user’s responsibilities change, you only need to update their role membership. RBAC can be applied in a way that supports the principle of **least privilege**, by carefully defining roles so that users receive only the access they need to perform their job.
 
-#### Planning access rights
+### Planning access rights
 
-Before jumping into SQL statements, it is important to first design the access model at a conceptual level.  
+#### Step 1 – Data classification
+Before designing tables and roles, it is important to classify the attributes according to their sensitivity. This determines what needs extra protection.
+
+| **Attribute**          | **Planned table**     | **Classification**        | **Notes**                                |
+|-------------------------|-----------------------|---------------------------|------------------------------------------|
+| customer_id             | customer_core         | Technical identifier      | Needed for joins, not sensitive by itself |
+| full_name               | customer_core         | Basic PII                 | Identifies a person directly              |
+| email                   | customer_core         | Basic PII                 | Often required for login / communication  |
+| created_at              | customer_core         | Non-sensitive metadata    | Timestamp only, low sensitivity           |
+| social_security_number  | customer_pii          | Highly sensitive PII      | Requires strict access control            |
+| address                 | customer_pii          | Highly sensitive PII      | Identifies a person’s physical location   |
+
+
+#### Step 2 – Schema design (vertical partitioning)
+
+Based on the classification, sensitive attributes are placed in a separate table (and schema) so that privileges can be restricted more strictly.
+
+- `customer_core` contains basic identifiers and metadata needed for most applications.  
+- `customer_pii` (in the `pii` schema) contains highly sensitive data with tighter access control.  
+
+
+#### Step 3 – Access control matrix
+Once the tables are designed, we can map roles to data objects. 
 
 1. **Identify roles, data objects, and required permissions.**  
    Start by listing the different roles in the organization (e.g., application user, HR admin, DBA) and the data objects they should interact with (e.g., `customer_core`, `customer_pii`, `orders`).  
@@ -119,7 +140,7 @@ Before jumping into SQL statements, it is important to first design the access m
 3. **Translate the matrix into PostgreSQL roles and grants.**  
    Once the required permissions are clear, we can implement them by creating roles in PostgreSQL and assigning the privileges accordingly.  
 
-##### Example of a simple access control matrix
+*Example of a simple access control matrix*
 
 | **Role**   | **customer_core** | **customer_pii** | **orders** |
 |------------|-------------------|------------------|------------|
@@ -128,26 +149,38 @@ Before jumping into SQL statements, it is important to first design the access m
 | hr_admin   | —                 | SELECT, UPDATE   | —          |
 | dba        | ALL               | ALL              | ALL        |
 
-#### Roles inside PostgreSQL
+The matrix shows which role can do what on each table.
+
+#### Step 4 – SQL implementation in PostgreSQL
 
 Roles are created and managed within the PostgreSQL database itself:
 
 ```sql
--- Create a role that groups privileges
+-- Group roles (no direct login)
 CREATE ROLE app_read NOLOGIN;
+CREATE ROLE app_write NOLOGIN;
+CREATE ROLE hr_admin NOLOGIN;
 
--- Create a login role (user account)
+-- Login roles (accounts)
 CREATE ROLE app_service LOGIN PASSWORD 'secure_scram_password';
+CREATE ROLE hr_manager  LOGIN PASSWORD 'secure_scram_password';
 
--- Make user 'app_service' member of role 'app_read'
-GRANT app_read TO app_service;
+-- Assign role membership
+GRANT app_read  TO app_service;
+GRANT hr_admin  TO hr_manager;
+
+-- Grant minimal privileges
+REVOKE ALL ON SCHEMA pii FROM app_read;
+REVOKE ALL ON pii.customer_pii FROM app_read;
+GRANT USAGE ON SCHEMA public TO app_read;
+GRANT SELECT ON public.customer_core TO app_read;
 ```
 
 - NOLOGIN roles are used as groups of privileges.
 - LOGIN roles are user accounts or service accounts that can connect.
 - Access to schemas, tables, and functions is granted to roles, not directly to individuals.
 
-#### Permissions inside PostgreSQL
+## PostgreSQL roles & authentification
 The example below shows how privileges are granted and revoked at the schema and table level. This illustrates the principle of least privilege:
 First, remove all default rights from the role (REVOKE). Then, explicitly grant only the permissions that are needed (GRANT).
 

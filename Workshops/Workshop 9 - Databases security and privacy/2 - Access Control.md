@@ -1,8 +1,10 @@
 # Access Control
 Access control is the process of defining **who** can access **which data** and **what actions** they are allowed to perform.  
-The goal is to ensure that sensitive information is only available to authorized users, while minimizing the risk of misuse or data leaks.  
+The goal is to ensure that sensitive information is only available to authorized parties, while minimizing the risk of misuse or data leaks.  
 
-In databases, access control is typically implemented using **roles** and **permissions**. Roles reflect responsibilities within an organization (e.g., application user, HR administrator, database administrator) and are mapped to the privileges needed for those responsibilities. By designing access rights carefully, we can apply the principle of *least privilege*: users and applications only get the minimum rights required to perform their tasks.
+In databases, access control is typically implemented using **roles** and **permissions**. Roles reflect responsibilities within an organization (e.g., application service, HR administrator, database administrator) and are mapped to the privileges needed for those responsibilities. By designing access rights according to the principle of *least privilege*, users and applications receive only the minimum permissions needed to perform their tasks.
+
+Database roles are service identities used by application processes to authenticate to the database (e.g. PostgreSQL); they are not mapped one-to-one to the application’s end-user accounts. End-user authorization is handled in the application layer and/or via database features such as Row-Level Security (RLS).
 
 ## Vertical Partitioning
 
@@ -113,6 +115,15 @@ Role-Based Access Control (RBAC) is a security model that restricts access to re
 - ***Permissions*** are granted to roles, not directly to users.
 
 This approach simplifies management: instead of configuring privileges for each user separately, you manage them at the role level. When a user’s responsibilities change, you only need to update their role membership. RBAC can be applied in a way that supports the principle of **least privilege**, by carefully defining roles so that users receive only the access they need to perform their job.
+
+### RBAC in PostgreSQL
+
+In PostgreSQL, RBAC is implemented with database roles and privileges:
+
+- **Group roles** represent responsibilities. Grant privileges to these roles on schemas, tables, sequences and functions.
+- **Login roles** are principals that connect to the database. Assign them to the appropriate group roles; application processes authenticate to PostgreSQL using these principals.
+- **Privileges are granted to group-roles** Login roles inherit the necessary rights via group-role membership.
+- **End-user authorization** remains in the application and/or via **Row-Level Security (RLS)**; database roles are not one-to-one to app users.
 
 ### Planning access rights
 
@@ -329,7 +340,53 @@ SELECT schemaname, tablename, tableowner
 FROM pg_tables
 WHERE schemaname='pii' AND tablename in ('customer_pii');
 ```
+**See the privileges in action**
 
+Use the ```\c <db_name> <user_role>``` commands in the ```psql shell``` to connect to a specific database as a specfic user_role. Depending on the authentication configuration of PostgreSQL this is allowed without a password, with a password or not at all. The authentification configuration is stored in the file ```pg_hba.conf```. 
+
+Locate the ```pg_hba.conf``` file with the command:
+```psql
+SHOW hba_file;
+```
+
+To allow user-roles ```app_service``` and ```app_update``` to connect to the ```hr_test``` databases through the local socket without a password, enable this line in the ```pg_hba.conf``` file:
+
+```
+# TYPE  DATABASE        USER                               ADDRESS                 METHOD
+local   hr_test         app_service,app_update                                     trust
+```
+
+Reload the ```pg_hba.conf``` configuration:
+```psql
+SELECT pg_reload_conf();
+```
+
+[PostgreSQL The pg_hba.conf File](https://www.postgresql.org/docs/current/auth-pg-hba-conf.html)
+
+
+Connect as user_role 'app_service'
+
+```psql
+-- Connect to database 'hr_test' as user_role 'app_service'
+\c hr_test app_service
+-- The user-role 'app_service' is allowed to query table 'public.customer_core'
+SELECT customer_id, full_name FROM customer_core LIMIT 5;
+-- The user-role 'app_service' is not allowed to query table 'pii.customer_pii'
+SELECT customer_id, social_security_number FROM pii.customer_pii LIMIT 5;
+-- The user-role 'app_service' is not allowed to insert data into table 'public.customer_core'
+INSERT INTO public.customer_core(full_name, email) VALUES ('Alice', 'alice@example.com');
+```
+
+Connect as user_role 'app_update'
+
+```psql
+-- Connect to database 'hr_test' as user_role 'app_update'
+\c hr_test app_update
+-- The user-role 'app_update' is allowed to insert data into table 'public.customer_core'
+INSERT INTO public.customer_core(full_name, email) VALUES ('Alice', 'alice@example.com');
+-- The user-role 'app_update' is not allowed to update data in table 'public.customer_core'
+UPDATE public.customer_core SET full_name = 'Alice Hooper' WHERE email = 'alice@example.com';
+```
 
 ### Summary of the steps
 Security starts with understanding the data, not with SQL commands. First classify data, then design the schema, define access rights in a matrix, and finally implement them in PostgreSQL.

@@ -183,6 +183,19 @@ c) **Fill in an access control matrix.**
 - “**dba**” is an abbreviation of *database administrator*; it manages the database and typically owns the objects.
 
 **Repeat steps a, b & c iteratively**, refining the application actors, data objects, and role mappings each pass until the access control matrix meets your requirements.
+
+
+🧠 Question: Consider this access control matrix and the login roles -> group roles mapping carefully. Should something be refined?
+
+<details>
+<summary>Click to reveal the answer</summary>
+    
+The mapping ```report_job``` → ```hr_admin``` **grants INSERT/UPDATE on PII** via ```hr_admin```, which is excessive. Prefer a dedicated report_read group role with ```SELECT``` on ```pii.customer_pii``` (or a view), and map ```report_job``` to that role.
+
+Consider splitting ```hr_admin``` into ```hr_pii_read``` and ```hr_pii_write```.
+</details>
+
+
   
 #### Step 4 – SQL implementation in PostgreSQL
 Once the required permissions are clear, we can implement them by creating roles in PostgreSQL and assigning the privileges accordingly.

@@ -314,9 +314,19 @@ SELECT rolname FROM pg_roles;
 SELECT rolname FROM pg_roles WHERE rolcanlogin = true;
 ```
 
+To remove a group role, use the ```DROP``` command.
 
+```sql
+DROP ROLE app_read;
+```
 
-#### Authentication outside PostgreSQL
+Any table, view, etc in a dbms has a owner. The role which created the data-object is the owner. When a role is owner of a data-object, it is not allowed to drop the role. The data-objects must be assigned a other owner first.
+
+```sql
+ALTER TABLE customer_core OWNER TO db_admin;
+```
+
+### Authentication outside PostgreSQL
 
 ***Separation of concerns***:
 - Inside PostgreSQL: you define what a role may do (RBAC, grants on schemas/tables). This is authorization.

@@ -37,7 +37,8 @@ CREATE TABLE customer_core (
     created_at  TIMESTAMP NOT NULL DEFAULT now()
 );
 
--- Dedicated schema for more sensitive PII with stricter privileges. The role 'db_admin' is the owner of this schema.
+-- Dedicated schema for more sensitive PII with stricter privileges.
+-- The role 'db_admin' will be the owner of this schema.
 CREATE SCHEMA pii AUTHORIZATION db_admin;
 
 --- PII table: contains sensitive identifiers. This table is placed in the 'pii' schema.
@@ -165,15 +166,23 @@ Roles are created and managed within the PostgreSQL database itself:
 CREATE ROLE app_read NOLOGIN;
 CREATE ROLE app_write NOLOGIN;
 CREATE ROLE hr_admin NOLOGIN;
+```
+- NOLOGIN roles are used as groups of privileges.
 
+```sql
 -- Login roles (accounts)
 CREATE ROLE app_service LOGIN PASSWORD 'secure_scram_password';
 CREATE ROLE hr_manager  LOGIN PASSWORD 'secure_scram_password';
+```
+- LOGIN roles are user accounts or service accounts that can connect.
 
+```sql
 -- Assign role membership
 GRANT app_read  TO app_service;
 GRANT hr_admin  TO hr_manager;
+```
 
+```sql
 -- Grant minimal privileges for app_read
 REVOKE ALL ON SCHEMA public from app_read;
 REVOKE ALL ON public.customer_core from app_read;
@@ -183,7 +192,9 @@ REVOKE ALL ON pii.customer_pii FROM app_read;
 GRANT USAGE ON SCHEMA public TO app_read;
 GRANT SELECT ON public.customer_core TO app_read;
 GRANT SELECT ON public.orders TO app_read;
-
+```
+  
+```sql
 -- Grant minimal privileges for app_write
 REVOKE ALL ON SCHEMA public from app_write;
 REVOKE ALL ON public.customer_core from app_write;
@@ -193,7 +204,8 @@ REVOKE ALL ON pii.customer_pii FROM app_write;
 GRANT USAGE ON SCHEMA public TO app_write;
 GRANT SELECT,INSERT ON public.customer_core TO app_read;
 GRANT ALL ON public.orders TO app_write;
-
+```
+```sql
 -- Grant minimal privileges for hr_admin
 REVOKE ALL ON SCHEMA public from hr_admin;
 REVOKE ALL ON public.customer_core from hr_admin;
@@ -202,12 +214,9 @@ REVOKE ALL ON SCHEMA pii FROM hr_admin;
 REVOKE ALL ON pii.customer_pii FROM hr_admin;
 GRANT USAGE ON SCHEMA pii TO hr_admin;
 GRANT SELECT,UPDATE ON pii.customer_pii TO hr_admin;
-
 ```
-
-- NOLOGIN roles are used as groups of privileges.
-- LOGIN roles are user accounts or service accounts that can connect.
 - Access to schemas, tables, and functions is granted to roles, not directly to individuals.
+
 
 ### Summary of the steps
 Security starts with understanding the data, not with SQL commands. First classify data, then design the schema, define access rights in a matrix, and finally implement them in PostgreSQL.

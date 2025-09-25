@@ -302,6 +302,20 @@ In this case, the ```app_read``` role can query non-sensitive data in customer_c
 
 [PostgreSQL Privileges](https://www.postgresql.org/docs/current/ddl-priv.html)
 
+### PostgreSQL managing configured roles
+Every dbms stores the roles configured in a database in a system-catalog. The system-catalog are tables in which the dbms itself stores meta-information about the database. In PostgreSQL the roles are stored in the ```pg_authid``` table. The view ```pg_roles``` provides a view on this table, with the password field blanked out.
+
+
+```sql
+--- Display the roles configured in the database
+SELECT rolname FROM pg_roles;
+
+--- Display the roles configured in the database which can login
+SELECT rolname FROM pg_roles WHERE rolcanlogin = true;
+```
+
+
+
 #### Authentication outside PostgreSQL
 
 ***Separation of concerns***:

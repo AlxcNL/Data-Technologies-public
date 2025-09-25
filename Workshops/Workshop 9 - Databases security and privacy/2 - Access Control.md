@@ -150,7 +150,7 @@ Based on the classification, sensitive attributes are placed in a separate table
 Once the tables (data objects) are clear, define how application actors will access them. 
 
 a) **Identify application actors and data objects.**
-   List the application components that connect to the database (e.g. web app, background jobs, admin tools) and the data objects they need. For each actor, decide which login role(s) (principals) it will use to connect. An application may use different login roles for different operations (e.g., read-only vs. write).       
+   List the application components (actors) that connect to the database (e.g. web app, background jobs, admin tools) and the data objects they need. For each actor, decide which login role(s) (principals) it will use to connect. An application may use different login roles for different operations (e.g., read-only vs. write).       
 
 b) **Map login roles to group roles.**
    Map each login role to one or more group roles that hold the required priviliges.

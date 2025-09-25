@@ -326,6 +326,13 @@ Any table, view, etc in a dbms has a owner. The role which created the data-obje
 ALTER TABLE customer_core OWNER TO db_admin;
 ```
 
+To see which privileges a role has on the data-objects, the view ```role_table_grants``` in the ```information_schema``` schema can be consulted.
+
+```sql
+SELECT table_catalog, table_schema, table_name, privilege_type FROM information_schema.role_table_grants WHERE grantee = 'app_read';
+````
+
+
 ### Authentication outside PostgreSQL
 
 ***Separation of concerns***:

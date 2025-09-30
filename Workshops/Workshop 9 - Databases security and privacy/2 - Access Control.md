@@ -224,7 +224,7 @@ CREATE ROLE report_job  LOGIN PASSWORD 'secure_password';
 CREATE ROLE db_admin LOGIN PASSWORD 'super_secret_password';
 ```
 
-***Assign user-roles to group-roles***
+**Assign user-roles to group-roles**
 ```sql
 -- Assign role membership
 GRANT app_read  TO app_service;
@@ -235,7 +235,7 @@ GRANT app_read, app_write TO report_job;
 GRANT dba TO db_admin;
 ```
 
-***Create the tables and schema***
+**Create the tables and schema**
 ```sql
 -- Core table: contains basic identifiers (still PII, but less sensitive).
 CREATE TABLE customer_core (
@@ -267,7 +267,7 @@ CREATE TABLE orders (
 );
 ```
 
-***Change owership of the tables***
+**Change owership of the tables**
 
 Created tables are owned by the user-role who executed the SQL ```create table``` command. We change the ownership of the tables to 'dba'.
 ```sql
@@ -276,7 +276,7 @@ ALTER TABLE public.customer_core OWNER TO dba;
 ALTER TABLE public.orders        OWNER TO dba;
 ```
 
-***Assign privileges to the group-roles***
+**Assign privileges to the group-roles**
 - Access to schemas, tables, and functions is granted to group-roles, not directly to individuals.
 
 ```sql
@@ -324,7 +324,7 @@ GRANT ALL              ON public.orders TO dba;
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO app_write, dba;
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA pii TO hr_admin, dba;
 ```
-
+**Check the assigned privileges**
 To check the assigned privileges for the tables, query the views in the ```information_schema``` schema
 
 ```sql

@@ -351,13 +351,13 @@ WHERE table_schema='public' AND table_name='orders'
 ORDER BY grantee, privilege_type;
 ```
 
-It is also possible to use the ```has_table_privilege``` function.
+It is also possible to use the ```has_table_privilege``` function. This is a PostgreSQL specific function.
 
 ```sql
 SELECT has_table_privilege('app_read',  'public.customer_core', 'SELECT') AS can_select;
 ```
 
-In the standard ```information_schema``` schema the view ```schema_privileges``` is defined. Unfortunally PostgreSQL does not implement this view. Instead, use the ```has_schema_privilege``` function.
+In the ```information_schema``` schema the view ```schema_privileges``` is defined. Unfortunally PostgreSQL does not implement this view. Instead, use the ```has_schema_privilege``` function.
 
 ```sql
 SELECT has_schema_privilege('app_read', 'public', 'USAGE')  AS can_use_schema;

@@ -326,7 +326,9 @@ GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA pii TO hr_admin, dba;
 ```
 **Check the assigned privileges**
 
-To check the assigned privileges for the tables, query the views in the ```information_schema``` schema
+To check the assigned privileges for the tables, query the views in the ```information_schema``` schema.
+
+> The ```information_schema``` is a set of read-only views defined in the ANSI SQL standard. These views expose metadata about the database tables, columns, constraints, privileges, etc. It provides a uniform way to query the database structure, regardless the underlying RDBMS.   
 
 ```sql
 SELECT grantee, privilege_type, is_grantable

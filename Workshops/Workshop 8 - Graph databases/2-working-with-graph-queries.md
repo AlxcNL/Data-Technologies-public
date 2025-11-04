@@ -156,7 +156,7 @@ Alice → Card 1111 → IP 203.0.113.42
 Such a path directly expresses a real-world relationship between entities.
 
 
-## Understanding MATCH and pattern mathcing
+## Understanding MATCH and pattern matching
 Before writing queries, it is important to understand how Cypher finds data. Cypher does not work with tables — instead, it matches patterns in a graph.
 
 ### Nodes

@@ -377,34 +377,17 @@ FROM pg_tables
 WHERE schemaname='pii' AND tablename in ('customer_pii');
 ```
 **See the privileges in action**
+Use the ```SET ROLE <user_role>``` command to switch to a specific role in the current SQL session.  
+Alternativly use the ```\c <db_name> <user_role>``` commands in the ```psql shell``` to connect to a specific database as a specfic user_role. Depending on the authentication configuration of PostgreSQL this is allowed without a password, with a password or not at all. The authentification configuration is stored in the file ```pg_hba.conf```. 
 
-Use the ```\c <db_name> <user_role>``` commands in the ```psql shell``` to connect to a specific database as a specfic user_role. Depending on the authentication configuration of PostgreSQL this is allowed without a password, with a password or not at all. The authentification configuration is stored in the file ```pg_hba.conf```. 
-
-Locate the ```pg_hba.conf``` file with the command:
-```psql
-SHOW hba_file;
-```
-
-To allow user-roles ```app_service``` and ```app_update``` to connect to the ```hr_test``` databases through the local socket without a password, enable this line in the ```pg_hba.conf``` file:
-
-```
-# TYPE  DATABASE        USER                               ADDRESS                 METHOD
-local   hr_test         app_service,app_update                                     trust
-```
-
-Reload the ```pg_hba.conf``` configuration:
-```psql
-SELECT pg_reload_conf();
-```
-
+[PostgreSQL The SET ROLE command](https://www.postgresql.org/docs/current/sql-set-role.html)
 [PostgreSQL The pg_hba.conf File](https://www.postgresql.org/docs/current/auth-pg-hba-conf.html)
-
 
 Connect as user_role 'app_service'
 
 ```psql
--- Connect to database 'hr_test' as user_role 'app_service'
-\c hr_test app_service
+-- Set the current role to 'app_service'
+SET ROLE app_service;
 -- The user-role 'app_service' is allowed to query table 'public.customer_core'
 SELECT customer_id, full_name FROM customer_core LIMIT 5;
 -- The user-role 'app_service' is not allowed to query table 'pii.customer_pii'
@@ -417,7 +400,7 @@ Connect as user_role 'app_update'
 
 ```psql
 -- Connect to database 'hr_test' as user_role 'app_update'
-\c hr_test app_update
+SET ROLE app_update;
 -- The user-role 'app_update' is allowed to insert data into table 'public.customer_core'
 INSERT INTO public.customer_core(full_name, email) VALUES ('Alice', 'alice@example.com');
 -- The user-role 'app_update' is not allowed to update data in table 'public.customer_core'

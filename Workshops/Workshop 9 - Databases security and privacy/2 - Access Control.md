@@ -494,8 +494,7 @@ Prefer aggregated, non-PII views (e.g., analytics.subscriber_counts_by_topic) in
 🧠 Q6. How can recipients update only their own record?
 <details>
 <summary>Click to reveal the answer</summary>
-Use application-mediated updates and/or Row-Level Security (RLS). Avoid granting broad table UPDATE to end-user roles.
-RLS is a mechanism to enforce access policies at the row level within a table. RLS will be covered later on.    
+By granting UPDATE to the end-user role supplemented with checks in the application. In the database Row-Level Security (RLS) can also be configured for this situation. RLS is a mechanism to enforce access policies at the row level within a table. RLS will be covered later on.    
 </details>
 
 

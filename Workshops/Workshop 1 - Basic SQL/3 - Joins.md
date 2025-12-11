@@ -160,9 +160,28 @@ RIGHT JOIN students ON enrollments.student_id = students.id;
 
 **How it works:**
 
-- Shows all students first.
-- If an enrollment is missing for a student, the student will still appear because the students table is preserved in a RIGHT JOIN.
-- Typically, LEFT JOIN is preferred over RIGHT JOIN for readability.
+- Matches enrollments with all students.
+- If a student does not have an enrollment, the fetched values for enrollment ('course_id' and 'academic_year' will be 'NULL'.
+
+```mermaid
+
+flowchart LR
+    E[enrollments] --> J1[RIGHT JOIN ON enrollments.student_id = students.id]
+    S[students] --> J1
+    J1 --> Result[(Final result-set: course_id, academic_year, first_name, last_name)]
+
+    %% Styles for result set (yellow highlight)
+    style Result fill:#fff3b0,stroke:#e0a400,stroke-width:2px
+
+    %% Optional: style join node (subtle)
+    style J1 fill:#e6f3ff,stroke:#4a90e2,stroke-width:1px,stroke-dasharray: 3 3
+
+    %% Annotation: non-matching rows
+    noteN[["If a student has NO matching enrollment:<br/>course_id = NULL, academic_year = NULL"]]
+    Result --- noteN
+```
+
+Typically, LEFT JOIN is preferred over RIGHT JOIN for readability.
 
 <details markdown="1">
 <summary>View this query result</summary>

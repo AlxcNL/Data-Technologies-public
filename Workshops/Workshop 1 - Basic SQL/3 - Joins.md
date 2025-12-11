@@ -289,6 +289,25 @@ CROSS JOIN courses;
 
 **How it works:**
 
+- Every student is matched with every course
+
+```mermaid
+flowchart LR
+    S[students] --> J[CROSS JOIN]
+    C[courses] --> J
+    J --> Result[(Final result-set: Cartesian product)]
+
+    %% Style result set
+    style Result fill:#fff3b0,stroke:#e0a400,stroke-width:2px
+
+    %% Style join node
+    style J fill:#e6f3ff,stroke:#4a90e2,stroke-width:1px,stroke-dasharray: 3 3
+
+    %% Note
+    noteN[["Every student is matched with every course.<br/>Rows = students × courses"]]
+    Result --- noteN
+```
+
 - If we have 100 students and 10 courses, this returns 1,000 rows.
 - Not commonly used unless explicitly needed.
 - Can be dangerous if tables contain large numbers of rows!
@@ -311,7 +330,8 @@ CROSS JOIN courses;
 
 ### :arrow_right_hook: Self Join
 
-A `SELF JOIN`s generates a Cartesian product, meaning every row in one table joins with every row in another.
+A `SELF JOIN' joins a table with itself using a join condition.
+It does not automatically produce a Cartesian product unless you omit the ON clause (which would then behave like a CROSS JOIN).
 
 **Example:** Finding students from the same city
 
@@ -323,7 +343,7 @@ SELECT
     s2.last_name AS s2_last_name,
     s1.city
 FROM students s1
-JOIN students s2 
+INNER JOIN students s2 
     ON s1.city = s2.city 
     AND s1.id <> s2.id;
 
@@ -331,9 +351,27 @@ JOIN students s2
 
 **How it works:**
 
-- Retrieve student pairs (`student1`, `student2`) and their shared city.
-- Match students living in the same city (`s1.city = s2.city`).
-- Ensure a student isn’t paired with themselves (`s1.id <> s2.id`).
+- The students table is joined with itself.
+- Matches each student (s1) with other students (s2) from the same city (`s1.city = s2.city`).
+- The condition (`s1.id <> s2.id`) prevents matching a student with themselves.
+
+```mermaid
+
+flowchart LR
+    S1[students alias s1] --> J[INNER JOIN ON s1.city = s2.city AND s1.id <> s2.id]
+    S2[students alias s2] --> J
+    J --> Result[(Pairs of students from the same city)]
+
+    %% Style result set
+    style Result fill:#fff3b0,stroke:#e0a400,stroke-width:2px
+
+    %% Style join node
+    style J fill:#e6f3ff,stroke:#4a90e2,stroke-width:1px,stroke-dasharray: 3 3
+
+    %% Note
+    noteN[["No Cartesian product.<br/>Only pairs matching the ON condition."]]
+    Result --- noteN
+```
 
 <details markdown="1">
 <summary>View this query result</summary>

@@ -43,6 +43,28 @@ INNER JOIN courses ON enrollments.course_id = courses.id;
 - Then matches this T1 with courses.
 - If a student is NOT enrolled in any course, they won’t appear.
 
+```mermaid
+
+
+flowchart LR
+    E[enrollments] --> J1[INNER JOIN ON student_id = id]
+    S[students] --> J1
+    J1 --> T1[(Temporary result-set T1)]
+
+    T1 --> J2[INNER JOIN ON course_id = id]
+    C[courses] --> J2
+    J2 --> Result[(Final result-set)]
+
+    %% Styles for result sets
+    style T1 fill:#fff3b0,stroke:#e0a400,stroke-width:2px
+    style Result fill:#fff3b0,stroke:#e0a400,stroke-width:2px
+
+    %% Optional: style join nodes (subtle)
+    style J1 fill:#e6f3ff,stroke:#4a90e2,stroke-width:1px,stroke-dasharray: 3 3
+    style J2 fill:#e6f3ff,stroke:#4a90e2,stroke-width:1px,stroke-dasharray: 3 3
+
+```
+
 <details markdown="1">
 <summary>View this query result</summary>
 

@@ -39,8 +39,8 @@ INNER JOIN courses ON enrollments.course_id = courses.id;
 
 **How it works:**
 
-- Matches students with enrollments.
-- Then matches enrollments with courses.
+- Matches enrollments with students. The result is a temporary result-set T1.
+- Then matches this T1 with courses.
 - If a student is NOT enrolled in any course, they won’t appear.
 
 <details markdown="1">

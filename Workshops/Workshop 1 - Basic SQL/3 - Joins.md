@@ -4,7 +4,7 @@
 
 SQL joins are used to combine rows from two or more tables based on a related column. In this document, we'll explore different types of joins using the given database schema.
 
-:information_source: Just as a reminder, we have the following tables in our [University dataset]("data/university.sql"):
+:information_source: Just as a reminder, we have the following tables in our [University dataset](data/university.sql):
 
 ---
 
@@ -39,9 +39,31 @@ INNER JOIN courses ON enrollments.course_id = courses.id;
 
 **How it works:**
 
-- Matches students with enrollments.
-- Then matches enrollments with courses.
+- Matches enrollments with students. The result is a temporary result-set T1.
+- Then matches this T1 with courses.
 - If a student is NOT enrolled in any course, they won’t appear.
+
+```mermaid
+
+
+flowchart LR
+    E[enrollments] --> J1[INNER JOIN ON student_id = id]
+    S[students] --> J1
+    J1 --> T1[(Temporary result-set T1)]
+
+    T1 --> J2[INNER JOIN ON course_id = id]
+    C[courses] --> J2
+    J2 --> Result[(Final result-set)]
+
+    %% Styles for result sets
+    style T1 fill:#fff3b0,stroke:#e0a400,stroke-width:2px
+    style Result fill:#fff3b0,stroke:#e0a400,stroke-width:2px
+
+    %% Optional: style join nodes (subtle)
+    style J1 fill:#e6f3ff,stroke:#4a90e2,stroke-width:1px,stroke-dasharray: 3 3
+    style J2 fill:#e6f3ff,stroke:#4a90e2,stroke-width:1px,stroke-dasharray: 3 3
+
+```
 
 <details markdown="1">
 <summary>View this query result</summary>
@@ -80,8 +102,26 @@ LEFT JOIN enrollments ON students.id = enrollments.student_id;
 
 **How it works:**
 
-- Includes all students.
-- If a student isn’t enrolled, the `course_id` and `academic_year` will be `NULL`.
+- Matches all students with enrollments.
+- If a student does not have an enrollment, the fetched values for enrollment ('course_id'and 'academic_year') will be 'NULL'.
+
+```mermaid
+
+flowchart LR
+    S[students] --> J1[LEFT JOIN ON students.id = enrollments.student_id]
+    E[enrollments] --> J1
+    J1 --> Result[(Final result-set: first_name, last_name, course_id, academic_year)]
+
+    %% Styles for result set (yellow highlight)
+    style Result fill:#fff3b0,stroke:#e0a400,stroke-width:2px
+
+    %% Optional: style join node (subtle)
+    style J1 fill:#e6f3ff,stroke:#4a90e2,stroke-width:1px,stroke-dasharray: 3 3
+
+    %% Annotation: non-matching rows
+    noteN[["If a student has NO matching enrollment:<br/>course_id = NULL, academic_year = NULL"]]
+    Result --- noteN
+```
 
 <details markdown="1">
 <summary>View this query result</summary>
@@ -105,7 +145,7 @@ A `RIGHT JOIN` works similarly to LEFT JOIN, but keeps all records from the righ
 
 ![alt text](data/img/right-join.jpeg "Right (Outer) Join")
 
-**Example:** Get all enrollments and their corresponding students (even if some enrollments lack student info)
+**Example:** Get all students and their corresponding enrollments (even if some students did not enroll)
 
 ````sql
 SELECT 
@@ -120,9 +160,28 @@ RIGHT JOIN students ON enrollments.student_id = students.id;
 
 **How it works:**
 
-- Shows all enrollments first.
-- If a course isn’t enrolled by any student, it won’t show up (because enrollments table is "stronger" in this join).
-- Typically, LEFT JOIN is preferred over RIGHT JOIN for readability.
+- Matches enrollments with all students.
+- If a student does not have an enrollment, the fetched values for enrollment ('course_id' and 'academic_year' will be 'NULL'.
+
+```mermaid
+
+flowchart LR
+    E[enrollments] --> J1[RIGHT JOIN ON enrollments.student_id = students.id]
+    S[students] --> J1
+    J1 --> Result[(Final result-set: course_id, academic_year, first_name, last_name)]
+
+    %% Styles for result set (yellow highlight)
+    style Result fill:#fff3b0,stroke:#e0a400,stroke-width:2px
+
+    %% Optional: style join node (subtle)
+    style J1 fill:#e6f3ff,stroke:#4a90e2,stroke-width:1px,stroke-dasharray: 3 3
+
+    %% Annotation: non-matching rows
+    noteN[["If a student has NO matching enrollment:<br/>course_id = NULL, academic_year = NULL"]]
+    Result --- noteN
+```
+
+Typically, LEFT JOIN is preferred over RIGHT JOIN for readability.
 
 <details markdown="1">
 <summary>View this query result</summary>
@@ -157,16 +216,44 @@ SELECT
     enrollments.academic_year 
 FROM students
 FULL OUTER JOIN enrollments ON students.id = enrollments.student_id;
-FULL JOIN courses ON enrollments.course_id = courses.id;
+FULL OUTER JOIN courses ON enrollments.course_id = courses.id;
 
 ````
 
 **How it works:**
 
-- Everything appears—students, courses, and academic_year.
-- If a student is not enrolled, their course_id will be NULL.
-- If a course has no enrollments, it will still be listed.
+- Matches students with enrollments. 
+    - If a student does not have a match, the fetched values for enrollment will be NULL. 
+    - If an enrollment does not have a match, the fetched values for student will be NULL. 
+    - The result is a temporary result-set T1.
+- Matches T1 with courses. 
+    - If T1 does not have a match, the fetched values for course will be NULL. 
+    - If a course does not have a match, the fetched values for T1 will be NULL.
+ 
+```mermaid
+flowchart LR
+    S[students] --> J1[FULL OUTER JOIN ON students.id = enrollments.student_id]
+    E[enrollments] --> J1
+    J1 --> T1[(Temporary result-set T1)]
 
+    T1 --> J2[FULL OUTER JOIN ON enrollments.course_id = courses.id]
+    C[courses] --> J2
+    J2 --> Result[(Final result-set)]
+
+    %% Styles for result sets
+    style T1 fill:#fff3b0,stroke:#e0a400,stroke-width:2px
+    style Result fill:#fff3b0,stroke:#e0a400,stroke-width:2px
+
+    %% Style join nodes
+    style J1 fill:#e6f3ff,stroke:#4a90e2,stroke-width:1px,stroke-dasharray: 3 3
+    style J2 fill:#e6f3ff,stroke:#4a90e2,stroke-width:1px,stroke-dasharray: 3 3
+
+    %% Notes for NULL behavior
+    note1[["If student has no match → enrollment columns = NULL<br/>If enrollment has no match → student columns = NULL"]]
+    note2[["If T1 has no match → course columns = NULL<br/>If course has no match → T1 columns = NULL"]]
+    T1 --- note1
+    Result --- note2
+```
 <details markdown="1">
 <summary>View this query result</summary>
 
@@ -202,6 +289,25 @@ CROSS JOIN courses;
 
 **How it works:**
 
+- Every student is matched with every course
+
+```mermaid
+flowchart LR
+    S[students] --> J[CROSS JOIN]
+    C[courses] --> J
+    J --> Result[(Final result-set: Cartesian product)]
+
+    %% Style result set
+    style Result fill:#fff3b0,stroke:#e0a400,stroke-width:2px
+
+    %% Style join node
+    style J fill:#e6f3ff,stroke:#4a90e2,stroke-width:1px,stroke-dasharray: 3 3
+
+    %% Note
+    noteN[["Every student is matched with every course.<br/>Rows = students × courses"]]
+    Result --- noteN
+```
+
 - If we have 100 students and 10 courses, this returns 1,000 rows.
 - Not commonly used unless explicitly needed.
 - Can be dangerous if tables contain large numbers of rows!
@@ -224,7 +330,8 @@ CROSS JOIN courses;
 
 ### :arrow_right_hook: Self Join
 
-A `SELF JOIN`s generates a Cartesian product, meaning every row in one table joins with every row in another.
+A `SELF JOIN' joins a table with itself using a join condition.
+It does not automatically produce a Cartesian product unless you omit the ON clause (which would then behave like a CROSS JOIN).
 
 **Example:** Finding students from the same city
 
@@ -236,7 +343,7 @@ SELECT
     s2.last_name AS s2_last_name,
     s1.city
 FROM students s1
-JOIN students s2 
+INNER JOIN students s2 
     ON s1.city = s2.city 
     AND s1.id <> s2.id;
 
@@ -244,9 +351,27 @@ JOIN students s2
 
 **How it works:**
 
-- Retrieve student pairs (`student1`, `student2`) and their shared city.
-- Match students living in the same city (`s1.city = s2.city`).
-- Ensure a student isn’t paired with themselves (`s1.id <> s2.id`).
+- The students table is joined with itself.
+- Matches each student (s1) with other students (s2) from the same city (`s1.city = s2.city`).
+- The condition (`s1.id <> s2.id`) prevents matching a student with themselves.
+
+```mermaid
+
+flowchart LR
+    S1[students alias s1] --> J[INNER JOIN ON s1.city = s2.city AND s1.id <> s2.id]
+    S2[students alias s2] --> J
+    J --> Result[(Pairs of students from the same city)]
+
+    %% Style result set
+    style Result fill:#fff3b0,stroke:#e0a400,stroke-width:2px
+
+    %% Style join node
+    style J fill:#e6f3ff,stroke:#4a90e2,stroke-width:1px,stroke-dasharray: 3 3
+
+    %% Note
+    noteN[["No Cartesian product.<br/>Only pairs matching the ON condition."]]
+    Result --- noteN
+```
 
 <details markdown="1">
 <summary>View this query result</summary>

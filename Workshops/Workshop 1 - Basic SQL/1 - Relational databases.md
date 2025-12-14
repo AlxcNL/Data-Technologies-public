@@ -98,9 +98,28 @@ Relational databases use keys to structure data:
 
 To avoid redundancy and inconsistent data, relational databases are often normalized:
 
-- 1NF (First Normal Form) – Each field contains atomic data, not multiple values ​​in a single cell.
-- 2NF (Second Normal Form) – Remove partial dependencies on non-primary attributes.
-- 3NF (Third Normal Form) – Eliminate transitive dependencies between attributes.
+- 1NF (First Normal Form) – A table is in 1NF if all attributes contain atomic (indivisible) values and there are no repeating groups or arrays in a single column.
+- 2NF (Second Normal Form) – A table is in 2NF if it is in 1NF and every non-key attribute is fully functionally dependent on the entire primary key (not just part of it).
+- 3NF (Third Normal Form) – A table is in 3NF if it is in 2NF and all non-key attributes depend only on the primary key, not on other non-key attributes.
+
+**1NF Bad example**:
+```
+students(id, first_name, last_name, emails)
+1, John, Smith, "john@mail.com; john.smith@uni.edu"
+```
+Here, the field emails contains multiple email addresses.
+
+**2NF Bad example**:
+```
+enrollments(student_id, course_id, academic_year, student_city)
+```
+Here, student_city depends only on student_id, not on the full composite key (student_id, course_id).
+
+**3NF Bad example**:
+```
+courses(id, name, department, department_head)
+```
+Here, department_head depends on department, not directly on id.
 
 &nbsp;
   

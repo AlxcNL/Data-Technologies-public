@@ -205,12 +205,10 @@ It returns the first non-null value from the list of arguments. In this example,
 
 PostgreSQL provides some extra functions to the default SQL functions above:
 
-- `PERCENTILE_CONT()` - Returns a computed result after doing linear interpolation
-- `PERCENTILE_DISC()` - Returns a value from the set of values that are aggregated over
+- `PERCENTILE_CONT()` - Returns a computed result after doing linear interpolation over a dataset.
+- `PERCENTILE_DISC()` - Picks the actual value from a dataset that corresponds to the requested percentile, without interpolation
 - `VARIANCE()` - Find the variance on a numeric column
 - `STDDEV()` - Find the standard deviation on a numeric column
-
-&nbsp;&nbsp;
 
 ## Filtering data
 

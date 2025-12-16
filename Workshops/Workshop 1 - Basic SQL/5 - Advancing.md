@@ -210,6 +210,8 @@ PostgreSQL provides some extra functions to the default SQL functions above:
 - `VARIANCE()` - Find the variance on a numeric column
 - `STDDEV()` - Find the standard deviation on a numeric column
 
+> See 'Resources' for a explanation of linear interpolation.
+
 ## Filtering data
 
 Previously we used the `WHERE` operator to retrieve specific records based on the condition given.

@@ -137,4 +137,5 @@ Dataset:
 ```
 
 # Further explanation
-[Difference between standard deviation and variance](https://www.investopedia.com/ask/answers/021215/what-difference-between-standard-deviation-and-variance.asp)
+- [Difference between standard deviation and variance](https://www.investopedia.com/ask/answers/021215/what-difference-between-standard-deviation-and-variance.asp)
+- [Coefficient of Variation: Meaning, Formula and Examples](https://www.geeksforgeeks.org/data-science/coefficient-of-variation-meaning-formula-and-examples/)

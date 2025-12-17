@@ -47,4 +47,7 @@ Calculation of interpolated value:
 11 + ( (0.5 *  1) / 1) =>
 11 + 0.5 = 11.5
 ```
-&nbsp;&nbsp;
+# Variance
+
+*What is Variance?*\
+Variance is a statistical measure that shows how spread out the numbers in a dataset are. If all numbers are close to each other, the variance is low. If all numbers are very different from each other, the variance is high.

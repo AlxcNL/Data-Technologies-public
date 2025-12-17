@@ -101,3 +101,37 @@ Standard deviation is a statistical measure that shows how much the numbers in a
 Formula:\
 \
 ![alt text](data/img/standard_deviation_formula.svg "Standard deviation")
+
+*Example 1*\
+Dataset: 
+```
+10, 11, 12, 40
+```
+- Calculate the variance
+
+```
+( (10-18,25)² + (11-18,25)² + (12-18,25)² + (40-18,25)² ) / 4 = 158,1875
+```
+
+- Take the square root of the variance
+
+```
+√158,1875 => 12,577
+```
+
+*Example 2*\
+Dataset: 
+```
+10, 11, 12, 14
+```
+- Calculate the variance
+
+```
+( (10-11,75)² + (11-11,75)² + (12-11,75)² + (40-11,75)² ) / 4 = 2,1875
+```
+
+- Take the square root of the variance
+
+```
+√2,1875 => 1,479
+```

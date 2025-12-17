@@ -43,7 +43,7 @@ Position of desired percentile:
 ```
 Calculation of interpolated value:
 ```
-11 + ( ((1.5 − 1) × (12 − 11)) / (12 - 11) =>
+11 + ( ((1.5 − 1) × (12 − 11)) / (12 - 11) ) =>
 11 + ( (0.5 × 1) / 1) =>
 11 + 0.5 = 11.5
 ```

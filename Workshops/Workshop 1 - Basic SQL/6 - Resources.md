@@ -19,12 +19,25 @@ Linear interpolation estimates a value between two known points by assuming a st
 Formula:
 ```
 Interpolated value = lower value + ((desired position − lower position) × (upper value − lower value))
-``` 
+```
+
+
+```latex
+Interpolated value = lower value + ((desired position − lower position) × (upper value − lower value)) / (upper position − lower position)
+```
+
 Example
 Dataset: 
 ```
 10, 11, 12, 40
 ```
+The position is as follows:
+|Position|Value|
+|--------|-----|
+|0|10|
+|1|11|
+|2|12|
+|3|40|
 
 We want the 50th percentile (median) using PERCENTILE_CONT(0.5).
 

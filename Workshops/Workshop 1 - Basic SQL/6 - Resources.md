@@ -96,4 +96,8 @@ Calculation of the variance:
 # Standard deviation
 
 *What is Standard deviation?*\
-Standard deviation is a statistical measure that shows how much the numbers in a dataset deviate from the average. \
+Standard deviation is a statistical measure that shows how much the numbers in a dataset deviate from the average.\
+\
+Formula:\
+\
+![alt text](data/img/standard_deviation_formula.svg "Standard deviation")

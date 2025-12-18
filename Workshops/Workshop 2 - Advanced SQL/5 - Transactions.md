@@ -172,7 +172,7 @@ When multiple transactions run concurrently, several read anomalies can occur if
   A transaction reads the same row twice and gets different values, because another committed transaction modified the row in between.
 
 - **Phantom read**  
-  A transaction re-executes a query and sees additional rows that were inserted or deleted by another committed transaction.
+  A transaction re-executes a query and getting different set of rows that were inserted or deleted by another committed transaction.
 
 #### Dirty read example
 ```mermaid

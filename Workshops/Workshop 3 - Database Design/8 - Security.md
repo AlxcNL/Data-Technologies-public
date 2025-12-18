@@ -12,7 +12,9 @@ Below are the most common threats on database systems:
 - **Privilege Abuse** – Users with excessive permissions misusing their access.
 - **Denial-of-Service (DoS) Attacks** – Overloading the database to disrupt operations.
 
-PostgreSQL provides robust security mechanisms to mitigate these threats, including role-based access control (RBAC), encryption, and auditing
+PostgreSQL provides robust security mechanisms to mitigate these threats, including role-based access control (RBAC), encryption, and auditing.
+
+> This workshop provides a brief introduction to RBAC. A more detailed discussion follows in a later workshop.
 
 &nbsp;
 

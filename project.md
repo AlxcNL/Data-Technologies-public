@@ -31,6 +31,10 @@ In de eerste weken stellen teams een **globaal conceptueel datamodel** op, gebas
 
 Het kunnen **bijstellen en verantwoorden van ontwerpkeuzes op basis van voortschrijdend inzicht** is een expliciet onderdeel van dit project en wordt meegenomen in de beoordeling.
 
+### Toelichting bij uitbreidingen (richtinggevend)
+De genoemde uitbreidingen bij de cases zijn richtinggevend. Ze geven voorbeelden van mogelijke verdieping van de functionaliteit, maar zijn niet verplicht en niet uitputtend.
+Studenten zijn vrij om deze uitbreidingen geheel of gedeeltelijk toe te passen, of andere uitbreidingen te kiezen, mits de gemaakte keuzes inhoudelijk worden onderbouwd en passen binnen de randvoorwaarden van de cursus.
+
 ---
 
 ## 2. Case 1 – Online Webshop
@@ -49,13 +53,6 @@ Je ontwikkelt een online webshop waarin gebruikers producten kunnen bekijken en 
 - Overzichten zoals top‑verkopen of omzet per periode
 - Aanbevelingen (bijv. “klanten kochten ook”)
 - Caching van veel geraadpleegde productoverzichten
-
-### Datatechnische aanknopingspunten
-- **Relationeel**: gebruikers, producten, orders, orderregels
-- **NoSQL**: reviews of productmetadata
-- **Key‑value**: caching van productlijsten of zoekresultaten
-- **Graph**: relaties tussen gebruikers en producten
-- **Security & privacy**: gebruikersrollen, minimale dataopslag
 
 ---
 
@@ -76,13 +73,6 @@ Je ontwikkelt een Content Management Systeem (CMS) voor een intranetomgeving. Me
 - Moderatie van reacties en forumberichten
 - Overzichten van populaire artikelen of actieve discussies
 - Aanbevelingen op basis van interesse of leesgedrag
-
-### Datatechnische aanknopingspunten
-- **Relationeel**: gebruikers, rollen, artikelen, categorieën
-- **NoSQL**: reacties en forumberichten
-- **Key‑value**: caching van populaire artikelen of zoekresultaten
-- **Graph**: relaties tussen gebruikers, onderwerpen en interesses
-- **Security & privacy**: rolverdeling, toegangsrechten
 
 ---
 

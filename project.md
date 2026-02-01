@@ -30,6 +30,7 @@ In de professionele praktijk wordt een applicatie vaak gestart met een volledig 
 In de eerste weken stellen teams een **globaal conceptueel datamodel** op, gebaseerd op hun initiële analyse en user stories. Dit model is nadrukkelijk **niet definitief**. Naarmate in de workshops meer kennis wordt opgedaan over database design, normalisatie en optimalisatie, wordt het datamodel **herzien, verfijnd en onderbouwd**.
 
 Het kunnen **bijstellen en verantwoorden van ontwerpkeuzes op basis van voortschrijdend inzicht** is een expliciet onderdeel van dit project en wordt meegenomen in de beoordeling.
+<div style="page-break-after: always;"></div>
 
 ### Toelichting bij uitbreidingen (richtinggevend)
 De genoemde uitbreidingen bij de cases zijn richtinggevend. Ze geven voorbeelden van mogelijke verdieping van de functionaliteit, maar zijn niet verplicht en niet uitputtend.

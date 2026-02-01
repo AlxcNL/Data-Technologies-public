@@ -154,7 +154,7 @@ Je ontwikkelt een Content Management Systeem (CMS) voor een intranetomgeving. Me
 
 ---
 
-### Week 9 – NoSQL toepassen
+### Week 9 – NoSQL toepassen & Herkansing tentamen
 - Implementatie NoSQL
 - Voorbeeldquery’s
 

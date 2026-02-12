@@ -3,6 +3,8 @@ W411*
 *.docx
 references.md
 .DS_STORE
+*.pdf 
+*.db 
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -31,6 +33,8 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
+*.profile_default
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

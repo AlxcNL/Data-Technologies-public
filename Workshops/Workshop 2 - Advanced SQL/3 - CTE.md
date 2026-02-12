@@ -76,18 +76,21 @@ What if we need to find course prerequisites recursively? We could use:
 
 ````sql
 WITH RECURSIVE course_tree AS (
-    -- Base case: Start with the target course
-    SELECT course_id, prerequisite_id FROM course_dependencies WHERE course_id = 3
+    -- Anchor query: Start with the target course
+    SELECT course_id, prerequisite_id, 1 AS level FROM course_dependencies WHERE course_id = 3
     
     UNION ALL
     
-    -- Recursive case: Find dependencies of prerequisites
-    SELECT cd.course_id, cd.prerequisite_id 
+    -- Recursive query: Find dependencies of prerequisites
+    SELECT cd.course_id, cd.prerequisite_id, ct.level + 1 
     FROM course_dependencies cd
     JOIN course_tree ct ON cd.course_id = ct.prerequisite_id
 )
 SELECT * FROM course_tree;
 ````
+The anchor query defines the starting set of rows.\
+The recursive query repeatedly builds on the previous result by joining with the CTE itself.\
+The recursion stops implicitly when no new rows are produced.
 
 &nbsp;
 

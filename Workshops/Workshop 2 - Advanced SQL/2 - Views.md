@@ -104,41 +104,7 @@ DROP VIEW IF EXISTS student_enrollments;
 
 &nbsp;
 
-### Recursive views
 
-A recursive view in SQL is a type of view that **calls itself** in a query to process hierarchical or sequential data.
-
-Suppose we want to model course dependencies, where some courses require students to complete prerequisite courses first.
-To find all courses and their prerequisite chains, we create a recursive CTE inside a view:
-
-```sql
-CREATE VIEW course_hierarchy AS
-WITH RECURSIVE course_tree AS (
-    -- Base case: Select courses with direct prerequisites
-    SELECT c.id, c.name, p.prerequisite_id, 1 AS level
-    FROM courses c
-    JOIN prerequisites p ON c.id = p.course_id
-
-    UNION ALL
-
-    -- Recursive case: Expand prerequisites further
-    SELECT ct.id, ct.name, p.prerequisite_id, ct.level + 1
-    FROM course_tree ct
-    JOIN prerequisites p ON ct.prerequisite_id = p.course_id
-)
-SELECT * FROM course_tree;
-```
-
-Now, we can retrieve hierarchical prerequisite chains:
-
-```sql
-SELECT * FROM course_hierarchy WHERE level > 1;
-```
-
-- This helps students see the full course progression.
-- Useful for advisors managing degree plans.
-
-&nbsp;
 
 ## Example and exercises
 

@@ -101,6 +101,37 @@ The recursion stops implicitly when no new rows are produced.
 
 &nbsp;
 
+### Define a view from this recursive CTE
+
+When we make the CTE more generic by factoring out the specific target course we can create a view from it.
+
+```sql
+CREATE VIEW course_hierarchy as  (
+    WITH RECURSIVE course_tree AS (
+        
+    -- anchor: start for every course as root
+    SELECT course_id AS root_course_id, course_id, prerequisite_id, 1 AS level
+    FROM course_dependencies
+
+    UNION ALL
+
+    -- Recursive query
+    SELECT ct.root_course_id, cd.course_id, cd.prerequisite_id, ct.level + 1
+    FROM course_dependencies cd
+    JOIN course_tree ct ON cd.course_id = ct.prerequisite_id
+    )
+    SELECT * FROM course_tree
+);
+
+```
+The view can be queried as follows:
+
+```sql
+SELECT *
+FROM course_hierarchy
+WHERE root_course_id = 76;
+```
+
 ## Aggregation & Statistical Computations
 
 What if we want to calculate the average grade per student using CTEs for a cleaner logic, we could use:

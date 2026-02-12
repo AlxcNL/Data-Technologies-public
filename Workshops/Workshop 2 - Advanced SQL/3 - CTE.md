@@ -72,12 +72,19 @@ JOIN recent_enrollments re ON ac.id = re.course_id;
 ## Recursive CTEs for hierarchical data
 
 Recursive queries are particularly useful for **organizational hierarchies**, **course prerequisites**, and **nested relationships**.
+
+The original university dataset does not include a table for course prerequisites.
+For this example, we extend the database with a new table: ```course_dependencies```, which stores prerequisite relationships between courses.
+
+Before running the query below, execute the script to create and populate this table:\
+[University Course prerequisites](data/course_prerequisites.sql)
+
 What if we need to find course prerequisites recursively? We could use:
 
 ````sql
 WITH RECURSIVE course_tree AS (
     -- Anchor query: Start with the target course
-    SELECT course_id, prerequisite_id, 1 AS level FROM course_dependencies WHERE course_id = 3
+    SELECT course_id, prerequisite_id, 1 AS level FROM course_dependencies WHERE course_id = 76
     
     UNION ALL
     

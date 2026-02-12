@@ -54,14 +54,14 @@ SELECT * FROM department_credits;
 &nbsp;
 
 ### Multiple CTEs in one query
-CTEs can also be **stacked**, allowing indepdent calculations.
+CTEs can also be **stacked**, allowing independent calculations.
 
 ````sql
 WITH active_courses AS (
     SELECT id, name FROM courses WHERE active = true
 ), 
 recent_enrollments AS (
-    SELECT student_id, course_id FROM enrollments WHERE academic_year = 2025
+    SELECT student_id, course_id FROM enrollments WHERE academic_year = 2024
 )
 SELECT * FROM active_courses ac 
 JOIN recent_enrollments re ON ac.id = re.course_id;

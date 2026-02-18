@@ -41,12 +41,13 @@ FROM students;
 
 ### 2.2 Running Total of Students Enrolled Per City
 
-Using `SUM()` to calculate a cumulative count of students in each city:
+Using `COUNT()` to calculate a cumulative count of students in each city:
 
 ````sql
 SELECT city, enrolled,
-       COUNT(id) OVER (PARTITION BY city ORDER BY enrolled ASC) AS running_total
-FROM students;
+       COUNT(*) OVER (PARTITION BY city ORDER BY enrolled ASC, id ASC) AS running_total
+FROM students
+ORDER BY city, enrolled;
 ````
 
 *Shows how many students have enrolled in each city over time.*

@@ -4,7 +4,8 @@ W411*
 references.md
 .DS_STORE
 *.pdf 
-*.db 
+*.db
+*.mwb
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

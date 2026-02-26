@@ -30,3 +30,7 @@ SELECT now();
 ```sql
 source script.sql;
 ```
+
+## Install MySQL Connector
+
+https://dev.mysql.com/downloads/connector/j/

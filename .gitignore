@@ -7,6 +7,8 @@ references.md
 *.db
 *.mwb
 
+examples/mysql/mysql_data
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -220,3 +222,10 @@ v1/Workshop - Refactoring/sphinx-example/.DS_Store
 v1/Workshop - Refactoring/sphinx-example/docs/_build/.DS_Store
 .DS_Store
 v1/data
+
+# H2
+examples/h2/bin
+examples/h2/docs
+examples/h2/service
+examples/h2/src
+examples/h2/temp

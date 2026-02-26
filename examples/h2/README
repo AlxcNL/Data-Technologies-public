@@ -1,0 +1,7 @@
+# h2
+
+## Create table from CSV
+
+```sql
+CREATE TABLE votes AS SELECT * FROM CSVREAD('../../data/eurovision/votes_2023.csv');
+```

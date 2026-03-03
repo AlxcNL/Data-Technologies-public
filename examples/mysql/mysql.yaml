@@ -2,9 +2,9 @@ version: '3.8'
 
 services:
   mysql:
-    image: mysql:latest
+    image: ubuntu/mysql:latest
     container_name: mysql_container
-    restart: always
+    restart: "always"
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -12,6 +12,3 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
         - "3306:3306"
-    volumes:
-      - $PWD/mysql_data:/var/lib/mysql
-      - $PWD/sakila:/tmp/sakila

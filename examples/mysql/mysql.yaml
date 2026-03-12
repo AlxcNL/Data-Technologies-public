@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   mysql:
-    image: ubuntu/mysql:8.4-24.04_edge
-    container_name: mysql_container
+    image: mysql
+    container_name: mysql_server
     restart: "always"
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -13,4 +13,5 @@ services:
     ports:
         - "3306:3306"
     volumes:
-      - $PWD/planets:/tmp
+      - $PWD/mysql_data:/var/lib/mysql
+      - $PWD/sakila:/tmp/sakila

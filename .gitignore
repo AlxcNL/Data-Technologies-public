@@ -229,3 +229,4 @@ examples/h2/docs
 examples/h2/service
 examples/h2/src
 examples/h2/temp
+examples/mysql/planets/.fuse_hidden*

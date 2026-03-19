@@ -77,7 +77,7 @@ classDiagram
 ### Language
 
 <p>
-Bij deze website gaat het om vertalingen (Translation) maar Song is de verbindende Class. Een Song mag bestaan zonder Translation. Een User mag maar 1 vertaling in 1 taal (Language) per Song maken. Omdat meerder gebruikers vertalingen mogen toevoegen kan een Song meerdere vertalingen in dezelfde taal hebben (zie bijvoorbeeld <a href="https://lyricstranslate.com/en/tali-fighter-lyrics">Tali - Fighter</a>).
+Bij deze website gaat het om vertalingen (Translation) maar Song is de verbindende Class. Een Song mag bestaan zonder Translation. Een User mag maar 1 vertaling in 1 taal (Language) per Song maken. Omdat meerdere gebruikers vertalingen mogen toevoegen kan een Song meerdere vertalingen in dezelfde taal hebben (zie bijvoorbeeld <a href="https://lyricstranslate.com/en/tali-fighter-lyrics">Tali - Fighter</a>).
 </p>
 
 ```mermaid

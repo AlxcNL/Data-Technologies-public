@@ -1,26 +1,25 @@
 
 services:
-  pgadmin_service:
-    image: dpage/pgadmin4
-    container_name: my-pgadmin
-    env_file:
-      - .env
-    ports:
-      - "15432:80"
+  pgcli_service:
+    image: jaboo/pgcli:0.2
+    container_name: pgcli 
+    entrypoint: ["bash"]
+    stdin_open: true
+    tty: true    
     networks:
       - my-network
-    volumes:
-      - $PWD/pgadmin-data:/var/lib/pgadmin
 
   postgres_service:
     image: postgres
-    container_name: my-postgres
+    container_name: postgres
     environment:
-      POSTGRES_USER: postgres:17
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: jaboo
+      POSTGRES_PASSWORD: secret
       TZ: Europe/Amsterdam
     ports:
       - "5433:5432"
+    env_file:
+      - .env
     networks:
       - my-network
 

@@ -8,6 +8,8 @@ references.md
 *.mwb
 
 examples/mysql/mysql_data
+examples/postgresql/.env
+examples/postgresql/pgadmin-data
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

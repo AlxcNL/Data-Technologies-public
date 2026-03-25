@@ -1,0 +1,29 @@
+
+services:
+  pgadmin_service:
+    image: dpage/pgadmin4
+    container_name: my-pgadmin
+    env_file:
+      - .env
+    ports:
+      - "15432:80"
+    networks:
+      - my-network
+    volumes:
+      - $PWD/pgadmin-data:/var/lib/pgadmin
+
+  postgres_service:
+    image: postgres
+    container_name: my-postgres
+    environment:
+      POSTGRES_USER: postgres:17
+      POSTGRES_PASSWORD: postgres
+      TZ: Europe/Amsterdam
+    ports:
+      - "5433:5432"
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# https://redis.io/tutorials/howtos/quick-start/
+# Author: J.A.Boogaard@hr.nl
 
 docker exec -it redis redis-cli
 container_name="redis"

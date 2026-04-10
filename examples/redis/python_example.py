@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# Author: J.A.Boogaard@hr.nl
+
 import redis
 
 redisHost = "localhost"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# https://redis.io/tutorials/howtos/quick-start/
+# Author: J.A.Boogaard@hr.nl
 
 version="trixie"
 host_port1=6379

@@ -217,7 +217,7 @@ JOIN customers c2 ON l2.customer_id = c2.id
 WHERE c1.name = 'Alice' AND c1.id <> c2.id;
 ```
 
-or a query with three joins and a subquery:
+or a query with two joins and a subquery (which also has two joins):
 
 ```sql
 SELECT DISTINCT c2.name

@@ -1,0 +1,10 @@
+{ 
+    user: "admin",
+    pwd: "mongo25",
+    roles: [
+        { 
+                    role: "readWrite", db: "config"
+        },
+        "clusterAdmin"
+    ]
+}

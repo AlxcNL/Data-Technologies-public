@@ -3,8 +3,9 @@
 services:
   app:
     image: zwieratko/mongosh:2.8.2-alpine3.23.3-r125
+    container_name: "mongosh"
     tty: true
-    command: /bin/ash
+    command: /bin/ash    
     depends_on:
       - mongodb    
 

@@ -1,3 +1,5 @@
+# Author: J.A.Boogaard@hr.nl
+
 services:
   app:
     image: zwieratko/mongosh:2.8.2-alpine3.23.3-r125

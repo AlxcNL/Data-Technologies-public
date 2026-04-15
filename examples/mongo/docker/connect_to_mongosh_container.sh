@@ -2,5 +2,7 @@
 
 # Author: J.A.Boogaard@hr.nl
 
+container_name="mongosh"
+
 CONN_STR=mongodb://root:password@mongodb:27017
-docker exec -it mongodb_app_1 mongosh $CONN_STR
+docker exec -it $container_name mongosh $CONN_STR

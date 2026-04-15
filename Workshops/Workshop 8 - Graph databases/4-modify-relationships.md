@@ -13,7 +13,7 @@ FOR (p:Person)
 REQUIRE p.name IS UNIQUE;
 ```
 
-This ensures that every `Person` node has a unique `name` value — effectively acting as a primary key.
+This ensures that every `Person` node has a unique `name` value. Such a property can be used as an application-level identifier, but it is not the same as a primary key in relational databases.
 
 
 ## Creating, updating and merging relationships

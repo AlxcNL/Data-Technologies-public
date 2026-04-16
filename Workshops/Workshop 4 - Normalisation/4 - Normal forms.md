@@ -28,15 +28,30 @@ Normal forms are rules or guidelines for structuring relational databases. Each 
 
 This is often how data looks when it's first collected—think spreadsheets, CSVs, or denormalized reports.
 
+### Violation
+
 ```sql
-| CustomerID | Name       | Contacts             |
-|------------|------------|----------------------|
-| C001       | Alice Wong | 123-4567, 987-6543   |
-| C002       | Bob Smith  | 555-1212             |
+| CustomerID | Name       | Contact1  | Contact2  | Contact3  |
+|------------|------------|-----------|-----------|-----------|
+| C001       | Alice Wong | 123-4567  | 987-6543  |           |
+| C002       | Bob Smith  | 555-1212  |           |           |
 ```
 
-- The `Contacts` field contains **multiple phone numbers** in a single cell.
+- The columns ```Contact1```, ```Contact2```, ```Contact3``` represent the same type of data repeated multiple times in the table structure.
 - This violates the principle of **atomicity** (each field should hold a single value).
+
+### Fix
+
+```sql
+| CustomerID | Name       | Contact   |
+|------------|------------|-----------|
+| C001       | Alice Wong | 123-4567  |
+| C001       | Alice Wong | 987-6543  |
+| C002       | Bob Smith  | 555-1212  |
+```
+
+The repeating group is removed by storing each contact as a separate row instead of multiple columns.
+This ensures that each field contains exactly one value and the table structure can handle any number of contacts.
 
 &nbsp;
 
@@ -47,8 +62,8 @@ This is often how data looks when it's first collected—think spreadsheets, CSV
 A table is in 1NF if:
 
 - All attributes contain **atomic (indivisible)** values.
-- Each record is **unique**.
-- There are **no repeating groups** or arrays.
+    - one value per field
+    - no lists, arrays, or comma-separated values
 
 ### Violation
 

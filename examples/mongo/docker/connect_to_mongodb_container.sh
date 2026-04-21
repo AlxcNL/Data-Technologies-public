@@ -4,5 +4,5 @@
 
 container_name="mongodb"
 
-CONN_STR=mongodb://root:password@mongodb:27017
-docker exec -it $container_name mongosh $CONN_STR
+BASH_ENV=.env docker exec -it $container_name mongosh $CONN_STR
+

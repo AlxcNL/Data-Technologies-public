@@ -1,0 +1,30 @@
+# Author: J.A.Boogaard@hr.nl
+
+services:
+  app:
+    image: python:3.10.20-alpine3.22
+    container_name: "app"
+    tty: true
+    env_file:
+      - .env
+    command: python
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:8.0
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    env_file:
+      - .env
+    volumes:
+      - mongo-data:/data/db
+      - mongo-config:/data/configdb
+
+volumes:
+  mongo-data:
+    driver: local
+  mongo-config:
+    driver: local

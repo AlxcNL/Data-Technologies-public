@@ -5,6 +5,6 @@
 compose_file="mongodb_and_app.yaml"
 containername="mongodb"
 
-docker-compose -f $compose_file down \
+docker container stop $containername \
 && docker container rm -f $containername
 docker-compose -f $compose_file up $containername

@@ -6,19 +6,9 @@ from flask import Flask, render_template, request
 from pymongo import MongoClient
 
 # TODO Read credentials from .env
-connectionString="mongodb://user:s3cret@localhost:27017/"
+connectionString="mongodb://user:s3cret@mongodb:27017/"
 
 app = Flask(__name__)
-
-# @app.route("/", methods=["GET", "POST"])
-# def search():
-    
-#     if request.method == "POST":
-#         query = request.form.get("query")
-#         return query
-
-#     else:
-#         return render_template("index.html")
         
 # Set up MongoDB connection and collection
 
@@ -29,6 +19,20 @@ db = client['demo']
 
 # Create collection named data if it doesn't exist already
 collection = db['data']
+
+@app.route("/", methods=["GET", "POST"])
+def search():
+    
+    if request.method == "POST":
+        query = request.form.get("query")
+        return query
+
+    else:
+        return render_template("index.html")
+
+@app.route('/hello', methods=["GET"])
+def hello_world():
+    return 'Hello, World!'
 
 # # GET /search
 # @app.route("/search", methods=["GET", "POST"])
@@ -46,16 +50,16 @@ collection = db['data']
 def info_route():
     return client.server_info()
 
-# # /dbs
-# @app.route('/dbs')
-# def get_dbs():
-#     return client.list_database_names()
+# /dbs
+@app.route('/dbs')
+def get_dbs():
+    return client.list_database_names()
 
-# # /docs
-# @app.route('/docs')
-# def get_docs():
-#     docs = collection.find_one()
-#     return json.loads(json_util.dumps(docs))
+# /docs
+@app.route('/docs')
+def get_docs():
+    docs = collection.find_one()
+    return json.loads(json_util.dumps(docs))
 
 # # POST add_data
 # @app.route('/add_data', methods=['POST'])

@@ -7,4 +7,4 @@
 
 container_name="app"
 
-docker exec -it $container_name ash
+docker exec -it $container_name bash

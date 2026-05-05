@@ -2,12 +2,13 @@
 
 services:
   app:
-    image: python:3.10.20-alpine3.22
+    image: app:0.1
     container_name: "app"
     tty: true
+    ports:
+      - "5000:5000"
     env_file:
       - .env
-    command: python
     depends_on:
       - mongodb
 

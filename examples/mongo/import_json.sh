@@ -5,19 +5,18 @@
 argument_values=("$@")
 nr_of_arguments=${#argument_values[@]}
 
-if [ $nr_of_arguments -lt 2 ]
+if [ $nr_of_arguments -lt 1 ]
 then
-    printf "USAGE: %s [server] [json_file]\n" "$0"
+    printf "USAGE: %s [json_file]\n" "$0"
     exit
 else
-    server="$1"
-    json_file="$2"
+    json_file="$1"
 fi
 
-CONN_STR=mongodb://root:password@${server}:27017
 database="lyrics"
 collection="songs"
+source $BASH_ENV
 
-cmd="mongoimport $CONN_STR --authenticationDatabase admin --db $database --collection $collection $json_file"
+cmd="mongoimport ${CONN_STR}/${database} --authenticationDatabase admin --collection $collection $json_file"
 echo $cmd
 eval $cmd

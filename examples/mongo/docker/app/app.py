@@ -2,6 +2,11 @@
 
 # Author: J.A.Boogaard@hr.nl
 
+# https://kb.objectrocket.com/mongo-db/python-mongoclient-examples-1050
+# https://www.geeksforgeeks.org/python/sending-data-from-a-flask-app-to-mongodb-database/
+# https://www.digitalocean.com/community/tutorials/how-to-use-mongodb-in-a-flask-application
+
+from bson import json_util
 from flask import Flask, render_template, request
 from pymongo import MongoClient
 
@@ -18,9 +23,9 @@ client = MongoClient(connectionString)
 db = client['demo']
 
 # Create collection named data if it doesn't exist already
-collection = db['data']
+collection = db['songs']
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/search", methods=["GET", "POST"])
 def search():
     
     if request.method == "POST":
@@ -28,49 +33,25 @@ def search():
         return query
 
     else:
-        return render_template("index.html")
+        return render_template("search.html")
 
 @app.route('/hello', methods=["GET"])
 def hello_world():
     return 'Hello, World!'
 
-# # GET /search
-# @app.route("/search", methods=["GET", "POST"])
-# def search():
-    
-#     if request.method == "POST":
-#         query = request.form.get("query")
-#         return query
-
-#     else:
-#         return render_template("index.html")
-
-# GET /info
-@app.route('/info')
+@app.route('/info', methods=["GET"])
 def info_route():
     return client.server_info()
 
-# /dbs
-@app.route('/dbs')
-def get_dbs():
-    return client.list_database_names()
+@app.route('/dbs', methods=["GET"])
+def show_dbs():
+    allDatabases = client.list_database_names()
+    return render_template('databases.html', databases=allDatabases)
 
-# /docs
-@app.route('/docs')
+@app.route('/docs', methods=["GET"])
 def get_docs():
-    docs = collection.find_one()
-    return json.loads(json_util.dumps(docs))
-
-# # POST add_data
-# @app.route('/add_data', methods=['POST'])
-# def add_data():
-#     # Get data from request
-#     data = request.json
-
-#     # Insert data into MongoDB
-#     collection.insert_one(data)
-
-#     return "Data added to MongoDB"
+    allDocs = collection.find()
+    return render_template('docs.html', docs=allDocs)
 
 if __name__ == "__main__":
     app.run()        

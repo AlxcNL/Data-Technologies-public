@@ -4,5 +4,5 @@
 
 image="app:0.1"
 
-docker rmi $image
+# docker rmi $image
 docker build -t $image .

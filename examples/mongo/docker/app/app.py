@@ -1,57 +1,59 @@
-#!/usr/bin/env python
+# _*_ coding: Utf-8 _*_
 
 # Author: J.A.Boogaard@hr.nl
 
-# https://kb.objectrocket.com/mongo-db/python-mongoclient-examples-1050
-# https://www.geeksforgeeks.org/python/sending-data-from-a-flask-app-to-mongodb-database/
-# https://www.digitalocean.com/community/tutorials/how-to-use-mongodb-in-a-flask-application
-
-from bson import json_util
+# from bson import json_util
 from flask import Flask, render_template, request
+from flask_bootstrap import Bootstrap
 from pymongo import MongoClient
 
-# TODO Read credentials from .env
-connectionString="mongodb://user:s3cret@mongodb:27017/"
+def connect2MongoDB(connectionString):
+    return MongoClient(connectionString)
 
-app = Flask(__name__)
-        
-# Set up MongoDB connection and collection
+def createApp():
+    app = Flask(__name__)
+    Bootstrap( app )
+    return app
 
-client = MongoClient(connectionString)
-
-# Create database named demo if they don't exist already
-db = client['demo']
-
-# Create collection named data if it doesn't exist already
-collection = db['songs']
-
-@app.route("/search", methods=["GET", "POST"])
-def search():
+def addEndpoints(app):        
+    # TODO Read credentials from .env
+    host = "localhost"
+    port = 27017
+    connectionString = f"mongodb://root:password@{host}:{port}"
+    client = MongoClient(connectionString)
+    db = client['demo']
+    collection = db['songs']
     
-    if request.method == "POST":
-        query = request.form.get("query")
-        return query
+    @app.route('/hello', methods=["GET"])
+    def hello_world():
+        return 'Hello, World!'
 
-    else:
-        return render_template("search.html")
+    @app.route('/info', methods=["GET"])
+    def info_route():
+        return client.server_info()
 
-@app.route('/hello', methods=["GET"])
-def hello_world():
-    return 'Hello, World!'
+    @app.route('/dbs', methods=["GET"])
+    def show_dbs():
+        allDatabases = client.list_database_names()
+        return render_template('databases.html', databases=allDatabases)
 
-@app.route('/info', methods=["GET"])
-def info_route():
-    return client.server_info()
+    @app.route('/docs', methods=["GET"])
+    def get_docs():
+        allDocs = collection.find()
+        return render_template('docs.html', docs=allDocs)
 
-@app.route('/dbs', methods=["GET"])
-def show_dbs():
-    allDatabases = client.list_database_names()
-    return render_template('databases.html', databases=allDatabases)
+    @app.route("/search", methods=["GET", "POST"])
+    def search():
+        
+        if request.method == "POST":
+            query = request.form.get("query")
+            return query
 
-@app.route('/docs', methods=["GET"])
-def get_docs():
-    allDocs = collection.find()
-    return render_template('docs.html', docs=allDocs)
+        else:
+            return render_template("search.html")
+    
+    return app
 
-if __name__ == "__main__":
-    app.run()        
+if __name__ == "__main__":    
+    app = createApp()
+    addEndpoints(app).run()        

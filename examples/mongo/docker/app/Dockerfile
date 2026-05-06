@@ -19,4 +19,5 @@ USER 1001
 
 EXPOSE 5000
 
-CMD [ "flask", "run", "--host=0.0.0.0"]
+ENTRYPOINT [ "python3" ]
+CMD [ "app.py"]

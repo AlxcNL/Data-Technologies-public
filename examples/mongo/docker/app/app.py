@@ -21,7 +21,7 @@ def addEndpoints(app):
     port = 27017
     connectionString = f"mongodb://root:password@{host}:{port}"
     client = MongoClient(connectionString)
-    db = client['demo']
+    db = client['lyrics']
     collection = db['songs']
     
     @app.route('/', methods=["GET"])

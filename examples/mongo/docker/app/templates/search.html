@@ -26,15 +26,12 @@
             <p><i>Search results for {{ query }}</i></p>
         </div>
 
-        <div class="container">            
+        <div class="container mt-3">
 
             <ul class="list-group">
             
                 {% for result in results %}
-                    <div class="results">
-                        <li>{{ result }}</li>
-                    </div>
-
+                    <li class="list-group-item">{{ result }}</li>
                 {% endfor %}    
 
             </ul>

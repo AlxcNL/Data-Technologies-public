@@ -24,13 +24,17 @@ def addEndpoints(app):
     db = client['demo']
     collection = db['songs']
     
+    @app.route('/', methods=["GET"])
+    def home():
+        return render_template("index.html")
+
     @app.route('/hello', methods=["GET"])
     def hello_world():
         return 'Hello, World!'
 
-    @app.route('/info', methods=["GET"])
-    def info_route():
-        return client.server_info()
+    @app.route("/test", methods=["GET", "POST"])
+    def test():
+        return render_template('test.html')
 
     @app.route('/dbs', methods=["GET"])
     def show_dbs():
@@ -47,10 +51,15 @@ def addEndpoints(app):
         
         if request.method == "POST":
             query = request.form.get("query")
-            return query
-
-        else:
-            return render_template("search.html")
+            
+            if query:
+                return render_template(
+                    "search.html", 
+                    query=query, 
+                    results=["A", "B"]
+                )
+    
+        return render_template("search.html")
     
     return app
 

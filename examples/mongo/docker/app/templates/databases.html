@@ -1,15 +1,24 @@
-<!databaseTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>databaseument</title>
-</head>
-<body>
-    {% for database in databases %}
-        <div class="database">
-            <p>{{ database }}</p>
-        </div>
-    {% endfor %}    
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+
+        <h2>Current MongoDB Databases</h2>
+
+        <ul class="list-group">
+        
+            {% for database in databases %}
+                <div class="database">
+                    <li>{{ database }}</li>
+                </div>
+
+            {% endfor %}    
+
+        </ul>
+
+    </div>
+
+{% endblock %}

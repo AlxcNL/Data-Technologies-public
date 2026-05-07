@@ -5,19 +5,18 @@ RUN echo 'http://dl-cdn.alpinelinux.org/alpine/v3.9/main' >> /etc/apk/repositori
     && apk update \    
     && apk add bash curl mongodb mongodb-tools
 
+EXPOSE 5000
+
 WORKDIR /app
+COPY templates templates
 
 ADD requirements.txt .
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
-
-ADD start_flask.sh .
-COPY templates templates
 
 ADD app.py .
 
 USER 1001
 
-EXPOSE 5000
-
-ENTRYPOINT [ "python3" ]
-CMD [ "app.py"]
+ENTRYPOINT [ "python" ]
+CMD [ "/app/app.py"]
+# CMD [ "/app/app.py" ]

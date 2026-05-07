@@ -21,6 +21,11 @@ services:
     env_file:
       - .env
     volumes:
-      - ./db/mongo-data:/data/db
-      - ./db/mongo-config:/data/configdb
+      - mongo-data:/data/db
+      - mongo-config:/data/configdb
 
+volumes:
+  mongo-data:
+    driver: local
+  mongo-config:
+    driver: local

@@ -14,10 +14,10 @@ def createApp():
     app = Flask(__name__)
     Bootstrap( app )
     return app
-
+    
 def addEndpoints(app):        
     # TODO Read credentials from .env
-    host = "localhost"
+    host = "mongodb"
     port = 27017
     connectionString = f"mongodb://root:password@{host}:{port}"
     client = MongoClient(connectionString)
@@ -56,4 +56,8 @@ def addEndpoints(app):
 
 if __name__ == "__main__":    
     app = createApp()
-    addEndpoints(app).run()        
+    addEndpoints(app).run(
+        host="0.0.0.0", 
+        port=5000,
+        debug=True
+    )        

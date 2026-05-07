@@ -19,4 +19,3 @@ USER 1001
 
 ENTRYPOINT [ "python" ]
 CMD [ "/app/app.py"]
-# CMD [ "/app/app.py" ]

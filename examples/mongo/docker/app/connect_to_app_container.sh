@@ -8,5 +8,5 @@
 container_name="app"
 mongo_host="mongodb"
 
-BASH_ENV=.env docker exec -it $container_name mongo $CONN_STR
+BASH_ENV=../../.env docker exec -it $container_name mongo $CONN_STR
 

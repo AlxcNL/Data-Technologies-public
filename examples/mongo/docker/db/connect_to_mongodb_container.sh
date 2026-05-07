@@ -4,4 +4,4 @@
 
 container_name="mongodb"
 
-BASH_ENV=.env docker exec -it $container_name mongosh $CONN_STR
+BASH_ENV=../../.env docker exec -it $container_name mongosh $CONN_STR

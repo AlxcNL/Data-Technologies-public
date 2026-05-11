@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # _*_ coding: Utf-8 _*_
 
 # Author: J.A.Boogaard@hr.nl
@@ -16,10 +17,9 @@ def createApp():
     return app
     
 def addEndpoints(app):        
-    # TODO Read credentials from .env
     host = "mongodb"
     port = 27017
-    connectionString = f"mongodb://root:password@{host}:{port}"
+    connectionString = f"mongodb://{host}:{port}"
     client = MongoClient(connectionString)
     db = client['lyrics']
     collection = db['songs']

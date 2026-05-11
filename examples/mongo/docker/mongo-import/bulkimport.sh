@@ -9,17 +9,18 @@ nr_of_arguments=${#argument_values[@]}
 
 if [ $nr_of_arguments -lt 1 ]
 then
-    printf "USAGE: %s [json_path]\n" "$0"
+    printf "USAGE: %s [mongodb host] [json_path]\n" "$0"
     exit
 else
-    json_path="$1"
+    host="$1"
+    json_path="$2"
 fi
 
 path2import=$(realpath ./import_json.sh)
 
 function import_json() {
     json_file=$(realpath "$1")
-    cmd="$path2import $json_file"
+    cmd="$path2import $host $json_file"
     echo $cmd
     eval $cmd
 

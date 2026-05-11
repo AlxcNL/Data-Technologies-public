@@ -1,0 +1,7 @@
+{
+    ProductId: "",
+    Taal: ["", ""],
+    Afmetingen: "",
+    Support: ["Windows", "Linux"],
+    Aantal jaren garantie: 2
+}

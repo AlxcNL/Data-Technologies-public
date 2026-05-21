@@ -1,0 +1,1 @@
+MATCH (a:Artist)-[:SINGS]-> (s:Song) RETURN s

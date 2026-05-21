@@ -1,13 +1,18 @@
 MATCH(n) DETACH DELETE n
 
-CREATE(imen_es:Artist {name: "Imen Es"})
+CREATE(imen_es:Artist
+{
+    lyrics_url: "https://lyricstranslate.com/en/imen-es-lyrics.html",
+    name: "Imen Es",
+    country: "France"
+} )
 
 CREATE(lynda:Artist
 {
     lyrics_url: "https://lyricstranslate.com/en/lynda-france-lyrics.html",
     name: "Lynda (France)",
     country: ["Algeria", "France" ],
-  style: "Pop"
+    style: "Pop"
 } )
 
 CREATE(ciao:Song 
@@ -23,3 +28,4 @@ CREATE(ciao:Song
     
 CREATE(lynda)-[:SINGS {album: "Papillon"}]-> (ciao)
 CREATE(imen_es)-[:FEATURES]-> (ciao)
+

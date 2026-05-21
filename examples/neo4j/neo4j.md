@@ -47,7 +47,7 @@ RETURN coach
 ```
 
 ```cypher
-MATCH(player:PLAYER)
+MATCH player:PLAYER)
 RETURN player.name AS PlayerName
 ```
 
@@ -58,7 +58,7 @@ RETURN player.name AS PlayerName
 ```
 
 ```cypher
-MATCH (player:PLAYER) -[:PLAYS_FOR]-> (team:TEAM)
+MATCH(player:PLAYER) -[:PLAYS_FOR]-> (team:TEAM)
 WHERE team.name = "LA Lakers"
 RETURN player
 ```

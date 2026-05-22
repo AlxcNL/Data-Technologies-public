@@ -25,7 +25,19 @@ CREATE(ciao:Song
     album: "Papillon (Réédition)",
     languages: "French"
 } )
-    
-CREATE(lynda)-[:SINGS {album: "Papillon"}]-> (ciao)
-CREATE(imen_es)-[:FEATURES]-> (ciao)
 
+CREATE(introspection:Song
+{
+    lyrics_url: "https://lyricstranslate.com/en/lynda-france-introspection-lyrics",
+    artist: "Lynda",
+    title: "Introspection",
+    video_url: "https://youtu.be/cpMzPCFgTwE",
+    featured_artists: "Imen Es",
+    album: "L’album du mâle",
+    languages: "French"
+} )
+
+CREATE(lynda)-[:SINGS]-> (ciao)
+CREATE(imen_es)-[:FEATURES]-> (ciao)
+MERGE(lynda)-[:SINGS]-> (introspection)
+MERGE(imen_es)-[:FEATURES]-> (introspection)

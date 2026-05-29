@@ -1,4 +1,4 @@
-MATCH(n) DETACH DELETE n
+MATCH(n) DETACH DELETE n;
 
 CREATE(imen_es:Artist
 {
@@ -10,24 +10,20 @@ CREATE(imen_es:Artist
 CREATE(lynda:Artist
 {
     lyrics_url: "https://lyricstranslate.com/en/lynda-france-lyrics.html",
-    name: "Lynda (France)",
+    name: "Lynda",
     country: ["Algeria", "France" ],
     style: "Pop"
 } )
 
-CREATE(ciao:Song 
-{
+MERGE(lynda)-[:SONG {
     lyrics_url: "https://lyricstranslate.com/en/lynda-france-ciao-lyrics", 
     video_url: "https://youtube.com/watch?v=a4fETDIAdqI",
-    artist: "Lynda (France)",
     title: "Ciao",
-    featured_artists: "Imen Es",
     album: "Papillon (Réédition)",
     languages: "French"
-} )
+}]-> (imen_es)
 
-CREATE(introspection:Song
-{
+MERGE(lynda)-[:SONG {
     lyrics_url: "https://lyricstranslate.com/en/lynda-france-introspection-lyrics",
     artist: "Lynda",
     title: "Introspection",
@@ -35,9 +31,5 @@ CREATE(introspection:Song
     featured_artists: "Imen Es",
     album: "L’album du mâle",
     languages: "French"
-} )
+}]-> (imen_es)
 
-CREATE(lynda)-[:SINGS]-> (ciao)
-CREATE(imen_es)-[:FEATURES]-> (ciao)
-MERGE(lynda)-[:SINGS]-> (introspection)
-MERGE(imen_es)-[:FEATURES]-> (introspection)

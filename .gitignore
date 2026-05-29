@@ -234,3 +234,4 @@ examples/h2/temp
 examples/mysql/planets/.fuse_hidden*
 examples/mongo/docker/db/mongo-data/
 examples/mongo/docker/db/mongo-config/
+examples/mongo/.env.bkp

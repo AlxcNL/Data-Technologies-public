@@ -204,7 +204,7 @@ RETURN DISTINCT c1.name, c2.name, p.name;
 ```
 **Example 2 — “Find customers who liked a product in the same category as something Alice liked.”**
 
-In SQL, this would require three joins and a subquery:
+In SQL, this would require six joins:
 ```sql
 SELECT DISTINCT c2.name
 FROM likes l1
@@ -215,6 +215,23 @@ JOIN likes l2 ON l2.product_id = p2.id
 JOIN customers c1 ON l1.customer_id = c1.id
 JOIN customers c2 ON l2.customer_id = c2.id
 WHERE c1.name = 'Alice' AND c1.id <> c2.id;
+```
+
+or a query with two joins and a subquery (which also has two joins):
+
+```sql
+SELECT DISTINCT c2.name
+FROM customers c2
+JOIN likes l2 ON c2.id = l2.customer_id
+JOIN products p2 ON l2.product_id = p2.id
+WHERE p2.category_id IN (
+    SELECT p1.category_id
+    FROM customers c1
+    JOIN likes l1 ON c1.id = l1.customer_id
+    JOIN products p1 ON l1.product_id = p1.id
+    WHERE c1.name = 'Alice'
+)
+AND c2.name <> 'Alice';
 ```
 
 In Cypher, this pattern is much easier to express and read:

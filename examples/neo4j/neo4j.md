@@ -1,5 +1,30 @@
 # Neo4j
 
+## Getting Started
+
+<ul>
+
+<li>Install Neo4j Desktop</li><br>
+
+<li>Install Neo4j Server</li><br>
+
+<li>Start Neo4j Server</li><br>
+
+<li>Open http://localhost:7474/browser/ and create login credentials</li><br>
+
+<li>Open Neo4j Desktop</li><br>
+
+<li>
+In Neo4j Desktop, create a remote connection to the local server
+
+```
+neo4j://localhost:7474
+```
+
+</li>
+
+</ul>
+
 ## Import Data
 
 ### Import CSV

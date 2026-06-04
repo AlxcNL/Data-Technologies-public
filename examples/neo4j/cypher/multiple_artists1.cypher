@@ -1,5 +1,7 @@
 MATCH(n) DETACH DELETE n;
 
+# Artist Nodes
+
 CREATE(imen_es:Artist
 {
     lyrics_url: "https://lyricstranslate.com/en/imen-es-lyrics.html",
@@ -14,6 +16,8 @@ CREATE(lynda:Artist
     country: ["Algeria", "France" ],
     style: "Pop"
 } )
+
+# Song Nodes
 
 CREATE(ciao:Song 
 {
@@ -37,7 +41,24 @@ CREATE(introspection:Song
     languages: "French"
 } )
 
-CREATE(lynda)-[:SINGS]-> (ciao)
-CREATE(imen_es)-[:FEATURES]-> (ciao)
+CREATE(facile:Song
+{
+    lyrics_url: "https://lyricstranslate.com/en/imen-es-facile-lyrics",
+    video_url: "https://youtu.be/jJa_CGDcJic",
+    title: "Facile",
+    album: "Es",
+    languages: "French"
+} )
+
+# Sings Relationships
+
+MERGE(lynda)-[:SINGS]-> (ciao)
 MERGE(lynda)-[:SINGS]-> (introspection)
+MERGE(imen_es)-[:SINGS]-> (facile)
+
+# Features Relationships
+
+MERGE(imen_es)-[:FEATURES]-> (ciao)
 MERGE(imen_es)-[:FEATURES]-> (introspection)
+MERGE()
+

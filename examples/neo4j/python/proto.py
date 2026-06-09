@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
 # https://coderivers.org/blog/neo4j-python/
+# https://neo4j.com/docs/python-manual/current/transformers/ 
 
-from neo4j import GraphDatabase, RoutingControl
+from neo4j import GraphDatabase, RoutingControl, Result
+import pyvis
 
 URI = "neo4j://localhost:7687"
 AUTH = ("neo4j", "secret319")
@@ -51,30 +53,42 @@ def addSong(driver, song, artist, fartist):
         parameters_ = params,
         database_= DB
     )
+    
+def visualize_result(query_graph, nodes_text_properties):
+    visual_graph = pyvis.network.Network()
+
+    for node in query_graph.nodes:
+        node_label = list(node.labels)[0]
+        node_text = node[nodes_text_properties[node_label]]
+        visual_graph.add_node(node.element_id, node_text, group=node_label)
+
+    for relationship in query_graph.relationships:
+        visual_graph.add_edge(
+            relationship.start_node.element_id,
+            relationship.end_node.element_id,
+            title=relationship.type
+        )
+
+
+    visual_graph.show('featured_artists.html', notebook=False)
+
         
 if __name__ == "__main__":    
-    with GraphDatabase.driver(URI, auth=AUTH) as driver:
-
-        cleanDB(driver)
-
-        artists = list()
-        artists.append( {'name': "Eva Queen"} )
-        artists.append( {'name': "Imen Es"} )
-        artists.append( {'name': "Lynda" } )
-        artists.append( {'name': "Lyna Mahyem"} )
-
-        for artist in artists:
-            addArtist( driver, artist ) 
-
-        getAllArtists(driver)
-
-        songs = list()
-        songs.append( {'title': "Dinero" } )
-        songs.append( {'title': "Instrospection"} )
-
-        addSong( driver, songs[0], artists[0], artists[2] )
-        addSong( driver, songs[1], artists[2], artists[1] )
+    with GraphDatabase.driver(URI, auth=AUTH) as driver:        
+    
+        # Query to get a graphy result
+        graph_result = driver.execute_query("""
+            MATCH p=(a:Artist)-[:SINGS]->()<-[:FEATURES]-(f:Artist)
+            WHERE f.name IN ['Amel Bent', 'Camelia Jordana', 'Vitaa']
+            RETURN p LIMIT 500""",
+            database_= DB,
+            result_transformer_ = Result.graph
+        )
+    
+            # Draw graph
+        nodes_text_properties = {  # what property to use as text for each node
+            "Artist": "name",
+            "Song": "title",
+        }
         
-        getAllSongs(driver)
-        
-        
+        visualize_result(graph_result, nodes_text_properties)

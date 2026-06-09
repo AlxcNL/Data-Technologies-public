@@ -5,7 +5,7 @@
 from neo4j import GraphDatabase, RoutingControl
 
 URI = "neo4j://localhost:7687"
-AUTH = ("neo4j", "secret26")
+AUTH = ("neo4j", "secret319")
 DB = "neo4j"
 
 def cleanDB(driver):
@@ -35,17 +35,21 @@ def getAllSongs(driver):
     for record in results:
         print( record["s"] )
 
-def addSong(driver, song, artist):
+def addSong(driver, song, artist, fartist):
+    params = {
+        'artist': artist['name'],
+        'featured_artist': fartist['name'],
+        'title': song['title'], 
+    }
+    
     driver.execute_query(
-        "MERGE (a:Artist {name: $name})"
-        "MERGE (s:Song {title: $title, album: $album, lyrics_url: $lyrics_url} )"
-        "MERGE (a)-[:SINGS]->(s)",
-        name=artist['name'],
-        lyrics_url=song['lyrics_url'],
-        title=song['title'], 
-        video_url=song['video_url'],
-        album = song['album'],
-        database_=DB
+        "MERGE (a:Artist {artist: $artist})"
+        "MERGE (f:Artist {artist: $featured_artist})"
+        "MERGE (s:Song {title: $title} )"
+        "MERGE (a)-[:SINGS]->(s)"
+        "MERGE (f)-[:FEATURES]->(s)",
+        parameters_ = params,
+        database_= DB
     )
         
 if __name__ == "__main__":    
@@ -53,24 +57,23 @@ if __name__ == "__main__":
 
         cleanDB(driver)
 
-        addArtist( driver, {'name': "Eva Queen"} ) 
-        addArtist( driver, {'name': "Imen Es"} ) 
-        addArtist( driver, {'name': "Lynda"} ) 
-        addArtist( driver, {'name': "Lyna Mahyem"} ) 
+        artists = list()
+        artists.append( {'name': "Eva Queen"} )
+        artists.append( {'name': "Imen Es"} )
+        artists.append( {'name': "Lynda" } )
+        artists.append( {'name': "Lyna Mahyem"} )
+
+        for artist in artists:
+            addArtist( driver, artist ) 
 
         getAllArtists(driver)
 
-        song = {
-                'lyrics_url': "https://lyricstranslate.com/en/lynda-france-introspection-lyrics",
-                'title': "Introspection",
-                'video_url': "https://youtu.be/cpMzPCFgTwE",
-                'album': "L’album du mâle",                
-                'languages': "French"
-            } 
+        songs = list()
+        songs.append( {'title': "Dinero" } )
+        songs.append( {'title': "Instrospection"} )
 
-        artist = {'name': "Eva Queen"}
-
-        addSong( driver, song, artist )
+        addSong( driver, songs[0], artists[0], artists[2] )
+        addSong( driver, songs[1], artists[2], artists[1] )
         
         getAllSongs(driver)
         

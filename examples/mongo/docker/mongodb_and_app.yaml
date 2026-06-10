@@ -1,0 +1,31 @@
+# Author: J.A.Boogaard@hr.nl
+
+services:
+  app:
+    image: app:0.1
+    container_name: "app"
+    tty: true
+    ports:
+      - "5000:5000"
+    env_file:
+      - ../.env
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:8.0
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    env_file:
+      - ../.env
+    volumes:
+      - mongo-data:/data/db
+      - mongo-config:/data/configdb
+
+volumes:
+  mongo-data:
+    driver: local
+  mongo-config:
+    driver: local

@@ -1,0 +1,26 @@
+
+services:
+  pgcli_service:
+    image: jaboo/pgcli:0.2
+    container_name: pgcli 
+    entrypoint: ["bash"]
+    stdin_open: true
+    tty: true    
+    networks:
+      - my-network
+
+  postgres_service:
+    image: postgres
+    container_name: postgres
+    environment:
+      POSTGRES_USER: jaboo
+      POSTGRES_PASSWORD: secret
+      TZ: Europe/Amsterdam
+    ports:
+      - "5433:5432"
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge

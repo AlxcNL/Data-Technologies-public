@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+
+    <div class="col-md-6 offset-md-3 mt-5">
+
+        <div class="input-group mb-3">
+            <div class="input-group-text p-0">
+                <select class="form-select form-select-lg shadow-none bg-light border-0">
+                    <option>Song</option>
+                    <option>Artist</option>
+                    <option>Album</option>
+                </select>
+            </div>
+
+            <form action="{{url_for('search')}}" method="POST">
+                <input for="search", id="search", name="query", placeholder="Please enter your query here">
+                <button class="input-group-text shadow-none px-4 btn-warning">
+                    <i class="bi bi-search"></i>
+                </button>
+            </form>    
+
+        </div>
+
+        <div class="query">    
+            <p><i>Search results for {{ query }}</i></p>
+        </div>
+
+        <div class="container mt-3">
+
+            <ul class="list-group">
+            
+                {% for result in results %}
+                    <li class="list-group-item">{{ result }}</li>
+                {% endfor %}    
+
+            </ul>
+
+        </div>
+
+    </div>
+
+{% endblock %}

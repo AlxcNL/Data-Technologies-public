@@ -33,4 +33,5 @@ source script.sql;
 
 ## Install MySQL Connector
 
+https://database-client.com/
 https://dev.mysql.com/downloads/connector/j/

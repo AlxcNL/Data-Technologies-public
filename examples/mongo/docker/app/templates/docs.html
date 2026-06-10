@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+
+        <div class="container mt-3">
+
+        <h2>Overview of all Songs</h2>
+
+        <table class="table table-striped">
+        
+            <tr>
+                <th>Song</th>
+                <th>Artist</th>
+            </tr>
+
+            {% for doc in docs %}
+
+            <tr>
+                <td><a href="{{ doc['lyrics_url'] }}" target="_blank">{{ doc['title'] }}</a></td>
+                <td>{{ doc['artist'] }}</td>
+            </tr>
+                
+            {% endfor %}    
+
+        </table>
+
+    </div>
+
+{% endblock %}

@@ -19,7 +19,7 @@ def addEndpoints(app):
     # TODO Read credentials from .env
     host = "mongodb"
     port = 27017
-    connectionString = f"mongodb://root:password@{host}:{port}"
+    connectionString = f"mongodb://${user}:${password}@{host}:{port}"
     client = MongoClient(connectionString)
     db = client['lyrics']
     collection = db['songs']

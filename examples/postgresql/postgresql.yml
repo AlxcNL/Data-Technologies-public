@@ -13,9 +13,7 @@ services:
     image: postgres
     container_name: postgres
     environment:
-      POSTGRES_USER: jaboo
-      POSTGRES_PASSWORD: secret
-      TZ: Europe/Amsterdam
+      - ../.env
     ports:
       - "5433:5432"
     networks:

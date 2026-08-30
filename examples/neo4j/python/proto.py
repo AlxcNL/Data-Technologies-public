@@ -7,7 +7,7 @@ from neo4j import GraphDatabase, RoutingControl, Result
 import pyvis
 
 URI = "neo4j://localhost:7687"
-AUTH = ("neo4j", "secret319")
+AUTH = ("neo4j", "")
 DB = "neo4j"
 
 def cleanDB(driver):
